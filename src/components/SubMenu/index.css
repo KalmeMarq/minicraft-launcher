@@ -1,0 +1,103 @@
+.submenu {
+  background: #1e1e1e;
+  padding: 30px 1.2rem 0;
+  height: 82px;
+  min-height: 82px;
+  position: relative;
+  z-index: 1;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+}
+
+.submenu h2 {
+  font-family: 'NotoSansBold';
+  color: var(--submenu-header-foreground);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 100;
+  padding: 0 0 3px;
+}
+
+.submenu ul {
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+}
+
+.submenu li {
+  text-align: center;
+  list-style: none;
+  margin: 0 1.6rem 0.8rem 0;
+}
+
+.submenu li:first-of-type {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.submenu li:last-of-type {
+  padding-left: 0;
+}
+
+.submenu a {
+  color: var(--submenu-tab-foreground);
+  text-decoration: none;
+  position: relative;
+  font-family: 'NotoSans';
+  font-size: 14px;
+  -webkit-user-drag: none;
+}
+
+.submenu a:hover {
+  color: #FFFFFF;
+}
+
+.submenu a::before {
+  display: block;
+  content: attr(title);
+  font-family: 'NotoSansBold';
+  overflow: hidden;
+  visibility: hidden;
+  height: 0px;
+}
+
+.submenu a.active {
+  pointer-events: none;
+  font-family: 'NotoSansBold';
+  color: #FFFFFF;
+}
+
+.submenu a.active::after {
+  background: #008542;
+  transition-property: width;
+  transition-duration: 200ms;
+  width: 20px;
+}
+
+.submenu a:focus {
+  outline: none;
+}
+
+.submenu a:focus-visible {
+  font-family: 'NotoSansBold';
+  color: hsl(0, 0%, 100%);
+}
+
+.submenu a.active:focus-visible::after {
+  background: hsl(0, 0%, 100%);
+  width: 20px;
+}
+
+.submenu a::after {
+  content: '';
+  display: block;
+  position: relative;
+  width: 0;
+  height: 3px;
+  background: transparent;
+  left: 50%;
+  transform: translate(-50%);
+  bottom: -9px;
+}
