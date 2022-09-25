@@ -1,0 +1,155 @@
+@font-face {
+  font-family: 'Minecraft';
+  src: url(./assets/fonts/Minecraft.ttf);
+}
+
+@font-face {
+  font-family: 'MinecraftTen';
+  src: url(./assets/fonts/MinecraftTen.ttf);
+}
+
+@font-face {
+  font-family: 'NotoSans';
+  src: url(./assets/fonts/NotoSans-Regular.ttf);
+}
+
+@font-face {
+  font-family: 'NotoSansBold';
+  src: url(./assets/fonts/NotoSans-Bold.ttf);
+}
+
+@font-face {
+  font-family: 'NotoSansItalic';
+  src: url(./assets/fonts/NotoSans-Italic.ttf);
+}
+
+@font-face {
+  font-family: 'NotoSansBoldItalic';
+  src: url(./assets/fonts/NotoSans-BoldItalic.ttf);
+}
+
+:root {
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 1);
+  background-color: #333333;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+}
+
+// Modal
+.modal-overlay {
+  position: fixed;
+  display: block;
+  z-index: 10;
+  opacity: 1;
+  transition: 0;
+  visibility: visible;
+}
+
+.modal-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  outline: none;
+  background: #303030;
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
+  
+  &.anim {
+    opacity: 0;
+    transform: translate(0, -10%);
+    animation: modalAnim 400ms forwards;
+  }
+
+  header {
+    display: flex;
+    place-content: center;
+    place-items: center;
+    width: 100%;
+    height: 61px;
+    min-height: 61px;
+    max-height: 61px;
+    position: relative;
+    border-bottom: 1px solid #373737;
+  
+    h2 {
+      font-family: 'NotoSansBold';
+      color: #FFFFFF;
+      font-size: 1.1rem;
+      font-weight: 100;
+    }
+  
+    .close-btn {
+      cursor: pointer;
+      position: absolute;
+      width: 36px;
+      height: 36px;
+      right: 10px;
+      border-radius: 50%;
+      background: none;
+      border: none;
+  
+      &:hover,
+      &:focus {
+        outline: none;
+        background: #ffffff39;
+      }
+
+      &:active {
+        background: #ffffff29;
+      }
+    }
+  
+    .close-icon {
+      width: 36px;
+      padding: 10px;
+    }
+  }
+
+  main {
+    overflow-y: auto;
+    padding: 0 0 2rem 0;
+    height: 100%;
+     
+    .container {
+      padding: 1rem 0;
+      display: flex;
+      flex-direction: column;
+      width: 400px;
+      margin: auto;
+    }
+  }
+  
+  footer {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding: 0 1rem;
+    gap: 0 0.7rem;
+    width: 100%;
+    height: 72px;
+    min-height: 72px;
+    max-height: 72px;
+    position: relative;
+    border-top: 1px solid #373737;
+  }
+}

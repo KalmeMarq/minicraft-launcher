@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import './index.css';
+import './index.scss';
 
 const MainMenuTab: React.FC<{
   title: string;
@@ -30,9 +30,10 @@ const MainMenuButton: React.FC<{
   title: string;
   subtitle?: string;
   icon: string;
-}> = ({ title, subtitle, icon }) => {
+  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+}> = ({ title, subtitle, icon, onClick }) => {
   return (
-    <button className="main-menu-tab" title={subtitle ? subtitle : title}>
+    <button className="main-menu-tab" title={subtitle ? subtitle : title} onClick={onClick}>
       <div className="icon">
         <img src={icon} alt={title} />
       </div>

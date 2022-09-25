@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import SubMenu from '../../components/SubMenu';
 
-const Settings: React.FunctionComponent = () => {
+const Settings: React.FC = () => {
   return (
     <>
       <SubMenu>

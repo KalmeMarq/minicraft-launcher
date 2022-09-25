@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import SubMenu from '../../components/SubMenu';
 
-const Minicraft: React.FunctionComponent = () => {
+const Minicraft: React.FC = () => {
   return (
     <>
       <SubMenu>

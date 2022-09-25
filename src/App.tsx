@@ -6,66 +6,32 @@ import iconCommunity from './assets/main_menu_icons/com_icon.png';
 import iconSettings from './assets/main_menu_icons/settings_icon.png';
 import MainMenuTab, { MainMenuButton } from './components/MainMenuTab';
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { tauri, fs, app, cli, globalShortcut, http, invoke, notification, os } from '@tauri-apps/api';
+import { tauri, fs, app, cli, globalShortcut, http, invoke, notification, os, process } from '@tauri-apps/api';
 import { appDir } from '@tauri-apps/api/path';
 import { useEffect, useState } from 'react';
 import Checkbox from './components/Checkbox';
 import Settings from './routes/Settings';
 import Minicraft from './routes/Minicraft';
+import LauncherNewsDialog from './components/LauncherNewsDialog';
+import MinicraftPlus from './routes/MinicraftPlus';
+import Community from './routes/Community';
 
-function MinicraftPlus() {
-  return (
-    <>
-      <h1>MinicraftPlus</h1>
-      <button
-        onClick={() => {
-          async function a() {
-            console.log(await appDir());
-          }
-          a();
-        }}
-      >
-        Click me
-      </button>
-    </>
-  );
-}
-
-// function Minicraft() {
-//   const [name, setName] = useState('');
-//   const [version, setVersion] = useState('');
-//   const [tauriVersion, setTauriVersion] = useState('');
-
-//   useEffect(() => {
-//     app.getName().then(setName);
-//     app.getVersion().then(setVersion);
-//     app.getTauriVersion().then(setTauriVersion);
-//   });
-
-//   return (
-//     <>
-//       <h1>Minicraft</h1>
-//       <p>name: {name}</p>
-//       <p>version: {version}</p>
-//       <p>tauriVersion: {tauriVersion}</p>
-//     </>
-//   );
-// }
-
-function Community() {
-  return <h1>Community</h1>;
-}
+// @ts-ignore
+console.log();
 
 function App() {
+  const [showDialog, setShowDialog] = useState(false);
+
   return (
     <>
+      <LauncherNewsDialog isOpen={showDialog} onClose={() => setShowDialog(false)} />
       <HashRouter>
         <div className="main-menu">
-          {/* <MainMenuTab title="Minicraft" subtitle="Plus" icon={iconMinicraftPlus} path="minicraftplus" /> */}
+          <MainMenuTab title="Minicraft" subtitle="Plus" icon={iconMinicraftPlus} path="minicraftplus" />
           <MainMenuTab title="Minicraft" icon={iconMinicraft} path="/minicraft" />
-          {/* <MainMenuTab title="Community" icon={iconCommunity} path="community" /> */}
+          {import.meta.env.DEV && <MainMenuTab title="Community" icon={iconCommunity} path="community" />}
           <div className="fill-v"></div>
-          <MainMenuButton title="What's New" icon={iconLauncherNew} />
+          <MainMenuButton title="What's New" icon={iconLauncherNew} onClick={() => setShowDialog(true)} />
           <MainMenuTab title="Settings" icon={iconSettings} path="/settings" />
         </div>
         <div className="route-root">
@@ -73,7 +39,7 @@ function App() {
             <Route path="/" element={<Navigate to="/minicraft" />} />
             <Route path="/minicraftplus/*" element={<MinicraftPlus />} />
             <Route path="/minicraft/*" element={<Minicraft />} />
-            <Route path="/community/*" element={<Community />} />
+            {import.meta.env.DEV && <Route path="/community/*" element={<Community />} />}
             <Route path="/settings/*" element={<Settings />} />
           </Routes>
         </div>
