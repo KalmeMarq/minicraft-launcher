@@ -1,5 +1,8 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import SubMenu from '../../components/SubMenu';
+import Installations from './Installations';
+import PatchNotes from './PatchNotes';
+import Play from './Play';
 
 const MinicraftPlus: React.FC = () => {
   return (
@@ -15,6 +18,9 @@ const MinicraftPlus: React.FC = () => {
       <div className="subroute-page">
         <Routes>
           <Route path="/" element={<Navigate to="/minicraftplus/play" replace />} />
+          <Route path="/play" element={<Play />} />
+          <Route path="/installations" element={<Installations />} />
+          <Route path="/patchnotes" element={<PatchNotes />} />
         </Routes>
       </div>
     </>

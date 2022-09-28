@@ -1,19 +1,12 @@
-import { invoke } from '@tauri-apps/api/tauri';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import SubMenu from '../../components/SubMenu';
+import { T } from '../../context/TranslationContext';
 
 const Community: React.FC = () => {
   return (
-    <>
-      <button
-        onClick={() => {
-          invoke('open_folder_from_launcher', { id: 'versions' });
-        }}
-      >
-        Click to open versions folder
-      </button>
-      <button>Click to open saves folder</button>
-    </>
+    <div className="coming-soon-container">
+      <h2>
+        <T>Coming soon</T>
+      </h2>
+    </div>
   );
 };
 

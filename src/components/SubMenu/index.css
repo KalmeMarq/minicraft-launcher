@@ -12,12 +12,13 @@
 }
 
 .submenu h2 {
-  font-family: 'NotoSansBold';
+  font-family: 'Noto Sans';
+  font-weight: bold;
   color: var(--submenu-header-foreground);
   text-transform: uppercase;
-  font-size: 0.8rem;
+  font-size: 0.76rem;
   font-weight: 100;
-  padding: 0 0 3px;
+  padding: 0 0 5px;
 }
 
 .submenu ul {
@@ -29,7 +30,7 @@
 .submenu li {
   text-align: center;
   list-style: none;
-  margin: 0 1.6rem 0.8rem 0;
+  margin: 0 1.7rem 0 0;
 }
 
 .submenu li:first-of-type {
@@ -42,12 +43,13 @@
 }
 
 .submenu a {
-  color: var(--submenu-tab-foreground);
+  color: hsl(0, 0%, 81%);
   text-decoration: none;
   position: relative;
-  font-family: 'NotoSans';
+  font-family: 'Noto Sans';
   font-size: 14px;
   -webkit-user-drag: none;
+  padding: 0 0 0.71rem 0;
 }
 
 .submenu a:hover {
@@ -57,7 +59,8 @@
 .submenu a::before {
   display: block;
   content: attr(title);
-  font-family: 'NotoSansBold';
+  font-family: 'Noto Sans';
+  font-weight: bold;
   overflow: hidden;
   visibility: hidden;
   height: 0px;
@@ -65,7 +68,8 @@
 
 .submenu a.active {
   pointer-events: none;
-  font-family: 'NotoSansBold';
+  font-family: 'Noto Sans';
+  font-weight: bold;
   color: #FFFFFF;
 }
 
@@ -81,7 +85,8 @@
 }
 
 .submenu a:focus-visible {
-  font-family: 'NotoSansBold';
+  font-family: 'Noto Sans';
+  font-weight: bold;
   color: hsl(0, 0%, 100%);
 }
 
@@ -99,5 +104,5 @@
   background: transparent;
   left: 50%;
   transform: translate(-50%);
-  bottom: -9px;
+  bottom: -8px;
 }

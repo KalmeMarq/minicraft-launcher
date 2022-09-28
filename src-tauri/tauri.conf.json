@@ -12,11 +12,16 @@
   },
   "tauri": {
     "allowlist": {
-      "all": true
+      "os": {
+        "all": true
+      },
+      "shell": {
+        "open": true
+      }
     },
     "bundle": {
       "active": true,
-      "category": "DeveloperTool",
+      "category": "Utility",
       "copyright": "",
       "deb": {
         "depends": []
@@ -30,7 +35,7 @@
         "icons/icon.ico"
       ],
       "identifier": "me.kalmemarq.minicraftlauncher",
-      "longDescription": "",
+      "longDescription": "A launcher for Minicraft",
       "macOS": {
         "entitlements": null,
         "exceptionDomain": "",
@@ -39,12 +44,17 @@
         "signingIdentity": null
       },
       "resources": [],
-      "shortDescription": "",
+      "shortDescription": "A launcher for Minicraft",
       "targets": "all",
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
-        "timestampUrl": ""
+        "timestampUrl": "",
+        "wix": {
+          "bannerPath": "icons/banner.bmp",
+          "dialogImagePath": "icons/dialog_banner.bmp",
+          "enableElevatedUpdateTask": false
+        }
       }
     },
     "security": {

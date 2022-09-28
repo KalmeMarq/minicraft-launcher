@@ -15,12 +15,35 @@
   border: 1px solid transparent;
   text-decoration: none;
 
+  .new-square {
+    --new-square-border: #1e1e1e;
+    position: absolute;
+    right: 0.6rem;
+    top: calc(50% - 15px);
+    translate: 0 -50%;
+    width: 10px;
+    height: 10px;
+    box-shadow:
+      inset 2px 2px var(--new-square-border),
+      inset -2px -2px var(--new-square-border);
+    background: #0DD166;
+    z-index: 0;
+  }
+
   &:hover {
     background: #353535;
+
+    .new-square {
+      --new-square-border: #353535;
+    }
   }
   
   &:focus {
     background: #292929;
+
+    .new-square {
+      --new-square-border: #292929;
+    }
   }
   
   &:focus-visible,
@@ -29,6 +52,10 @@
     border: 1px solid white;
     border-radius: 0;
     background: #353535;
+
+    .new-square {
+      --new-square-border: #353535;
+    }
   }
 
   &.selected {
@@ -54,6 +81,7 @@
   }
   
   .icon {
+    position: relative;
     height: 100%;
     padding: 0 0.9rem;
     display: flex;
@@ -71,22 +99,25 @@
     place-content: center;
     height: 100%;
     color: #EEE;
+    position: relative;
+    top: -1px;
   }
   
   .label-content .uptitle {
-    font-family: 'NotoSans';
+    font-family: 'Noto Sans';
     font-size: 10px;
     text-transform: uppercase;
   }
   
   .label-content .title {
-    font-family: 'NotoSans';
+    font-family: 'Noto Sans';
     font-size: 14px;
   }
   
   &.selected .label-content .uptitle,
   &.selected .label-content .title {
-    font-family: 'NotoSansBold';
+    font-family: 'Noto Sans';
+    font-weight: bold;
     letter-spacing: -0.2px;
   }
 }
