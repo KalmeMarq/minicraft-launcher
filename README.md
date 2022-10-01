@@ -1,5 +1,5 @@
 # Minicraft Launcher
-The old one is on KalmeMarq/minicraft-launcher and the renew starts from 0.1.0 again and uses the same identifier, so uninstall the older one. "Renew" is only used in the repository name.
+The old ones are on [KalmeMarq/minicraft-launcher-tauri](https://github.com/KalmeMarq/minicraft-launcher-tauri) and [KalmeMarq/minicraft-launcher-electron](https://github.com/KalmeMarq/minicraft-launcher-electron) and this new version starts from 0.1.0 again and uses the same identifier, so uninstall the older one.
 
 A launcher for all Minicraft versions and mods. Includes +190 version mods.
 
@@ -19,6 +19,5 @@ The UI is based on the Minecraft Launcher (it's pretty).
 [Minicraft+ Wiki](https://minicraft.fandom.com/wiki/Minicraft%2B)
 
 ## Translations
-
 
 Translations are available in https://crowdin.com/project/minicraft-launcher. Feel free to contribute.

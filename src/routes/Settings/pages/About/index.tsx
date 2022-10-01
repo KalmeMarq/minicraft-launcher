@@ -33,7 +33,7 @@ const About: React.FC = () => {
               setShowLauncherNewsDialog(true);
             }}
           />
-          <a target="_blank" rel="noopener noreferrer" href="https://github.com/KalmeMarq/minicraft-launcher-renew/issues">
+          <a target="_blank" rel="noopener noreferrer" href="https://github.com/KalmeMarq/minicraft-launcher/issues">
             <T>Report a Launcher bug</T>
           </a>
         </div>
