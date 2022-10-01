@@ -138,8 +138,8 @@ pub fn open_folder(path: PathBuf) {
     Command::new("explorer").arg("/select,".to_owned() + path.to_str().unwrap()).spawn().unwrap();
 
     #[cfg(target_os = "macos")]
-    Command::new("open").args(["-R", &path]).spawn().unwrap();
+    Command::new("open").args(["-R", &path.to_str().unwrap()]).spawn().unwrap();
 
     #[cfg(target_os = "linux")]
-    Command::new("xdg-open").arg(&path).spawn().unwrap();    
+    Command::new("xdg-open").arg(&path.to_str().unwrap()).spawn().unwrap(); 
 }
