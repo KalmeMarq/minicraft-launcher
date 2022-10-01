@@ -1,8 +1,17 @@
 {
   "name": "minicraft-launcher",
-  "private": true,
   "version": "0.1.0",
+  "private": true,
   "type": "module",
+  "license": "GLP-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KalmeMarq/minicraft-launcher.git"
+  },
+  "homepage": "https://github.com/KalmeMarq/minicraft-launcher",
+  "bugs": {
+    "url": "https://github.com/KalmeMarq/minicraft-launcher/issues"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
