@@ -17,3 +17,8 @@ The UI is based on the Minecraft Launcher (it's pretty).
 
 
 [Minicraft+ Wiki](https://minicraft.fandom.com/wiki/Minicraft%2B)
+
+## Translations
+
+
+Translations are available in https://crowdin.com/project/minicraft-launcher. Feel free to contribute.
