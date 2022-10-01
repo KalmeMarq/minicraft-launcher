@@ -3,6 +3,11 @@ The old one is on KalmeMarq/minicraft-launcher and the renew starts from 0.1.0 a
 
 A launcher for all Minicraft versions and mods. Includes +190 version mods.
 
+The UI is based on the Minecraft Launcher (it's pretty).
+
+![about](./docs/about.png)
+
+
 ## About Minicraft
 [Play Minicraft](https://playminicraft.com/)
 
