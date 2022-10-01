@@ -5,6 +5,7 @@ import LButton from '../../../../components/LButton';
 import LicensesDialog from '../../../../components/LicensesDialog';
 import { AboutContext } from '../../../../context/AboutContext';
 import { LauncherPatchNote, PatchNotesContext } from '../../../../context/PatchNotesContext';
+import { T } from '../../../../context/TranslationContext';
 import { formatDate, getAppInfo } from '../../../../utils';
 import './index.scss';
 
@@ -32,14 +33,18 @@ const About: React.FC = () => {
               setShowLauncherNewsDialog(true);
             }}
           />
-          <a target="_blank" rel="noopener noreferrer" href="https://github.com/KalmeMarq/minicraft-launcher-tauri/issues">
-            Report a Launcher bug
+          <a target="_blank" rel="noopener noreferrer" href="https://github.com/KalmeMarq/minicraft-launcher-renew/issues">
+            <T>Report a Launcher bug</T>
           </a>
         </div>
         <div className="divider"></div>
         <div className="section">
-          <h3>Credits and Third-party licenses</h3>
-          <p>Made by KalmeMarq</p>
+          <h3>
+            <T>Credits and Third-party licenses</T>
+          </h3>
+          <p>
+            <T>Made by</T> KalmeMarq
+          </p>
           <br />
           <LButton
             text="Third-party licenses"
@@ -52,7 +57,9 @@ const About: React.FC = () => {
         </div>
         <div className="divider"></div>
         <div className="section links-section">
-          <h3>Links</h3>
+          <h3>
+            <T>Links</T>
+          </h3>
           <a href="https://discord.gg/SMKCVuj" target="_blank" rel="noopener noreferrer">
             Minicraft+ Discord
           </a>

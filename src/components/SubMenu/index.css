@@ -12,12 +12,13 @@
 }
 
 .submenu h2 {
+  position: relative;
   font-family: 'Noto Sans';
   font-weight: bold;
-  color: var(--submenu-header-foreground);
+  color: #FFFFFF;
+  top: 1px;
   text-transform: uppercase;
   font-size: 0.76rem;
-  font-weight: 100;
   padding: 0 0 5px;
 }
 
@@ -50,6 +51,7 @@
   font-size: 14px;
   -webkit-user-drag: none;
   padding: 0 0 0.71rem 0;
+  transition: color 100ms;
 }
 
 .submenu a:hover {

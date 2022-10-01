@@ -1,19 +1,24 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { useTranslation } from '../../hooks/useTranslation';
 import './index.css';
 
 const SubMenuLink: React.FC<{ to: string; title?: string; text: string }> = ({ to, text, title }) => {
+  const { t } = useTranslation();
+
   return (
     <li>
-      <NavLink className={(prop) => (prop.isActive ? 'active' : '')} title={title ?? text} to={to}>
-        {text}
+      <NavLink className={(prop) => (prop.isActive ? 'active' : '')} title={t(title ?? text)} to={to}>
+        {t(text)}
       </NavLink>
     </li>
   );
 };
 
 const SubMenuTitle: React.FC<{ text: string }> = ({ text }) => {
-  return <h2>{text}</h2>;
+  const { t } = useTranslation();
+
+  return <h2>{t(text)}</h2>;
 };
 
 const SubMenuNavbar: React.FC<React.PropsWithChildren> = ({ children }) => {

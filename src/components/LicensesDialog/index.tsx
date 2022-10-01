@@ -1,34 +1,26 @@
-import ReactModal from 'react-modal';
-import cancelIcon from '../../assets/images/cancel.png';
-import licenses from '../../assets/thirdparty_licenses.json';
+import licenses from '../../assets/licenses.json';
+import { ModalDialog } from '../ModalDialog';
 import './index.scss';
 
-const LicensesDialog: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+const LicensesDialog: React.FC<{ isOpen?: boolean; onClose?: () => void }> = ({ isOpen, onClose }) => {
   return (
-    <ReactModal isOpen={isOpen} className="modal-dialog licenses-modal" overlayClassName="modal-overlay" shouldReturnFocusAfterClose={false} onRequestClose={onClose}>
-      <header>
-        <h2>Third-party licenses</h2>
-        <button className="modal-close-btn" onClick={() => onClose()}>
-          <img src={cancelIcon} className="close-icon" alt="close" />
-        </button>
-      </header>
-      <main>
-        <div className="licenses-list">
-          {licenses.licenses.map((lc) => (
-            <div className="tplicense" key={lc.name}>
-              <p className="name">
-                <a href={lc.url} rel="noopener" target="_blank">
-                  {lc.name}
-                </a>
-              </p>
-              <span className="license-version">{lc.version}</span>
-              <p className="license">{lc.licenses}</p>
-              {lc.license_content.length > 0 && <div className="license-content">{lc.license_content}</div>}
-            </div>
-          ))}
-        </div>
-      </main>
-    </ReactModal>
+    <ModalDialog isOpen={isOpen} title="Third-party licenses" onClose={onClose}>
+      <div className="licenses-list">
+        {licenses.map((lc) => (
+          <div className="tplicense" key={lc.name}>
+            <p className="name">
+              <a href={lc.homepage} rel="noopener" target="_blank">
+                {lc.name}
+              </a>
+            </p>
+            {lc.author && <p className="license-author">{lc.author}</p>}
+            <span className="license-version">{lc.version}</span>
+            <p className="license">{lc.license}</p>
+            {lc.licenseText.length > 0 && <div className="license-content">{lc.licenseText}</div>}
+          </div>
+        ))}
+      </div>
+    </ModalDialog>
   );
 };
 

@@ -5,12 +5,16 @@ import { TranslationContext } from '../context/TranslationContext';
 export const useTranslation = () => {
   const translations = useContext(TranslationContext);
 
-  function translate(text: string, domPurifyConfig?: DOMPurify.Config) {
+  function translate(text: string, placeholders?: (string | number)[], domPurifyConfig?: DOMPurify.Config) {
     if (translations[text] === undefined) {
       return text;
     }
 
-    const result = DOMPurify.sanitize(translations[text], {
+    let translation = translations[text].replace(/%([0-9]{1,2})\$s/g, (a, b) => {
+      return placeholders ? (placeholders[Number(b) - 1] ? placeholders[Number(b) - 1].toString() : a) : a;
+    });
+
+    const result = DOMPurify.sanitize(translation, {
       RETURN_DOM_FRAGMENT: false,
       RETURN_DOM: false,
       ...domPurifyConfig

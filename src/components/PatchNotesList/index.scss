@@ -1,0 +1,27 @@
+.patch-list {
+  display: grid;
+  padding: 1.2rem;
+  width: max-content;
+  grid-template-columns: repeat(3, 240px);
+  row-gap: 26px;
+  column-gap: 26px;
+  margin: auto;
+}
+
+@media screen and (min-width: 1300px) {
+  .patch-list {
+    grid-template-columns: repeat(4, 240px);
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .patch-list {
+    grid-template-columns: repeat(5, 240px);
+  }
+}
+
+@media screen and (min-width: 1800px) {
+  .patch-list {
+    grid-template-columns: repeat(6, 240px);
+  }
+}

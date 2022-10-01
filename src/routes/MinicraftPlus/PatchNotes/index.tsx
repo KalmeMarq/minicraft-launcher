@@ -1,8 +1,16 @@
+import { useContext } from 'react';
+import PatchNotesList from '../../../components/PatchNotesList';
+import { PatchNotesContext } from '../../../context/PatchNotesContext';
+import './index.scss';
+
 const PatchNotes: React.FC = () => {
+  const { minicraftPlus } = useContext(PatchNotesContext);
+
   return (
-    <div className="coming-soon-container">
-      <h2>Coming soon</h2>
-    </div>
+    <>
+      <div className="pn-h-divider"></div>
+      <PatchNotesList patchNotes={minicraftPlus} />
+    </>
   );
 };
 

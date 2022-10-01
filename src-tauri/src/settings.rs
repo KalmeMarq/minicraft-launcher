@@ -1,8 +1,9 @@
 use std::fs::{self, File};
 
 use serde::{Deserialize, Serialize};
+use tauri::State;
 
-use crate::utils::get_launcher_path;
+use crate::{utils::get_launcher_path, LauncherState};
 
 fn bool_true() -> bool {
     true
@@ -56,6 +57,52 @@ pub struct LauncherSettings {
     minicraft_plus_configuration_filter: MinicraftPlusConfigurationFilter,
     #[serde(rename = "minicraftConfigurationFilter")]
     minicraft_configuration_filter: MinicraftConfigurationFilter
+}
+
+impl LauncherSettings {
+    pub fn set_keep_launcher_open(&mut self, value: bool) {
+        self.keep_launcher_open = value;
+    }
+
+    pub fn set_language(&mut self, value: &str) {
+        if LANGUAGES.contains(&value) {
+            self.language = value.to_string();
+        }
+    }
+
+    pub fn set_open_output_log(&mut self, value: bool) {
+        self.open_output_log = value;
+    }
+}
+
+fn parse_set_bool(val: &str) -> bool {
+    match val {
+        "true" => true,
+        "false" => false,
+        _ => false,
+    }
+}
+
+static LANGUAGES: [&str; 4] = ["en-US", "en-GB", "pt-PT", "pt-BR"];
+
+#[tauri::command]
+pub fn set_setting(state: State<LauncherState>, option: &str, value: &str) {
+    match option {
+        "keepLauncherOpen" => state.settings.lock().unwrap().set_keep_launcher_open(parse_set_bool(value)),
+        "language" => state.settings.lock().unwrap().set_language(value),
+        "openOutputLog" => state.settings.lock().unwrap().set_open_output_log(parse_set_bool(value)),
+        _ => {}
+    }
+}
+
+#[tauri::command]
+pub fn get_setting(state: State<LauncherState>, option: &str) -> String {
+   match option {
+       "keepLauncherOpen" => state.settings.lock().unwrap().keep_launcher_open.to_string(),
+       "language" => state.settings.lock().unwrap().language.clone(),
+       "openOutputLog" => state.settings.lock().unwrap().open_output_log.to_string(),
+       _ => "unknown".to_string()
+   } 
 }
 
 pub fn load_settings() -> LauncherSettings {

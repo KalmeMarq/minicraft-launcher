@@ -51,14 +51,14 @@ pub fn open_folder_from_launcher(id: &str) {
 #[tauri::command]
 pub async fn get_launcher_patch_notes() -> serde_json::Value {
     let pn_path = get_cache_path().join("launcherPatchNotes");
-    let request_url = "https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/launcherPatchNotes.json";
+    let request_url = "https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/patchnotes/launcherPatchNotes.json";
     get_json_cached_file(pn_path, &request_url, 60).await
 }
 
 #[tauri::command]
 pub async fn get_minicraft_plus_patch_notes() -> serde_json::Value {
     let pn_path = get_cache_path().join("minicraftPlusPatchNotes");
-    let request_url = "https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/minicraftPlusPatchNotes.json";
+    let request_url = "https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/patchnotes/minicraftPlusPatchNotes.json";
 
     get_json_cached_file(pn_path, &request_url, 60).await
 }
@@ -66,7 +66,28 @@ pub async fn get_minicraft_plus_patch_notes() -> serde_json::Value {
 #[tauri::command]
 pub async fn get_minicraft_patch_notes() -> serde_json::Value {
     let pn_path = get_cache_path().join("minicraftPatchNotes");
-    let request_url = "https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/minicraftPatchNotes.json";
+    let request_url = "https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/patchnotes/minicraftPatchNotes.json";
+    get_json_cached_file(pn_path, &request_url, 60).await
+}
+
+#[tauri::command]
+pub async fn get_faq() -> serde_json::Value {
+    let pn_path = get_cache_path().join("faq");
+    let request_url = "https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/faq.json";
+    get_json_cached_file(pn_path, &request_url, 60).await
+}
+
+#[tauri::command]
+pub async fn get_alert_messaging() -> serde_json::Value {
+    let pn_path = get_cache_path().join("alertMessaging");
+    let request_url = "https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/alertMessaging.json";
+    get_json_cached_file(pn_path, &request_url, 60).await
+}
+
+#[tauri::command]
+pub async fn get_news() -> serde_json::Value {
+    let pn_path = get_cache_path().join("news");
+    let request_url = "https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/news.json";
     get_json_cached_file(pn_path, &request_url, 60).await
 }
 

@@ -11,7 +11,7 @@ const Settings: React.FC = () => {
         <SubMenu.Title text="Settings" />
         <SubMenu.Navbar>
           <SubMenu.Link to="/settings/general" text="General" />
-          <SubMenu.Link to="/settings/versions" text="Accounts" />
+          <SubMenu.Link to="/settings/versions" text="Versions" />
           <SubMenu.Link to="/settings/about" text="About" />
         </SubMenu.Navbar>
       </SubMenu>

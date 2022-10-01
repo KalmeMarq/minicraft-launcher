@@ -1,4 +1,3 @@
-import './App.scss';
 import iconMinicraft from './assets/main_menu_icons/minicraft_icon.png';
 import iconMinicraftPlus from './assets/main_menu_icons/minicraftplus_icon.png';
 import iconLauncherNew from './assets/main_menu_icons/lnew_icon.png';

@@ -11,7 +11,7 @@ export const TranslationProvider: React.FC<{ translation: ITranslation } & React
   return <TranslationContext.Provider value={translation}>{children}</TranslationContext.Provider>;
 };
 
-export const T: React.FC<{ children: string; isHTML?: boolean; domPurifyConfig?: DOMPurify.Config }> = ({ children, domPurifyConfig, isHTML }) => {
+export const T: React.FC<{ children: string; isHTML?: boolean; placeholders?: (string | number)[]; domPurifyConfig?: DOMPurify.Config }> = ({ children, placeholders = [], domPurifyConfig, isHTML }) => {
   const translations = useContext(TranslationContext);
 
   let text = children.replace(/\n/g, '').replace(/\s{2,}/g, ' ');
@@ -19,6 +19,10 @@ export const T: React.FC<{ children: string; isHTML?: boolean; domPurifyConfig?:
   if (translations[text] !== undefined) {
     text = translations[text];
   }
+
+  text = text.replace(/%([0-9]{1,2})\$s/g, (a, b) => {
+    return placeholders[Number(b) - 1] ? placeholders[Number(b) - 1].toString() : a;
+  });
 
   if (isHTML) {
     return (

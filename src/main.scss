@@ -1,66 +1,3 @@
-@font-face {
-  font-family: 'Minecraft';
-  font-display: block;
-  src: url(./assets/fonts/Minecraft.ttf);
-}
-
-@font-face {
-  font-family: 'MinecraftTen';
-  src: url(./assets/fonts/MinecraftTen.ttf);
-  font-style: normal;
-  font-weight: normal;
-  font-display: block;
-  text-rendering: optimizeLegibility;
-}
-
-@font-face {
-  font-family: 'Noto Sans';
-  src:
-    local('Noto Sans'), local('NotoSans'),
-    url(./assets/fonts/NotoSans-Regular.woff2) format('woff2'),
-    url(./assets/fonts/NotoSans-Regular.woff) format('woff'),
-    url(./assets/fonts/NotoSans-Regular.ttf) format('truetype');
-  font-style: normal;
-  font-weight: normal;
-  text-rendering: optimizeLegibility;
-}
-
-@font-face {
-  font-family: 'Noto Sans';
-  src:
-    local('Noto Sans Bold'), local('NotoSans-Bold'),
-    url(./assets/fonts/NotoSans-Bold.woff2) format('woff2'),
-    url(./assets/fonts/NotoSans-Bold.woff) format('woff'),
-    url(./assets/fonts/NotoSans-Bold.ttf) format('truetype');
-  font-style: normal;
-  font-weight: bold;
-  text-rendering: optimizeLegibility;
-}
-
-@font-face {
-  font-family: 'Noto Sans';
-  src:
-    local('Noto Sans Italic'), local('NotoSans-Italic'),
-    url(./assets/fonts/NotoSans-Italic.woff2) format('woff2'),
-    url(./assets/fonts/NotoSans-Italic.woff) format('woff'),
-    url(./assets/fonts/NotoSans-Italic.ttf) format('truetype');
-  font-style: italic;
-  font-weight: normal;
-  text-rendering: optimizeLegibility;
-}
-
-@font-face {
-  font-family: 'Noto Sans Bold Italic';
-  src:
-    local('Noto Sans Bold Italic'), local('NotoSans-BoldItalic'),
-    url(./assets/fonts/NotoSans-BoldItalic.woff2) format('woff2'),
-    url(./assets/fonts/NotoSans-BoldItalic.woff) format('woff'),
-    url(./assets/fonts/NotoSans-BoldItalic.ttf) format('truetype');
-  font-style: italic;
-  font-weight: bold;
-  text-rendering: optimizeLegibility;
-}
-
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   color-scheme: light dark;
@@ -83,7 +20,7 @@ body {
   height: 100vh;
 }
 
-body, #root, h1, h2, h3, h4, h5, h6, p, span, button, a {
+body, #root, h1, h2, h3, h4, h5, h6, p, span, button, a, img {
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
@@ -111,104 +48,52 @@ body, #root, h1, h2, h3, h4, h5, h6, p, span, button, a {
   background: #3C3C3C;
 }
 
-// Modal
-.modal-overlay {
-  position: fixed;
-  display: block;
-  z-index: 10;
-  opacity: 1;
-  transition: 0;
-  visibility: visible;
+// App
+#root {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
 }
 
-.modal-dialog {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  outline: none;
-  background: #303030;
+.main-menu {
   display: flex;
   flex-direction: column;
-  opacity: 1;
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -webkit-user-drag: none;
+  min-width: 180px;
+  width: 180px;
+  height: 100%;
+  background: #1e1e1e;
 
-  header {
-    display: flex;
-    place-content: center;
-    place-items: center;
-    width: 100%;
-    height: 61px;
-    min-height: 61px;
-    max-height: 61px;
-    position: relative;
-    border-bottom: 1px solid #373737;
-  
-    h2 {
-      font-family: 'Noto Sans';
-      color: #FFFFFF;
-      font-size: 1.1rem;
-      font-weight: bold;
-    }
-  
-    .modal-close-btn {
-      cursor: pointer;
-      position: absolute;
-      width: 36px;
-      height: 36px;
-      right: 10px;
-      border-radius: 50%;
-      background: none;
-      border: none;
-  
-      &:hover,
-      &:focus {
-        outline: none;
-        background: #ffffff39;
-      }
+  .launcher-version {
+    color: #A5A5A5;
+    font-family: 'Noto Sans';
+    font-size: 0.75rem;
+    padding: 0.1rem 0.8rem 0.1rem;
+  }
+}
 
-      &:active {
-        background: #ffffff29;
-      }
-    }
-  
-    .close-icon {
-      width: 36px;
-      padding: 10px;
-    }
-  }
+.main-menu .fill-v {
+  height: 100%;
+}
 
-  main {
-    overflow-y: auto;
-    padding: 0 0 2rem 0;
-    height: 100%;
-     
-    .container {
-      padding: 1rem 0;
-      display: flex;
-      flex-direction: column;
-      width: 400px;
-      margin: auto;
-    }
-  }
-  
-  footer {
-    display: flex;
-    align-items: center;
-    justify-content: end;
-    padding: 0 1rem;
-    gap: 0 0.7rem;
-    width: 100%;
-    height: 72px;
-    min-height: 72px;
-    max-height: 72px;
-    position: relative;
-    border-top: 1px solid #373737;
-  }
+.route-root {
+  width: 100%;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.subroute-page {
+  top: 83px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-x: hidden;
 }
 
 // Coming Soon

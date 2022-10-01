@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import SubMenu from '../../components/SubMenu';
+import FAQ from '../MinicraftPlus/FAQ';
 import Installations from './Installations';
 import PatchNotes from './PatchNotes';
 import Play from './Play';

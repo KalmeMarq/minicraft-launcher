@@ -1,0 +1,94 @@
+.mc-patchnote-list {
+  max-width: 880px;
+  width: 880px;
+  min-width: 880px;
+  margin: auto;
+
+  h1 {
+    font-family: 'Noto Sans';
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 1.7rem;
+  }
+
+  h2 {
+    font-family: 'Noto Sans';
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 1.4rem;
+  }
+
+  h3 {
+    font-family: 'Noto Sans';
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+
+  h5 {
+    font-family: 'Noto Sans';
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 0.9rem;
+  }
+
+  h4 {
+    font-family: 'Noto Sans';
+    color: #FFFFFF;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 1rem 0 0;
+  }
+
+  p {
+    font-family: 'Noto Sans';
+    font-size: 0.9rem;
+    color: #FFFFFF;
+    padding: 1rem 0;
+  }
+
+  li {
+    font-family: 'Noto Sans';
+    font-size: 0.9rem;
+    color: #FFFFFF;
+    padding: 0.1rem;
+  }
+
+  ul {
+    padding: 0.6rem 1rem;
+    margin-left: 25px;
+  }
+
+  a {
+    font-family: 'Noto Sans';
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-decoration-color: #FFFFFF;
+    padding: 0.1rem 0.4rem 0.2rem;
+    border-radius: 4px;
+    position: relative;
+    display: inline-flex;
+    flex-direction: row;
+    place-items: center;
+
+    outline: none;
+
+    &:hover,
+    &:focus {
+      background: hsl(0, 0%, 35%);
+    }
+
+    &:after {
+      position: relative;
+      top: -8px;
+      left: 2px;
+      display: inline-block;
+      content: url(../../assets/icons/hyperlink.svg);
+      width: 14px;
+      height: 0px;
+      padding: 0 0.1rem;
+      image-rendering: pixelated;
+    }
+  }
+}

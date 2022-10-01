@@ -1,0 +1,72 @@
+$spinner-bg: white;
+
+.nloader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  transform: translate(-50%, -50%) rotateZ(0deg);
+  animation: animOpac 1000ms;
+  
+  .nloaders {
+    transform: rotateZ(0deg);
+    float: left;
+    width: 50%;
+    height: 50%;
+    position: relative;
+    
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #FFFFFF;
+      animation: nloaderAnim 2.76s infinite linear both;
+      transform-origin: 100% 100%;
+    }
+  }
+
+  .nloader2 {
+    transform: rotateZ(90deg);
+  
+    &::before {
+      animation-delay: 0.35s;
+    }
+  }
+  
+  .nloader3 {
+    transform: rotateZ(180deg);
+  
+    &::before {
+      animation-delay: 0.69s;
+    }
+  }
+  
+  .nloader4 {
+    transform: rotateZ(270deg);
+  
+    &::before {
+      animation-delay: 1.04s;
+    }
+  }
+}
+
+@keyframes nloaderAnim {
+  0%, 10% {
+    transform: perspective(136px) rotateX(-180deg);
+    opacity: 0;
+  }
+  
+  25%, 75% {
+    transform: perspective(136px) rotateX(0deg);
+    opacity: 1;
+  }
+  
+  90%, 100% {
+    transform: perspective(136px) rotateY(180deg);
+    opacity: 0;
+  }
+}

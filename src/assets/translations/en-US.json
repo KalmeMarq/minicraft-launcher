@@ -1,9 +1,10 @@
 {
   "Play": "Play",
+  "FAQ": "FAQ",
   "Installations": "Installations",
   "Patch Notes": "Patch Notes",
   "Community": "Community",
-  "What's new": "What's new",
+  "What's New": "What's new",
   "Settings": "Settings",
   "General": "General",
   "Versions": "Versions",
@@ -14,5 +15,6 @@
   "Made by": "Made by",
   "Third-party licenses": "Third-party licenses",
   "Links": "Links",
+  "%1$s version": "%1$s version",
   "Coming Soon": "Coming Soon"
 }

@@ -7,7 +7,7 @@
   height: 62px;
   background: #1e1e1e;
   cursor: pointer;
-  transition: 100ms background ease-in;
+  transition: 150ms background ease-in;
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
@@ -46,6 +46,7 @@
     }
   }
   
+  &:focus:not(:active, .selected),
   &:focus-visible,
   &.selected:focus-visible {
     outline: none;
@@ -98,7 +99,7 @@
     flex-direction: column;
     place-content: center;
     height: 100%;
-    color: #EEE;
+    color: #FFF;
     position: relative;
     top: -1px;
   }
