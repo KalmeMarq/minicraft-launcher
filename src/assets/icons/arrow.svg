@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="11px" height="6px" id="Dropdown" viewBox="0 0 10.61 6.01">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #fff;
+        stroke-miterlimit: 10;
+      }
+    </style>
+  </defs>
+  <title>arrow-down</title>
+  <polyline id="Dropdown-2" data-name="Dropdown" class="cls-1" points="0.35 0.35 5.3 5.3 10.25 0.35" />
+</svg>

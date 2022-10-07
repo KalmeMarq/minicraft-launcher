@@ -61,6 +61,7 @@ export interface ISettings {
 
 export function getOSName(os: string) {
   switch (os) {
+    case 'win32':
     case 'windows':
       return 'Windows';
     case 'osx':

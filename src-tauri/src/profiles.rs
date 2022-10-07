@@ -3,38 +3,54 @@ use std::{collections::HashMap, fs::File};
 use serde::{Serialize, Deserialize};
 use time::OffsetDateTime;
 
-use crate::{get_launcher_path};
+use crate::get_launcher_path;
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+enum ProfileType {
+    #[serde(rename = "minicraftplus")]
+    MinicraftPlus,
+    #[serde(rename = "minicraft")]
+    Minicraft
+}
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct Profile {
     #[serde(rename = "type")]
-    profile_type: String,
+    profile_type: ProfileType,
     name: String,
     icon: String,
     #[serde(with = "time::serde::rfc3339")]
     created: OffsetDateTime,
-    #[serde(rename = "lastUsed", with = "time::serde::rfc3339")]
+    #[serde(with = "time::serde::rfc3339")]
     last_used: OffsetDateTime,
-    #[serde(rename = "lastVersionId")]
     version_id: String,
-    #[serde(rename = "totalPlayTime")]
-    total_play_time: u32,
-    #[serde(rename = "javaArgs")]
-    java_args: Option<String>,
-    #[serde(rename = "gameDir")]
+    last_time_played: u32,
+    total_time_played: u32,
+    jvm_args: Option<String>,
+    java_path: Option<String>,
     game_dir: String
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct Group {
+    #[serde(default = "bool::default")]
+    hidden: bool,
+    installations: Vec<String>
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct LauncherProfiles {
     profiles: HashMap<String, Profile>,
+    groups: HashMap<String, Group>
 }
 
 pub fn load_profiles() -> LauncherProfiles {
     let profiles_path = get_launcher_path().join("launcher_profiles.json");
 
     let mut profiles: LauncherProfiles = LauncherProfiles {
-        profiles: HashMap::new()
+        profiles: HashMap::new(),
+        groups: HashMap::new()
     };
 
     if profiles_path.exists() {

@@ -5,9 +5,9 @@ export interface LauncherPatchNote {
   id: string;
   date: string;
   versions: {
-    windows: string;
-    osx: string;
-    linux: string;
+    windows?: string;
+    osx?: string;
+    linux?: string;
   };
   body: string;
 }

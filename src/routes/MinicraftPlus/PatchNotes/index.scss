@@ -1,6 +1,22 @@
+.pn-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+
+  .pn-cards-content {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+  }
+}
+
 .pn-h-divider {
   width: 100%;
   height: 1px;
-  background: red;
-  margin: 2rem 0;
+  min-height: 1px;
+  background: #484848;
+  margin: 2rem 0 0 0;
 }

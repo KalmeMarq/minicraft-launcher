@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import SubMenu from '../../components/SubMenu';
+import { useNotifications } from '../../hooks/useNotifications';
 import About from './pages/About';
 import General from './pages/General';
 import Versions from './pages/Versions';

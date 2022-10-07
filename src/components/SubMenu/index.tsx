@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from '../../hooks/useTranslation';
-import './index.css';
+import './index.scss';
 
 const SubMenuLink: React.FC<{ to: string; title?: string; text: string }> = ({ to, text, title }) => {
   const { t } = useTranslation();

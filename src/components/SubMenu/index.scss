@@ -1,5 +1,5 @@
 .submenu {
-  background: #1e1e1e;
+  background: var(--submenu-background);
   padding: 30px 1.2rem 0;
   height: 82px;
   min-height: 82px;
@@ -86,6 +86,8 @@
   outline: none;
 }
 
+.submenu a:active,
+.submenu a:focus,
 .submenu a:focus-visible {
   font-family: 'Noto Sans';
   font-weight: bold;

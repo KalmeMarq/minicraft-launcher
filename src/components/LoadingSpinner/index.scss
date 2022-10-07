@@ -6,7 +6,8 @@ $spinner-bg: white;
   left: 50%;
   width: 40px;
   height: 40px;
-  transform: translate(-50%, -50%) rotateZ(0deg);
+  translate: -50%, -50%;
+  transform: rotateZ(0deg);
   animation: animOpac 1000ms;
   
   .nloaders {

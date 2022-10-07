@@ -1,13 +1,21 @@
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  color-scheme: light dark;
   color: rgba(255, 255, 255, 1);
-  background-color: #333333;
+  color-scheme: light dark;
+  background-color: var(--background);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  --background: #333333;
+  --mainmenu-background: #1e1e1e;
+  --mainmenu-tab-background: #1e1e1e;
+  --mainmenu-tab-foreground: #ffffff;
+  --mainmenu-tab-selected-indicator: #ffffff;
+  --submenu-background: #1e1e1e;
+  --modal-dialog-background: #303030;
 }
 
 * {
@@ -64,7 +72,7 @@ body, #root, h1, h2, h3, h4, h5, h6, p, span, button, a, img {
   min-width: 180px;
   width: 180px;
   height: 100%;
-  background: #1e1e1e;
+  background: var(--mainmenu-background);
 
   .launcher-version {
     color: #A5A5A5;

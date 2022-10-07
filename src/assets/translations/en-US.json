@@ -16,5 +16,9 @@
   "Third-party licenses": "Third-party licenses",
   "Links": "Links",
   "%1$s version": "%1$s version",
+  "%1$s is %2$s% translated!": "%1$s is %2$s% translated!",
+  "What to help translate? Go to": "Want to help translate? Go to",
+  "A new Launcher update is ready. Restart the Launcher to use the latest version.": "A new Launcher update is ready. Restart the Launcher to use the latest version.",
+  "Go to": "",
   "Coming Soon": "Coming Soon"
 }

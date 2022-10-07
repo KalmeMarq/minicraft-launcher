@@ -13,8 +13,12 @@ pub fn get_versions_path() -> PathBuf {
     get_launcher_path().join("versions")
 }
 
-pub fn get_saves_path() -> PathBuf {
-    get_launcher_path().join("saves")
+pub fn get_installations_path() -> PathBuf {
+    get_launcher_path().join("installations")
+}
+
+pub fn get_themes_path() -> PathBuf {
+    get_launcher_path().join("themes")
 }
 
 pub fn get_libraries_path() -> PathBuf {
@@ -30,8 +34,12 @@ pub fn create_launcher_dirs() {
         fs::create_dir(get_versions_path()).expect("Could not create versions directory");
     }
 
-    if !get_saves_path().exists() {
-        fs::create_dir(get_saves_path()).expect("Could not create saves directory");
+    if !get_installations_path().exists() {
+        fs::create_dir(get_installations_path()).expect("Could not create installations directory");
+    }
+
+    if !get_themes_path().exists() {
+        fs::create_dir(get_themes_path()).expect("Could not create themes directory");
     }
 
     if !get_libraries_path().exists() {
@@ -91,25 +99,27 @@ pub async fn get_news() -> serde_json::Value {
     get_json_cached_file(pn_path, &request_url, 60).await
 }
 
+// TODO: Instead of checking every given minutes, use If-Modified-Since header. It doesn't wastes the rate limit. If not modified then used the stored file
 pub async fn get_json_cached_file(file_path: PathBuf, request_url: &str, minutes_to_wait: u64) -> serde_json::Value {
     if file_path.exists() {
         let metadata = std::fs::metadata(&file_path)
-            .expect("Could not read metadata for version manifest file");
+            .expect("Could not read metadata for cache file");
 
         let dur = metadata.modified().unwrap().elapsed().unwrap();
 
         if dur.as_secs() / 60 > minutes_to_wait {
-            let json: serde_json::Value = reqwest::get(request_url.to_string())
+            let data = reqwest::get(request_url.to_string())
                 .await
                 .expect("Could not get file from url")
-                .json()
+                .text()
                 .await
                 .expect("Could not jsonify file");
+            let json: serde_json::Value = serde_json::from_str(&data).expect("Could not parse json");
             serde_json::to_writer_pretty(
                 &File::create(&file_path).expect("Could not cache file"),
                 &json,
             )
-            .expect("Could not save version file");
+            .expect("Could not save cache file");
             json
         } else {
             let data = fs::read_to_string(&file_path).expect("Could not read cached file");
@@ -118,17 +128,18 @@ pub async fn get_json_cached_file(file_path: PathBuf, request_url: &str, minutes
             json
         }
     } else {
-        let json: serde_json::Value = reqwest::get(request_url.to_string())
+        let data = reqwest::get(request_url.to_string())
             .await
             .expect("Could not get file from url")
-            .json()
+            .text()
             .await
             .expect("Could not jsonify file");
+        let json: serde_json::Value = serde_json::from_str(&data).expect("Could not parse json");
         serde_json::to_writer_pretty(
             &File::create(&file_path).expect("Could not cache file"),
             &json,
         )
-        .expect("Could not save version file");
+        .expect("Could not save cache file");
         json
     }
 }

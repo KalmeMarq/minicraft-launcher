@@ -7,7 +7,7 @@ const LicensesDialog: React.FC<{ isOpen?: boolean; onClose?: () => void }> = ({ 
     <ModalDialog isOpen={isOpen} title="Third-party licenses" onClose={onClose}>
       <div className="licenses-list">
         {licenses.map((lc) => (
-          <div className="tplicense" key={lc.name}>
+          <div className="tplicense" key={lc.id}>
             <p className="name">
               <a href={lc.homepage} rel="noopener" target="_blank">
                 {lc.name}
@@ -16,7 +16,7 @@ const LicensesDialog: React.FC<{ isOpen?: boolean; onClose?: () => void }> = ({ 
             {lc.author && <p className="license-author">{lc.author}</p>}
             <span className="license-version">{lc.version}</span>
             <p className="license">{lc.license}</p>
-            {lc.licenseText && lc.licenseText.length > 0 && <div className="license-content">{lc.licenseText}</div>}
+            {lc.licenseText && lc.licenseText.length > 0 && <p className="license-content">{lc.licenseText}</p>}
           </div>
         ))}
       </div>

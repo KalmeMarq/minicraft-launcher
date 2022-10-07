@@ -4,21 +4,25 @@
 )]
 
 mod profiles;
-mod utils;
+pub mod utils;
 mod settings;
+pub mod themes;
 
 use std::sync::Mutex;
 
 use profiles::{LauncherProfiles, load_profiles};
 use settings::{LauncherSettings, load_settings};
-use tauri::{WindowBuilder, WindowUrl, Manager};
+use tauri::{WindowBuilder, WindowUrl, Manager, AppHandle};
+use themes::{LauncherThemes, load_themes};
 use utils::{create_launcher_dirs, get_cache_path, get_launcher_path, get_alert_messaging, get_faq, get_news, open_folder_from_launcher, get_launcher_patch_notes, get_minicraft_patch_notes, get_minicraft_plus_patch_notes};
 
 use crate::settings::{get_setting, set_setting};
 
 pub struct LauncherState {
     pub settings: Mutex<LauncherSettings>,
-    pub profiles: Mutex<LauncherProfiles>
+    pub profiles: Mutex<LauncherProfiles>,
+    pub themes: Mutex<LauncherThemes>,
+    app_handle: AppHandle
 }
 
 #[tokio::main]
@@ -35,17 +39,18 @@ async fn main() {
             .visible(false)
             .build()?;
 
-        tauri::async_runtime::spawn(async move {
-            let settings = load_settings();
-            let profiles = load_profiles();
-            
-            main_win.manage(LauncherState {
-                settings: Mutex::from(settings),
-                profiles: Mutex::from(profiles)
-            });
-
-            main_win.show().unwrap();
+        let settings = load_settings();
+        let profiles = load_profiles();
+        let themes = load_themes();
+        
+        main_win.manage(LauncherState {
+            settings: Mutex::from(settings),
+            profiles: Mutex::from(profiles),
+            themes: Mutex::from(themes),
+            app_handle: app.app_handle()
         });
+
+        main_win.show().unwrap();
 
         Ok(())
     })

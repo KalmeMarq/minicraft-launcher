@@ -5,7 +5,7 @@
   width: 100%;
   min-height: 62px;
   height: 62px;
-  background: #1e1e1e;
+  background: var(--mainmenu-tab-background);
   cursor: pointer;
   transition: 150ms background ease-in;
   user-select: none;
@@ -70,9 +70,10 @@
     display: block;
     width: 4px;
     height: 0px;
-    background: white;
+    background: var(--mainmenu-tab-selected-indicator);
     position: absolute;
     top: 50%;
+    left: -1px;
     translate: 0 -50%;
   }
   
@@ -99,7 +100,7 @@
     flex-direction: column;
     place-content: center;
     height: 100%;
-    color: #FFF;
+    color: var(--mainmenu-tab-foreground);
     position: relative;
     top: -1px;
   }

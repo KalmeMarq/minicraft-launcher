@@ -6,14 +6,14 @@ import LicensesDialog from '../../../../components/LicensesDialog';
 import { AboutContext } from '../../../../context/AboutContext';
 import { LauncherPatchNote, PatchNotesContext } from '../../../../context/PatchNotesContext';
 import { T } from '../../../../context/TranslationContext';
-import { formatDate, getAppInfo } from '../../../../utils';
+import { formatDate, getAppInfo, getOSName } from '../../../../utils';
 import './index.scss';
 
 const About: React.FC = () => {
   const [showLauncherNewsDialog, setShowLauncherNewsDialog] = useState(false);
   const [showLicensesDialog, setShowLicensesDialog] = useState(false);
 
-  const { app } = useContext(AboutContext);
+  const { app, os } = useContext(AboutContext);
   const { launcher } = useContext(PatchNotesContext);
 
   return (
@@ -23,7 +23,9 @@ const About: React.FC = () => {
       <div className="settings-about-content">
         <div className="section">
           <h3>Launcher</h3>
-          <p>{app.version}</p>
+          <p>
+            {getOSName(os.platform)} {os.version.substring(0, os.version.indexOf('.', os.version.indexOf('.') + 1))} {app.version}
+          </p>
           {launcher.length > 0 && <p>{formatDate(launcher[launcher.length - 1].date)}</p>}
           <LButton
             text="What's New"
@@ -45,7 +47,7 @@ const About: React.FC = () => {
           <p>
             <T>Made by</T> KalmeMarq
           </p>
-          <br />
+          <div style={{ height: '10px' }}></div>
           <LButton
             text="Third-party licenses"
             className="thirdparty-btn"

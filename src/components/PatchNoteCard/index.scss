@@ -23,7 +23,7 @@ $patchnotecard-title: #FFFFFF;
 
   .card-inside {
     width: 100%;
-    height: 100%;
+    height: 316px;
     background: none;
     display: flex;
     flex-direction: column;
@@ -46,6 +46,7 @@ $patchnotecard-title: #FFFFFF;
     height: 100%;
     text-align: start;
     padding: 12px;
+    padding-top: 8px;
     font-family: 'Noto Sans';
     font-weight: bold;
     font-size: 1rem;

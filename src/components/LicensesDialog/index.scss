@@ -44,6 +44,10 @@
     line-height: 1.1rem;
   }
 
+  .license-content::selection {
+    background: #008541;
+  }
+
   a {
     font-family: 'Noto Sans';
     font-size: 1.1rem;

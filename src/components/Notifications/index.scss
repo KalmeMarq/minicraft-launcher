@@ -1,0 +1,268 @@
+.notifications-panel {
+  position: fixed;
+  top: 20px;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.notification-item {
+  --notification-bg: #EBEBEB;
+  --notification-close-color: #333;
+  --notification-close-button-hover-bg: rgba(0, 0, 0, 0.15);
+  width: 424px;
+  translate: 100%;
+  opacity: 0;
+  animation: notificationOpen 250ms ease-in-out forwards;
+}
+
+.notification-item.close {
+  .notification-item-inside {
+    animation: notificationClose 250ms ease-out forwards;
+  }
+
+  button {
+    cursor: initial;
+  }
+}
+
+@keyframes notificationOpen {
+  0% {
+    translate: 100%;
+    opacity: 0;
+  }
+  40% {
+    translate: 100%;
+  }
+  70% {
+    opacity: 0.5;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    translate: 0%;
+    opacity: 1;
+  }
+}
+
+@keyframes notificationClose {
+  0% {
+    translate: 0% 0%;
+    opacity: 1;
+  }
+  100% {
+    translate: 100% 0%;
+    opacity: 0;
+  }
+}
+
+.notification-item[data-type="error"] {
+  --notification-bg: #d93636;
+  --notification-close-color: #EEE;
+  --notification-close-button-hover-bg: rgba(255, 255, 255, 0.2);
+
+  .error-icon {
+    svg {
+      fill: white;
+    }
+  }
+
+  .text-content {
+    color: white;
+  }
+}
+
+.notification-item[data-type="warn"] {
+  --notification-bg: #e68414;
+  --notification-close-color: #EEE;
+  --notification-close-button-hover-bg: rgba(255, 255, 255, 0.2);
+
+  .error-icon {
+    svg {
+      position: relative;
+      top: 1px;
+    }
+  }
+
+  .text-content {
+    color: white;
+  }
+}
+
+.notification-item[data-type="updater"] {
+  --notification-bg: #EBEBEB;
+  --notification-close-color: #333;
+  --notification-close-button-hover-bg: rgba(0, 0, 0, 0.15);
+}
+
+.notification-item[data-type="translation"] {
+  --notification-bg: #EBEBEB;
+  --notification-close-color: #333;
+  --notification-close-button-hover-bg: rgba(0, 0, 0, 0.15);
+
+  .error-icon {
+    svg {
+      fill: #333;
+    }
+  }
+}
+
+.notification-item-inside {
+  position: relative;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+
+  .notification-item-inside-outside {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: max-content;
+    background: var(--notification-bg);
+    padding: 0.3rem 0.75rem;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    box-shadow: 0px 4px 4px #00000044;
+  }
+
+  .error-icon {
+    display: flex;
+    place-content: center;
+    place-items: center;
+    padding: 0 1rem 0 0;
+  }
+
+  .circle-prog {
+    --circle-size: 30px;
+    --circle-width: 7px;
+    position: relative;
+    display: flex;
+    place-items: center;
+    place-content: center;
+    padding: 0 1rem 0 0;
+    color: black;
+    padding: 0 7px 0 0;
+    
+    .progress-circle {
+      position: relative;
+      width: var(--circle-size);
+      height: var(--circle-size);
+      background: var(--notification-bg);
+    
+      #progress-spinner {
+        --progress: 50%;
+        position: absolute;
+        border-radius: 50%;
+        height: var(--circle-size);
+        width: var(--circle-size);
+        background: conic-gradient(#009047 var(--progress), var(--notification-bg) var(--progress));
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+      }
+
+      #middle-circle {
+        position: absolute;
+        border-radius: 50%;
+        height: calc(var(--circle-size) - var(--circle-width));
+        width: calc(var(--circle-size) - var(--circle-width));
+        background-color: var(--notification-bg);
+        display: flex;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+        z-index: 1;
+      }
+
+      .prog-text {
+        position: absolute;
+        font-family: 'Noto Sans';
+        font-size: 0.8rem;
+        z-index: 11;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+      }
+    }
+  }
+
+  .text-content {
+    width: 100%;
+    padding: 1rem 0;
+    padding-right: 1rem;
+    color: #252525;
+    font-size: 0.72rem;
+    font-family: 'Noto Sans';
+
+    a {
+      font-family: 'Noto Sans';
+      font-weight: bold;
+      font-size: 0.72rem;
+      color: #252525;
+      text-decoration-color: #252525;
+      padding: 0.08rem 0.4rem 0.2rem;
+      border-radius: 4px;
+      position: relative;
+      display: inline-flex;
+      flex-direction: row;
+      place-items: center;
+      outline: none;
+  
+      &:hover,
+      &:focus {
+        background: hsl(0, 0%, 85%);
+      }
+  
+      &:after {
+        position: relative;
+        top: -8px;
+        left: 2px;
+        display: inline-block;
+        content: url(../../assets/icons/hyperlink.svg);
+        width: 14px;
+        filter: brightness(0);
+        height: 0px;
+        padding: 0 0.1rem;
+        image-rendering: pixelated;
+      }
+    }
+  }
+
+  .close-panel {
+    width: 24px;
+
+    button {
+      width: 100%;
+      height: 100%;
+      border: none;
+      outline: none;
+      background: none;
+      transition: 100ms background ease-in;
+      cursor: pointer;
+      display: flex;
+      place-items: center;
+      place-content: center;
+
+      &:hover {
+        background: var(--notification-close-button-hover-bg);
+      }
+
+      svg {
+        position: relative;
+        width: 12px;
+        height: 12px;
+        left: -1px;
+        
+        line {
+          stroke: var(--notification-close-color);
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactModal from 'react-modal';
-import cancelIcon from '../../assets/images/cancel.png';
+import { ReactComponent as CloseIcon } from '../../assets/icons/close.svg';
 import { T } from '../../context/TranslationContext';
 import './index.scss';
 
@@ -12,7 +12,7 @@ export const ModalDialog: React.FC<{ title?: string; isOpen?: boolean; onClose?:
           <T>{title}</T>
         </h2>
         <button className="modal-close-btn" onClick={onClose}>
-          <img src={cancelIcon} className="close-icon" alt="close" />
+          <CloseIcon className="close-icon" />
         </button>
       </header>
       <main>{children}</main>

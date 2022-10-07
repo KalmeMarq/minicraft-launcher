@@ -9,7 +9,7 @@
   width: 100%;
   height: 100vh;
   outline: none;
-  background: #303030;
+  background: var(--modal-dialog-background);
   display: flex;
   flex-direction: column;
   z-index: 100;
@@ -54,8 +54,10 @@
     }
     
     .close-icon {
-      width: 36px;
-      padding: 10px;
+      position: relative;
+      width: 16px;
+      height: 16px;
+      top: 1px;
     }
   }
 

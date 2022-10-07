@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import './fonts.scss';
 import './main.scss';
+import './night.scss';
+import './light.scss';
 import { setAppElement } from 'react-modal';
 import { PatchNotesProvider } from './context/PatchNotesContext';
 import { AboutProvider } from './context/AboutContext';
@@ -15,6 +17,14 @@ import esESTranslations from './assets/translations/es-ES.json';
 import esMXTranslations from './assets/translations/es-MX.json';
 import { isDev } from './utils';
 import { FAQProvider } from './context/FAQContext';
+import { NotificationsProvider } from './context/NotificatonsContext';
+
+if (!isDev()) {
+  document.addEventListener('keydown', (e) => {
+    if (e.code === 'F5') e.preventDefault();
+    if (e.code === 'KeyR' && e.ctrlKey) e.preventDefault();
+  });
+}
 
 const langs: Record<string, Record<string, string>> = {
   'en-GB': enGBTranslations,
@@ -45,11 +55,13 @@ const Root = () => {
   return (
     <TranslationProvider translation={langs[lang]}>
       <AboutProvider>
-        <PatchNotesProvider>
-          <FAQProvider>
-            <App />
-          </FAQProvider>
-        </PatchNotesProvider>
+        <NotificationsProvider>
+          <PatchNotesProvider>
+            <FAQProvider>
+              <App />
+            </FAQProvider>
+          </PatchNotesProvider>
+        </NotificationsProvider>
       </AboutProvider>
     </TranslationProvider>
   );

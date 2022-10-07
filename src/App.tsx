@@ -13,10 +13,25 @@ import MinicraftPlus from './routes/MinicraftPlus';
 import Community from './routes/Community';
 import { isDev } from './utils';
 import { AboutContext } from './context/AboutContext';
+import Notifications from './components/Notifications';
+import { INotification, NotificationsContext } from './context/NotificatonsContext';
 
 function App() {
   const [showDialog, setShowDialog] = useState(false);
   const { app: appInfo } = useContext(AboutContext);
+  const { addNotification, removeNotification, hasNotification } = useContext(NotificationsContext);
+
+  if (isDev()) {
+    (window as any).addNotif = (notif: INotification) => {
+      addNotification(notif);
+    };
+    (window as any).delNotif = (id: string) => {
+      removeNotification(id);
+    };
+    (window as any).hasNotif = (id: string) => {
+      return hasNotification(id);
+    };
+  }
 
   return (
     <>
@@ -51,6 +66,7 @@ function App() {
             <Route path="/settings/*" element={<Settings />} />
           </Routes>
         </div>
+        <Notifications />
       </HashRouter>
     </>
   );

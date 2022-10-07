@@ -10,7 +10,7 @@ edition = "2021"
 rust-version = "1.57"
 
 [build-dependencies]
-tauri-build = { version = "1.1.0", features = [] }
+tauri-build = { version = "1.1.1", features = [] }
 
 [dependencies]
 dirs = "4.0"
@@ -21,7 +21,7 @@ reqwest = { version = "0.11.12", features = ["json"] }
 time = { version = "0.3.14", features = ["serde", "serde-well-known"] }
 tokio = { version = "1.18.2", features = ["full"] }
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.1.0", features = ["os-all", "shell-open", "updater"] }
+tauri = { version = "1.1.1", features = ["os-all", "shell-open", "updater"] }
 
 [features]
 default = [ "custom-protocol" ]
