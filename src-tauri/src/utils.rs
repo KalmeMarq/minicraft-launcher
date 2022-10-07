@@ -79,9 +79,9 @@ pub async fn get_minicraft_patch_notes() -> serde_json::Value {
 }
 
 #[tauri::command]
-pub async fn get_faq() -> serde_json::Value {
-    let pn_path = get_cache_path().join("faq");
-    let request_url = "https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/faq.json";
+pub async fn get_faq(language: String) -> serde_json::Value {
+    let pn_path = get_cache_path().join(format!("faq-{}", &language));
+    let request_url = format!("https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/faq/{}.json", language);
     get_json_cached_file(pn_path, &request_url, 60).await
 }
 

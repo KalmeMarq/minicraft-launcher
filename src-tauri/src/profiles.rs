@@ -3,7 +3,7 @@ use std::{collections::HashMap, fs::File};
 use serde::{Serialize, Deserialize};
 use time::OffsetDateTime;
 
-use crate::get_launcher_path;
+use crate::utils::get_launcher_path;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 enum ProfileType {

@@ -2,6 +2,7 @@ import DOMPurify from 'dompurify';
 import { useContext } from 'react';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { FAQContext } from '../../../context/FAQContext';
+import { T } from '../../../context/TranslationContext';
 import './index.scss';
 
 const FAQLoading = () => {};
@@ -16,7 +17,9 @@ const FAQ: React.FC = () => {
       ) : (
         <div className="faq-content">
           <div className="faq-header">
-            <h2>Frequently asked questions</h2>
+            <h2>
+              <T>Frequently asked questions</T>
+            </h2>
             <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(getContext('Minicraft Plus').description) }}></div>
           </div>
           <div style={{ height: '4px' }}></div>

@@ -19,7 +19,7 @@ export const FAQProvider: React.FC<React.PropsWithChildren> = ({ children }) => 
 
   useEffect(() => {
     if (qas.length === 0)
-      invoke('get_faq').then((data) => {
+      invoke('get_faq', { language: 'en-US' }).then((data) => {
         setQAs((data as { data: { context: string; description: string; qas: QA[] }[] }).data);
       });
   }, []);

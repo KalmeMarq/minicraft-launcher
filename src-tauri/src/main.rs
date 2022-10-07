@@ -10,14 +10,17 @@ pub mod themes;
 
 use std::sync::Mutex;
 
+use log::{LevelFilter, error, warn, info};
+use log4rs::{append::{console::{ConsoleAppender}, file::FileAppender}, encode::pattern::PatternEncoder, Config, config::{Appender, Root, Logger}};
 use profiles::{LauncherProfiles, load_profiles};
 use settings::{LauncherSettings, load_settings};
 use tauri::{WindowBuilder, WindowUrl, Manager, AppHandle};
 use themes::{LauncherThemes, load_themes};
-use utils::{create_launcher_dirs, get_cache_path, get_launcher_path, get_alert_messaging, get_faq, get_news, open_folder_from_launcher, get_launcher_patch_notes, get_minicraft_patch_notes, get_minicraft_plus_patch_notes};
+use utils::{create_launcher_dirs, get_cache_path};
 
-use crate::settings::{get_setting, set_setting};
+use crate::{settings::{get_setting, set_setting}, utils::get_launcher_path};
 
+#[allow(dead_code)]
 pub struct LauncherState {
     pub settings: Mutex<LauncherSettings>,
     pub profiles: Mutex<LauncherProfiles>,
@@ -25,9 +28,40 @@ pub struct LauncherState {
     app_handle: AppHandle
 }
 
+fn init_logger() {
+    let stdout = ConsoleAppender::builder()
+        .encoder(Box::new(PatternEncoder::new("{h([{l}: {d(%Y-%m-%d %H:%M:%S.%f)}: {f}:{L}] {m}{n})}")))
+        .build();
+    let logfile = FileAppender::builder()
+        .append(false)
+        .encoder(Box::new(PatternEncoder::new("[{l}: {d(%Y-%m-%d %H:%M:%S.%f)}: {f}:{L}] {m}{n}")))
+        .build(get_launcher_path().join("launcher_log.txt"))
+        .unwrap();
+    
+    let config = Config::builder()
+        .appender(Appender::builder().build("stdout", Box::new(stdout)))
+        .appender(Appender::builder().build("logfile", Box::new(logfile)))
+        .logger(Logger::builder().build("tao", LevelFilter::Off))
+        .build(
+            Root::builder()
+                .appender("logfile")
+                .appender("stdout")
+                .build(LevelFilter::Info),
+        )
+        .unwrap();
+    
+    let _handle = log4rs::init_config(config).unwrap();
+}
+
 #[tokio::main]
 async fn main() {
     create_launcher_dirs();
+
+    init_logger();
+
+    error!("Goes to stderr and file");
+    warn!("Goes to stderr and file");
+    info!("Goes to stderr and file");
     
     tauri::Builder::default()
     .setup(|app| {
@@ -55,14 +89,14 @@ async fn main() {
         Ok(())
     })
     .invoke_handler(tauri::generate_handler![
-        get_launcher_path,
-        open_folder_from_launcher,
-        get_alert_messaging,
-        get_faq,
-        get_news,
-        get_launcher_patch_notes,
-        get_minicraft_patch_notes,
-        get_minicraft_plus_patch_notes,
+        utils::get_launcher_path,
+        utils::open_folder_from_launcher,
+        utils::get_alert_messaging,
+        utils::get_faq,
+        utils::get_news,
+        utils::get_launcher_patch_notes,
+        utils::get_minicraft_patch_notes,
+        utils::get_minicraft_plus_patch_notes,
         get_setting,
         set_setting
     ])

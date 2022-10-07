@@ -16,6 +16,8 @@ tauri-build = { version = "1.1.1", features = [] }
 dirs = "4.0"
 serde_json = "1.0"
 chrono = "0.4.22"
+log = "0.4.17"
+log4rs = "1.1.1"
 tauri-plugin-single-instance = { git = "https://github.com/tauri-apps/tauri-plugin-single-instance" }
 reqwest = { version = "0.11.12", features = ["json"] }
 time = { version = "0.3.14", features = ["serde", "serde-well-known"] }

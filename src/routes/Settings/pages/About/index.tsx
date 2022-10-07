@@ -22,7 +22,9 @@ const About: React.FC = () => {
       <LicensesDialog isOpen={showLicensesDialog} onClose={() => setShowLicensesDialog(false)} />
       <div className="settings-about-content">
         <div className="section">
-          <h3>Launcher</h3>
+          <h3>
+            <T placeholders={[getOSName(os.platform)]}>Launcher for %1$s</T>
+          </h3>
           <p>
             {getOSName(os.platform)} {os.version.substring(0, os.version.indexOf('.', os.version.indexOf('.') + 1))} {app.version}
           </p>

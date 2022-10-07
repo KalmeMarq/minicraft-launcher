@@ -18,10 +18,13 @@ import esMXTranslations from './assets/translations/es-MX.json';
 import { isDev } from './utils';
 import { FAQProvider } from './context/FAQContext';
 import { NotificationsProvider } from './context/NotificatonsContext';
+import { UIStateProvider } from './context/UIStateContext';
 
 if (!isDev()) {
   document.addEventListener('keydown', (e) => {
     if (e.code === 'F5') e.preventDefault();
+    if (e.code === 'F3') e.preventDefault();
+    if (e.code === 'F7') e.preventDefault();
     if (e.code === 'KeyR' && e.ctrlKey) e.preventDefault();
   });
 }
@@ -55,13 +58,15 @@ const Root = () => {
   return (
     <TranslationProvider translation={langs[lang]}>
       <AboutProvider>
-        <NotificationsProvider>
-          <PatchNotesProvider>
-            <FAQProvider>
-              <App />
-            </FAQProvider>
-          </PatchNotesProvider>
-        </NotificationsProvider>
+        <UIStateProvider>
+          <NotificationsProvider>
+            <PatchNotesProvider>
+              <FAQProvider>
+                <App />
+              </FAQProvider>
+            </PatchNotesProvider>
+          </NotificationsProvider>
+        </UIStateProvider>
       </AboutProvider>
     </TranslationProvider>
   );

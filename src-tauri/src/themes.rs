@@ -1,4 +1,5 @@
 use std::{collections::HashMap, fs::{self}};
+use log::{info};
 
 use serde::{Serialize, Deserialize};
 
@@ -41,7 +42,7 @@ pub fn load_themes() -> LauncherThemes {
             let data: String = fs::read_to_string(&file_path).unwrap().parse().unwrap();
             let theme: Theme = serde_json::from_str(&data).unwrap();
 
-            println!("Found theme: type={:?} name={}", theme.theme_type, theme.name);
+            info!("Found theme: type={:?} name={}", theme.theme_type, theme.name);
 
             if themes.themes.iter().position(|t| t.name != theme.name).is_some() {
                 themes.push(theme);
