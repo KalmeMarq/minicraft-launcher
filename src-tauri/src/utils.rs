@@ -1,4 +1,6 @@
 use std::{fs::{File, self}, path::PathBuf, process::Command};
+use log::{LevelFilter, info};
+use log4rs::{append::{console::{ConsoleAppender}, file::FileAppender}, encode::pattern::PatternEncoder, Config, config::{Appender, Root, Logger}};
 
 #[tauri::command]
 pub fn get_launcher_path() -> PathBuf {
@@ -26,6 +28,8 @@ pub fn get_libraries_path() -> PathBuf {
 }
 
 pub fn create_launcher_dirs() {
+    info!("Creating launcher dirs");
+
     if !get_launcher_path().exists() {
         fs::create_dir(get_launcher_path()).expect("Could not create launcher directory");
     }
@@ -153,4 +157,38 @@ pub fn open_folder(path: PathBuf) {
 
     #[cfg(target_os = "linux")]
     Command::new("xdg-open").arg(&path.to_str().unwrap()).spawn().unwrap(); 
+}
+
+pub trait LauncherSave {
+    fn save(&self);
+}
+
+pub fn init_logger() {
+    info!("Initializing logger");
+
+    let console_pattern = "{h([{l}: {d(%Y-%m-%d %H:%M:%S.%f)}: {M} > {f}\\({L}\\)] {m}{n})}";
+    let log_file_pattern = "[{l}: {d(%Y-%m-%d %H:%M:%S.%f)}: {f}\\({L}\\)] {m}{n}";
+
+    let stdout = ConsoleAppender::builder()
+        .encoder(Box::new(PatternEncoder::new(console_pattern)))
+        .build();
+    let logfile = FileAppender::builder()
+        .append(false)
+        .encoder(Box::new(PatternEncoder::new(log_file_pattern)))
+        .build(get_launcher_path().join("launcher_log.txt"))
+        .unwrap();
+    
+    let config = Config::builder()
+        .appender(Appender::builder().build("stdout", Box::new(stdout)))
+        .appender(Appender::builder().build("logfile", Box::new(logfile)))
+        .logger(Logger::builder().build("tao", LevelFilter::Off))
+        .build(
+            Root::builder()
+                .appender("logfile")
+                .appender("stdout")
+                .build(LevelFilter::Info),
+        )
+        .unwrap();
+    
+    let _handle = log4rs::init_config(config).unwrap();
 }

@@ -1,9 +1,14 @@
-use std::{collections::HashMap, fs::File};
+use std::{collections::HashMap, path::PathBuf, fs::File};
 
+use log::info;
 use serde::{Serialize, Deserialize};
 use time::OffsetDateTime;
 
-use crate::utils::get_launcher_path;
+use crate::utils::{get_launcher_path, LauncherSave};
+
+pub fn get_launcher_profiles_path() -> PathBuf {
+    get_launcher_path().join("launcher_profiles.json")
+}
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 enum ProfileType {
@@ -45,8 +50,21 @@ pub struct LauncherProfiles {
     groups: HashMap<String, Group>
 }
 
+impl LauncherSave for LauncherProfiles {
+    fn save(&self) {
+        info!("Saving launcher profiles");
+
+        serde_json::to_writer_pretty(
+            &File::create(get_launcher_profiles_path()).expect("Could not save launcher profiles file"), 
+            self
+        ).expect("Could not save launcher profiles");
+    } 
+}
+
 pub fn load_profiles() -> LauncherProfiles {
-    let profiles_path = get_launcher_path().join("launcher_profiles.json");
+    info!("Loading launcher profiles");
+
+    let profiles_path = get_launcher_profiles_path();
 
     let mut profiles: LauncherProfiles = LauncherProfiles {
         profiles: HashMap::new(),

@@ -5,8 +5,6 @@ import { FAQContext } from '../../../context/FAQContext';
 import { T } from '../../../context/TranslationContext';
 import './index.scss';
 
-const FAQLoading = () => {};
-
 const FAQ: React.FC = () => {
   const { hasContext, getContext } = useContext(FAQContext);
 
@@ -28,13 +26,17 @@ const FAQ: React.FC = () => {
               <div className="faq-item" key={faq.id}>
                 <div className="faq-item__question">
                   <div className="faq-item__question-right">
-                    <span>Q</span>
+                    <span>
+                      <T>Q</T>
+                    </span>
                   </div>
                   <div className="faq-question">{faq.question}</div>
                 </div>
                 <div className="faq-item__answer">
                   <div className="faq-item__question-right">
-                    <span>A</span>
+                    <span>
+                      <T>A</T>
+                    </span>
                   </div>
                   <div className="faq-answer" dangerouslySetInnerHTML={{ __html: faq.answer }}></div>
                 </div>

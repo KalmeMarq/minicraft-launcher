@@ -14,20 +14,12 @@ const BasicNotification: React.FC<{ id: string; type: string; message: string; c
   const notifRef = createRef<HTMLDivElement>();
 
   useEffect(() => {
-    console.log(id, closeAfter, 'useeff');
-
     if (closeAfter !== undefined) {
-      console.log(id, closeAfter, 'hasclose');
-
       setTimeout(() => {
         if (notifRef.current) {
-          console.log(id, closeAfter, 'current');
-
           notifRef.current.classList.add('close');
 
           setTimeout(() => {
-            console.log(id, closeAfter, 'remov');
-
             if (hasNotification(id)) {
               removeNotification(id);
             }

@@ -18,8 +18,6 @@ const Checkbox: React.FunctionComponent<ICheckboxProps> = ({ title, id, label, d
   // const idCheckbox = useId('checkbox-');
   const [isChecked, setIsChecked] = useState(checked);
 
-  console.log(id, isChecked, checked);
-
   const onValueChanged = (ev: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(!isChecked);
     if (onChange) onChange(ev, !isChecked, id);

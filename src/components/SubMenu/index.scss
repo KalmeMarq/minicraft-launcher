@@ -87,7 +87,7 @@
 }
 
 .submenu a:active,
-.submenu a:focus,
+.submenu a:focus:has(:hover),
 .submenu a:focus-visible {
   font-family: 'Noto Sans';
   font-weight: bold;

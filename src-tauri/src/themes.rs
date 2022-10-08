@@ -1,5 +1,5 @@
 use std::{collections::HashMap, fs::{self}};
-use log::{info};
+use log::info;
 
 use serde::{Serialize, Deserialize};
 
@@ -31,6 +31,8 @@ impl LauncherThemes {
 }
 
 pub fn load_themes() -> LauncherThemes {
+    info!("Loading launcher themes");
+
     let paths = fs::read_dir(get_themes_path()).unwrap();
 
     let mut themes = LauncherThemes { themes: Vec::new() };

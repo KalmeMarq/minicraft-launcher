@@ -1,9 +1,14 @@
-use std::fs::{self, File};
+use std::{fs::{self, File}, path::PathBuf};
 
 use serde::{Deserialize, Serialize};
 use tauri::State;
+use log::info;
 
-use crate::{utils::get_launcher_path, LauncherState};
+use crate::{utils::{get_launcher_path, LauncherSave}, LauncherState};
+
+pub fn get_launcher_settings_path() -> PathBuf {
+    get_launcher_path().join("launcher_settings.json")
+}
 
 fn bool_true() -> bool {
     true
@@ -128,6 +133,21 @@ pub struct LauncherSettings {
     minicraft: UIState
 }
 
+impl Default for LauncherSettings {
+    fn default() -> Self {
+        LauncherSettings {
+            keep_launcher_open: true,
+            theme: default_theme(),
+            language: default_language(),
+            open_output_log: false,
+            show_community_tab: false,
+            animate_pages: false,
+            minicraft_plus: default_ui_state(),
+            minicraft: default_ui_state()
+        }
+    }
+}
+
 impl LauncherSettings {
     pub fn set_keep_launcher_open(&mut self, value: bool) {
         self.keep_launcher_open = value;
@@ -153,6 +173,17 @@ impl LauncherSettings {
 
     pub fn set_open_output_log(&mut self, value: bool) {
         self.open_output_log = value;
+    }
+}
+
+impl LauncherSave for LauncherSettings {
+    fn save(&self) {
+        info!("Saving launcher settings");
+
+        serde_json::to_writer_pretty(
+            &File::create(get_launcher_settings_path()).expect("Could not save launcher settings file"), 
+            self
+        ).expect("Could not save launcher settings");
     }
 }
 
@@ -213,18 +244,11 @@ pub fn get_setting(state: State<LauncherState>, option: &str) -> String {
 }
 
 pub fn load_settings() -> LauncherSettings {
-    let settings_path = get_launcher_path().join("launcher_settings.json");
+    info!("Loading launcher settings");
 
-    let mut settings: LauncherSettings = LauncherSettings {
-        keep_launcher_open: true,
-        theme: default_theme(),
-        language: default_language(),
-        open_output_log: false,
-        show_community_tab: false,
-        animate_pages: false,
-        minicraft_plus: default_ui_state(),
-        minicraft: default_ui_state()
-    };
+    let settings_path = get_launcher_settings_path();
+
+    let mut settings: LauncherSettings = LauncherSettings::default();
 
     if settings_path.exists() {
         let data = fs::read_to_string(settings_path).expect("Could not read launcher settings");

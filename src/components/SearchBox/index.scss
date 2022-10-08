@@ -1,0 +1,122 @@
+.searchbox {
+  display: flex;
+  height: 32px;
+  min-height: 32px;
+  background: #131313;
+  border-radius: 3px;
+  place-items: center;
+  border: 1px solid #131313;
+
+  &:hover {
+    background: #0E0E0E;
+  }
+
+  &:focus-within {
+    border: 1px solid #C2C2C2;
+  }
+
+  .reset-btn {
+    cursor: pointer;
+    color: white;
+    background: none;
+    border: none;
+    margin: 4px 4px;
+    width: 20px;
+    height: 20px;
+    min-height: 20px;
+    min-width: 20px;
+    display: flex;
+    padding: 0 0;
+    border-radius: 3px;
+    place-content: center;
+    place-items: center;
+    transition: 100ms background;
+
+    svg {
+      width: 12px;
+      height: 12px;
+
+      line {
+        stroke: #B8B8B8;
+      }
+    }
+
+    &:hover {
+      background: #2B2B2B;
+
+      svg {
+        line {
+          stroke: #FFF;
+        }
+      }
+    }
+  }
+
+  .search-icon {
+    width: 16px;
+    height: 16px;
+    max-width: 16px;
+    max-height: 16px;
+    min-width: 16px;
+    min-height: 16px;
+    margin-left: 8px;
+
+    path {
+      fill: #bbb;
+    }
+  }
+
+  input[type="text"] {
+    background: none;
+    border: none;
+    height: 100%;
+    color: white;
+    width: 100%;
+    caret-color: white;
+    padding: 0 0.4rem;
+
+    &:focus {
+      outline: none;
+    }
+
+    &::placeholder {
+      font-weight: 550;
+      color: #898989;
+      letter-spacing: -0.3px;
+      transition: 100ms color;
+    }
+
+    &:focus::placeholder {
+      color: #6E6E6E;
+    }
+
+    &::selection {
+      background: #008541;
+    }
+  }
+
+  .results {
+    padding: 0 5px;
+    color: white;
+    margin: 4px 7px 4px 10px;
+    display: flex;
+    flex-direction: row;
+    width: max-content;
+    min-width: max-content;
+    background: hsl(0, 0%, 17%);
+    height: 22px;
+    position: relative;
+    font-size: 0.9rem;
+
+    &::before {
+      position: relative;
+      content: '';
+      display: block;
+      width: 1px;
+      height: 20px;
+      top: 1px;
+      left: -12px;
+      background: #777;
+    }
+  }
+}

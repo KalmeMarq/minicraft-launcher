@@ -68,6 +68,10 @@
       background: hsl(0, 0%, 35%);
     }
 
+    &:active {
+      background: #515151;
+    }
+
     &:after {
       position: relative;
       top: -10px;
