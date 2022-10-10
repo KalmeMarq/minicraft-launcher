@@ -4,14 +4,14 @@ use log::info;
 use serde::{Serialize, Deserialize};
 use time::OffsetDateTime;
 
-use crate::utils::{get_launcher_path, LauncherSave};
+use crate::{utils::{get_launcher_path, LauncherSave}, LauncherState};
 
 pub fn get_launcher_profiles_path() -> PathBuf {
     get_launcher_path().join("launcher_profiles.json")
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
-enum ProfileType {
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+pub enum ProfileType {
     #[serde(rename = "minicraftplus")]
     MinicraftPlus,
     #[serde(rename = "minicraft")]
@@ -61,6 +61,39 @@ impl LauncherSave for LauncherProfiles {
     } 
 }
 
+#[tauri::command]
+pub fn get_minicraftplus_profiles(state: tauri::State<LauncherState>) -> HashMap<String, Profile> {
+    state.profiles.lock().unwrap().profiles.clone().into_iter().filter(|(_, prof)| prof.profile_type == ProfileType::MinicraftPlus).collect()
+}
+
+#[tauri::command]
+pub fn get_minicraft_profiles(state: tauri::State<LauncherState>) -> HashMap<String, Profile> {
+    state.profiles.lock().unwrap().profiles.clone().into_iter().filter(|(_, prof)| prof.profile_type == ProfileType::Minicraft).collect()
+}
+
+#[derive(Serialize)]
+pub struct ProfileDeleteResponse {
+    message: Option<String>,
+    success: bool
+}
+
+#[tauri::command]
+pub fn delete_profile(state: tauri::State<LauncherState>, profile_id: String) -> ProfileDeleteResponse {
+    if state.profiles.lock().unwrap().profiles.contains_key(&profile_id) {
+        state.profiles.lock().unwrap().profiles.remove(&profile_id).unwrap();
+        
+        ProfileDeleteResponse {
+            message: None,
+            success: true
+        }
+    } else {
+        ProfileDeleteResponse {
+            message: Some("Profile does not exist".into()),
+            success: false
+        }
+    }
+}
+
 pub fn load_profiles() -> LauncherProfiles {
     info!("Loading launcher profiles");
 
@@ -75,10 +108,7 @@ pub fn load_profiles() -> LauncherProfiles {
         let data = std::fs::read_to_string(profiles_path).expect("Could not read launcher profiles file");
         profiles = serde_json::from_str(&data).expect("Could not load launcher profiles");
     } else {
-        serde_json::to_writer_pretty(&File::create(profiles_path).expect("Could not create launcher profiles file"),
-            &profiles,
-        )
-        .expect("Could not save profiles");
+        profiles.save();
     }
 
     profiles

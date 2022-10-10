@@ -6,6 +6,7 @@
   border-radius: 3px;
   place-items: center;
   border: 1px solid #131313;
+  cursor: text;
 
   &:hover {
     background: #0E0E0E;
@@ -21,6 +22,8 @@
     background: none;
     border: none;
     margin: 4px 4px;
+    margin-left: 4px;
+    margin-right: 0;
     width: 20px;
     height: 20px;
     min-height: 20px;
@@ -61,6 +64,11 @@
     min-height: 16px;
     margin-left: 8px;
 
+    [dir="rtl"] & {
+      margin-left: 0;
+      margin-right: 9px;
+    }
+
     path {
       fill: #bbb;
     }
@@ -97,26 +105,32 @@
 
   .results {
     padding: 0 5px;
+    cursor: initial;
     color: white;
-    margin: 4px 7px 4px 10px;
+    margin: 4px 3px 4px 10px;
     display: flex;
     flex-direction: row;
     width: max-content;
     min-width: max-content;
-    background: hsl(0, 0%, 17%);
-    height: 22px;
+    background: #FFFFFF1B;
+    height: 24px;
+    border-radius: 3px;
     position: relative;
-    font-size: 0.9rem;
+    top: 0px;
+    place-content: center;
+    place-items: center;
+    font-size: 0.8rem;
 
     &::before {
+      cursor: initial;
       position: relative;
       content: '';
       display: block;
       width: 1px;
-      height: 20px;
-      top: 1px;
-      left: -12px;
-      background: #777;
+      height: 24px;
+      top: 0px;
+      left: -13px;
+      background: #424242;
     }
   }
 }

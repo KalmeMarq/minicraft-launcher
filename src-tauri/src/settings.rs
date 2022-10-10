@@ -254,7 +254,7 @@ pub fn load_settings() -> LauncherSettings {
         let data = fs::read_to_string(settings_path).expect("Could not read launcher settings");
         settings = serde_json::from_str(&data).expect("Could not load launcher settings");
     } else {
-        serde_json::to_writer_pretty(&File::create(settings_path).expect("Could not create launcher settings"), &settings).expect("Could not save settings");
+        settings.save();
     }
 
     settings

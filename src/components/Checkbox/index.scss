@@ -55,6 +55,11 @@
     border: 1px solid transparent;
     margin-right: 4px;
 
+    [dir="rtl"] & {
+      margin-right: 0;
+      margin-left: 4px;
+    }
+
     &:focus-within {
       border: 1px solid white;
     }

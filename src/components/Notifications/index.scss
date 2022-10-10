@@ -6,6 +6,11 @@
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
+
+  [dir="rtl"] & {
+    left: 0;
+    right: initial;
+  }
 }
 
 .notification-item {
@@ -16,11 +21,19 @@
   translate: 100%;
   opacity: 0;
   animation: notificationOpen 250ms ease-in-out forwards;
+
+  [dir="rtl"] & {
+    animation-name: notificationOpenRTL;
+  }
 }
 
 .notification-item.close {
   .notification-item-inside {
     animation: notificationClose 250ms ease-out forwards;
+
+    [dir="rtl"] & {
+      animation-name: notificationCloseRTL;
+    }
   }
 
   button {
@@ -48,6 +61,26 @@
   }
 }
 
+@keyframes notificationOpenRTL {
+  0% {
+    translate: -100%;
+    opacity: 0;
+  }
+  40% {
+    translate: -100%;
+  }
+  70% {
+    opacity: 0.5;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    translate: 0%;
+    opacity: 1;
+  }
+}
+
 @keyframes notificationClose {
   0% {
     translate: 0% 0%;
@@ -59,10 +92,22 @@
   }
 }
 
+@keyframes notificationCloseRTL {
+  0% {
+    translate: 0% 0%;
+    opacity: 1;
+  }
+  100% {
+    translate: -100% 0%;
+    opacity: 0;
+  }
+}
+
 .notification-item[data-type="error"] {
   --notification-bg: #d93636;
   --notification-close-color: #EEE;
   --notification-close-button-hover-bg: rgba(255, 255, 255, 0.2);
+  --notification-close-button-active-bg: rgba(255, 255, 255, 0.15);
 
   .error-icon {
     svg {
@@ -79,6 +124,7 @@
   --notification-bg: #e68414;
   --notification-close-color: #EEE;
   --notification-close-button-hover-bg: rgba(255, 255, 255, 0.2);
+  --notification-close-button-active-bg: rgba(255, 255, 255, 0.15);
 
   .error-icon {
     svg {
@@ -96,12 +142,14 @@
   --notification-bg: #EBEBEB;
   --notification-close-color: #333;
   --notification-close-button-hover-bg: rgba(0, 0, 0, 0.15);
+  --notification-close-button-active-bg: rgba(0, 0, 0, 0.10);
 }
 
 .notification-item[data-type="translation"] {
   --notification-bg: #EBEBEB;
   --notification-close-color: #333;
   --notification-close-button-hover-bg: rgba(0, 0, 0, 0.15);
+  --notification-close-button-active-bg: rgba(0, 0, 0, 0.10);
 
   .error-icon {
     svg {
@@ -125,7 +173,7 @@
     width: 100%;
     height: max-content;
     background: var(--notification-bg);
-    padding: 0.3rem 0.75rem;
+    padding: 0.5rem 0.75rem;
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
     box-shadow: 0px 4px 4px #00000044;
@@ -136,6 +184,10 @@
     place-content: center;
     place-items: center;
     padding: 0 1rem 0 0;
+
+    [dir="rtl"] & {
+      padding: 0 0.2rem 0 0.3rem;
+    }
   }
 
   .circle-prog {
@@ -156,12 +208,13 @@
       background: var(--notification-bg);
     
       #progress-spinner {
-        --progress: 50%;
+        --progress: 0%;
+        --progresstest: 0%;
         position: absolute;
         border-radius: 50%;
         height: var(--circle-size);
         width: var(--circle-size);
-        background: conic-gradient(#009047 var(--progress), var(--notification-bg) var(--progress));
+        background: conic-gradient(#009047 var(--progresstest), var(--notification-bg) var(--progresstest));
         top: 50%;
         left: 50%;
         translate: -50% -50%;
@@ -194,7 +247,7 @@
 
   .text-content {
     width: 100%;
-    padding: 1rem 0;
+    padding: 0.8rem 0;
     padding-right: 1rem;
     color: #252525;
     font-size: 0.72rem;
@@ -236,6 +289,7 @@
 
   .close-panel {
     width: 24px;
+    min-width: 24px;
 
     button {
       width: 100%;
@@ -253,11 +307,15 @@
         background: var(--notification-close-button-hover-bg);
       }
 
+      &:active {
+        background: var(--notification-close-button-active-bg);
+      }
+
       svg {
         position: relative;
         width: 12px;
         height: 12px;
-        left: -1px;
+        left: 0px;
         
         line {
           stroke: var(--notification-close-color);
@@ -265,4 +323,515 @@
       }
     }
   }
+}
+
+@property --progresstest {
+  syntax: '<percentage>';
+  initial-value: 0%;
+  inherits: false;
+}
+
+@keyframes per0ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 0%; }
+}
+
+@keyframes per1ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 1%; }
+}
+
+@keyframes per2ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 2%; }
+}
+
+@keyframes per3ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 3%; }
+}
+
+@keyframes per4ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 4%; }
+}
+
+@keyframes per5ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 5%; }
+}
+
+@keyframes per6ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 6%; }
+}
+
+@keyframes per7ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 7%; }
+}
+
+@keyframes per8ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 8%; }
+}
+
+@keyframes per9ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 9%; }
+}
+
+@keyframes per10ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 10%; }
+}
+
+@keyframes per11ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 11%; }
+}
+
+@keyframes per12ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 12%; }
+}
+
+@keyframes per13ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 13%; }
+}
+
+@keyframes per14ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 14%; }
+}
+
+@keyframes per15ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 15%; }
+}
+
+@keyframes per16ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 16%; }
+}
+
+@keyframes per17ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 17%; }
+}
+
+@keyframes per18ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 18%; }
+}
+
+@keyframes per19ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 19%; }
+}
+
+@keyframes per20ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 20%; }
+}
+
+@keyframes per21ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 21%; }
+}
+
+@keyframes per22ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 22%; }
+}
+
+@keyframes per23ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 23%; }
+}
+
+@keyframes per24ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 24%; }
+}
+
+@keyframes per25ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 25%; }
+}
+
+@keyframes per26ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 26%; }
+}
+
+@keyframes per27ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 27%; }
+}
+
+@keyframes per28ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 28%; }
+}
+
+@keyframes per29ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 29%; }
+}
+
+@keyframes per30ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 30%; }
+}
+
+@keyframes per31ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 31%; }
+}
+
+@keyframes per32ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 32%; }
+}
+
+@keyframes per33ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 33%; }
+}
+
+@keyframes per34ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 34%; }
+}
+
+@keyframes per35ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 35%; }
+}
+
+@keyframes per36ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 36%; }
+}
+
+@keyframes per37ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 37%; }
+}
+
+@keyframes per38ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 38%; }
+}
+
+@keyframes per39ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 39%; }
+}
+
+@keyframes per40ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 40%; }
+}
+
+@keyframes per41ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 41%; }
+}
+
+@keyframes per42ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 42%; }
+}
+
+@keyframes per43ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 43%; }
+}
+
+@keyframes per44ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 44%; }
+}
+
+@keyframes per45ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 45%; }
+}
+
+@keyframes per46ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 46%; }
+}
+
+@keyframes per47ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 47%; }
+}
+
+@keyframes per48ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 48%; }
+}
+
+@keyframes per49ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 49%; }
+}
+
+@keyframes per50ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 50%; }
+}
+
+@keyframes per51ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 51%; }
+}
+
+@keyframes per52ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 52%; }
+}
+
+@keyframes per53ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 53%; }
+}
+
+@keyframes per54ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 54%; }
+}
+
+@keyframes per55ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 55%; }
+}
+
+@keyframes per56ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 56%; }
+}
+
+@keyframes per57ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 57%; }
+}
+
+@keyframes per58ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 58%; }
+}
+
+@keyframes per59ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 59%; }
+}
+
+@keyframes per60ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 60%; }
+}
+
+@keyframes per61ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 61%; }
+}
+
+@keyframes per62ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 62%; }
+}
+
+@keyframes per63ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 63%; }
+}
+
+@keyframes per64ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 64%; }
+}
+
+@keyframes per65ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 65%; }
+}
+
+@keyframes per66ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 66%; }
+}
+
+@keyframes per67ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 67%; }
+}
+
+@keyframes per68ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 68%; }
+}
+
+@keyframes per69ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 69%; }
+}
+
+@keyframes per70ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 70%; }
+}
+
+@keyframes per71ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 71%; }
+}
+
+@keyframes per72ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 72%; }
+}
+
+@keyframes per73ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 73%; }
+}
+
+@keyframes per74ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 74%; }
+}
+
+@keyframes per75ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 75%; }
+}
+
+@keyframes per76ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 76%; }
+}
+
+@keyframes per77ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 77%; }
+}
+
+@keyframes per78ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 78%; }
+}
+
+@keyframes per79ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 79%; }
+}
+
+@keyframes per80ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 80%; }
+}
+
+@keyframes per81ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 81%; }
+}
+
+@keyframes per82ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 82%; }
+}
+
+@keyframes per83ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 83%; }
+}
+
+@keyframes per84ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 84%; }
+}
+
+@keyframes per85ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 85%; }
+}
+
+@keyframes per86ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 86%; }
+}
+
+@keyframes per87ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 87%; }
+}
+
+@keyframes per88ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 88%; }
+}
+
+@keyframes per89ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 89%; }
+}
+
+@keyframes per90ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 90%; }
+}
+
+@keyframes per91ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 91%; }
+}
+
+@keyframes per92ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 92%; }
+}
+
+@keyframes per93ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 93%; }
+}
+
+@keyframes per94ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 94%; }
+}
+
+@keyframes per95ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 95%; }
+}
+
+@keyframes per96ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 96%; }
+}
+
+@keyframes per97ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 97%; }
+}
+
+@keyframes per98ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 98%; }
+}
+
+@keyframes per99ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 99%; }
+}
+
+@keyframes per100ProgLangAnim {
+  0% { --progresstest: 0%; }
+  100% { --progresstest: 100%; }
 }

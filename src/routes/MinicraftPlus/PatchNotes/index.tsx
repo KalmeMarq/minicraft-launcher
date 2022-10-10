@@ -3,6 +3,7 @@ import Checkbox from '../../../components/Checkbox';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import PatchNotesList from '../../../components/PatchNotesList';
 import { PatchNotesContext } from '../../../context/PatchNotesContext';
+import { T } from '../../../context/TranslationContext';
 import { UIStateContext } from '../../../context/UIStateContext';
 import './index.scss';
 
@@ -15,7 +16,9 @@ const PatchNotes: React.FC = () => {
       <div className="pn-filter-content">
         <div className="pn-filter-content-inside">
           <div className="pn-versions-filter">
-            <p>Versions</p>
+            <p>
+              <T>Versions</T>
+            </p>
             <div className="pn-versions-filter-wrapper">
               <Checkbox
                 label="Release"

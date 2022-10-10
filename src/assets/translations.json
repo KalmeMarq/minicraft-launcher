@@ -1,0 +1,54 @@
+{
+  "available_codes": [
+    "en-US",
+    "en-GB",
+    "pt-PT",
+    "pt-BR",
+    "es-ES",
+    "es-MX"
+  ],
+  "languages": [
+    {
+      "iso": "en",
+      "locale": "en-GB",
+      "localName": "English - United Kingdom",
+      "completeness": 100,
+      "direction": "ltr"
+    },
+    {
+      "iso": "en",
+      "locale": "en-US",
+      "localName": "English - United States",
+      "completeness": 100,
+      "direction": "ltr"
+    },
+    {
+      "iso": "es",
+      "locale": "es-ES",
+      "localName": "Español - España",
+      "completeness": 100,
+      "direction": "ltr"
+    },
+    {
+      "iso": "es",
+      "locale": "es-MX",
+      "localName": "Español - México",
+      "completeness": 100,
+      "direction": "ltr"
+    },
+    {
+      "iso": "pt",
+      "locale": "pt-BR",
+      "localName": "Português - Brasil",
+      "completeness": 100,
+      "direction": "ltr"
+    },
+    {
+      "iso": "pt",
+      "locale": "pt-PT",
+      "localName": "Português - Portugal",
+      "completeness": 20,
+      "direction": "ltr"
+    }
+  ]
+}

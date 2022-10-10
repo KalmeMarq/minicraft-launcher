@@ -114,3 +114,26 @@ export function displayTime(time: number) {
 
   return str.trim();
 }
+
+export const versionInfosTesting = [
+  {
+    id: 'minicraftplus_2.1.3',
+    type: 'release',
+    size: 8247532
+  },
+  {
+    id: 'minicraftplus_1.1.3',
+    type: 'beta',
+    size: 18247532
+  },
+  {
+    id: 'minicraftplus_4.2.3',
+    type: 'release',
+    size: 34756347
+  },
+  {
+    id: 'minicraftplus_2.5.3',
+    type: 'release',
+    size: 8247532
+  }
+];

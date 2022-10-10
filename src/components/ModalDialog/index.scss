@@ -41,6 +41,11 @@
       border-radius: 50%;
       background: none;
       border: none;
+
+      [dir="rtl"] & {
+        left: 10px;
+        right: initial;
+      }
   
       &:hover,
       &:focus {

@@ -1,6 +1,7 @@
-use std::{fs::{File, self}, path::PathBuf, process::Command};
-use log::{LevelFilter, info};
-use log4rs::{append::{console::{ConsoleAppender}, file::FileAppender}, encode::pattern::PatternEncoder, Config, config::{Appender, Root, Logger}};
+use std::{fs::{File, self, read_to_string}, path::PathBuf, process::Command};
+use log::info;
+use log4rs::config::RawConfig;
+use tauri::regex::Regex;
 
 #[tauri::command]
 pub fn get_launcher_path() -> PathBuf {
@@ -163,32 +164,19 @@ pub trait LauncherSave {
     fn save(&self);
 }
 
-pub fn init_logger() {
+pub fn init_logger(app: tauri::AppHandle) {
     info!("Initializing logger");
 
-    let console_pattern = "{h([{l}: {d(%Y-%m-%d %H:%M:%S.%f)}: {M} > {f}\\({L}\\)] {m}{n})}";
-    let log_file_pattern = "[{l}: {d(%Y-%m-%d %H:%M:%S.%f)}: {f}\\({L}\\)] {m}{n}";
+    let log_config_path = app.path_resolver().resolve_resource("resources/log4rs.yml").expect("failed to resolve log4rs.yml resource");
 
-    let stdout = ConsoleAppender::builder()
-        .encoder(Box::new(PatternEncoder::new(console_pattern)))
-        .build();
-    let logfile = FileAppender::builder()
-        .append(false)
-        .encoder(Box::new(PatternEncoder::new(log_file_pattern)))
-        .build(get_launcher_path().join("launcher_log.txt"))
-        .unwrap();
+    let binding = get_launcher_path().join("launcher_log.txt");
     
-    let config = Config::builder()
-        .appender(Appender::builder().build("stdout", Box::new(stdout)))
-        .appender(Appender::builder().build("logfile", Box::new(logfile)))
-        .logger(Logger::builder().build("tao", LevelFilter::Off))
-        .build(
-            Root::builder()
-                .appender("logfile")
-                .appender("stdout")
-                .build(LevelFilter::Info),
-        )
-        .unwrap();
-    
-    let _handle = log4rs::init_config(config).unwrap();
+    let log_file_path = binding.to_str().unwrap().replace("\\", "/");
+    let log_config_str = read_to_string(&log_config_path).unwrap();
+
+    let re = Regex::new(r"%LOG_FILE_PATH%").unwrap();
+    let log_config = re.replace_all(&log_config_str, log_file_path);
+
+    let raw_config = serde_yaml::from_str::<RawConfig>(&log_config).unwrap();
+    let _handle = log4rs::init_raw_config(raw_config).unwrap();
 }

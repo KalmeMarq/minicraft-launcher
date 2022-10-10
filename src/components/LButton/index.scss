@@ -15,14 +15,18 @@
     height: 32px;
   }
 
-  .inner.green {
+  &.iconned .inner {
+    padding: 0.35rem 0.5rem;
+  }
+
+  &.green .inner {
     background: #008542;
     border-color: #008542;
   }
 
-  .inner.red {
-    background: #a00202;
-    border-color: #a00202;
+  &.red .inner {
+    background: #D93636;
+    border-color: #D93636;
   }
 
   &:hover.normal .inner {
@@ -36,8 +40,8 @@
   }
 
   &:hover.red .inner {
-    background: #d10d0d;
-    border-color: #d10d0d;
+    background: #E7643C;
+    border-color: #E7643C;
   }
 
   &:active.normal .inner {
@@ -49,7 +53,7 @@
   }
 
   &:active.red .inner {
-    background: #640000;
+    background: #C0300A;
   }
 
   &:focus.normal .inner,

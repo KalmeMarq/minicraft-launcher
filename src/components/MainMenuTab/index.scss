@@ -76,6 +76,10 @@
     left: -1px;
     translate: 0 -50%;
   }
+
+  [dir="rtl"] &::before {
+    right: 0;
+  }
   
   &.selected::before {
     height: 18px;

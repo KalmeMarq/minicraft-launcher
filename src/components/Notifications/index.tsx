@@ -70,10 +70,26 @@ const UpdaterNotification: React.FC<{ id: string; message: string; closeAfter?: 
   return <BasicNotification id={id} message={message} type="updater" icon={<UpdaterIcon width={13.788} height={18} />} closeAfter={closeAfter} />;
 };
 
-const TranslationNotification: React.FC<{ id: string; completeness: number; language: string }> = ({ id, completeness, language }) => {
+const TranslationNotification: React.FC<{ id: string; completeness: number; language: string; closeAfter?: number }> = ({ id, closeAfter, completeness, language }) => {
   const { t } = useTranslation();
   const notifRef = createRef<HTMLDivElement>();
   const { removeNotification, hasNotification } = useContext(NotificationsContext);
+
+  useEffect(() => {
+    if (closeAfter !== undefined) {
+      setTimeout(() => {
+        if (notifRef.current) {
+          notifRef.current.classList.add('close');
+
+          setTimeout(() => {
+            if (hasNotification(id)) {
+              removeNotification(id);
+            }
+          }, 250);
+        }
+      }, closeAfter);
+    }
+  }, []);
 
   return (
     <div className="notification-item" data-type="translation" ref={notifRef}>
@@ -82,12 +98,12 @@ const TranslationNotification: React.FC<{ id: string; completeness: number; lang
           <div className="circle-prog">
             <div className="progress-circle">
               <div id="middle-circle"></div>
-              <div id="progress-spinner" style={{ '--progress': `${completeness}%` } as React.CSSProperties}></div>
-              <span className="prog-text">{completeness}</span>
+              <div id="progress-spinner" className="doit" style={{ animation: `per${~~completeness}ProgLangAnim 1000ms ease-in forwards` } as React.CSSProperties}></div>
+              <span className="prog-text">{~~completeness}</span>
             </div>
           </div>
           <div className="text-content">
-            <span style={{ fontWeight: 'bolder' }}>{t('%1$s is %2$s% translated!', [language, completeness])}</span>
+            <span style={{ fontWeight: 'bolder' }}>{t('%1$s is %2$s% translated!', [language, ~~completeness])}</span>
             <span> </span>
             <span>{t('Want to help translate? Go to')} </span>
             <a href="https://crowdin.com/project/minicraft-launcher" target="_blank" rel="noopener noreferrer">
@@ -130,7 +146,7 @@ const Notifications: React.FC = () => {
         } else if (notification.type === 'warn') {
           return <WarnNotification key={notification.id} id={notification.id} message={notification.message} closeAfter={notification.closeAfter} />;
         } else if (notification.type === 'translation') {
-          return <TranslationNotification key={notification.id} id={notification.id} completeness={notification.completeness} language={notification.language} />;
+          return <TranslationNotification key={notification.id} id={notification.id} completeness={notification.completeness} language={notification.language} closeAfter={notification.closeAfter} />;
         }
       })}
     </div>

@@ -8,6 +8,8 @@ import { LauncherPatchNote, PatchNotesContext } from '../../../../context/PatchN
 import { T } from '../../../../context/TranslationContext';
 import { formatDate, getAppInfo, getOSName } from '../../../../utils';
 import './index.scss';
+import credits from '../../../../assets/credits.json';
+import { SettingsContext } from '../../../../context/SettingsContext';
 
 const About: React.FC = () => {
   const [showLauncherNewsDialog, setShowLauncherNewsDialog] = useState(false);
@@ -15,6 +17,7 @@ const About: React.FC = () => {
 
   const { app, os } = useContext(AboutContext);
   const { launcher } = useContext(PatchNotesContext);
+  const { language } = useContext(SettingsContext);
 
   return (
     <>
@@ -28,7 +31,7 @@ const About: React.FC = () => {
           <p>
             {getOSName(os.platform)} {os.version.substring(0, os.version.indexOf('.', os.version.indexOf('.') + 1))} {app.version}
           </p>
-          {launcher.length > 0 && <p>{formatDate(launcher[launcher.length - 1].date)}</p>}
+          {launcher.length > 0 && <p>{formatDate(launcher[launcher.length - 1].date, language)}</p>}
           <LButton
             text="What's New"
             className="whatsnew-btn"
@@ -40,6 +43,10 @@ const About: React.FC = () => {
           <a target="_blank" rel="noopener noreferrer" href="https://github.com/KalmeMarq/minicraft-launcher/issues">
             <T>Report a Launcher bug</T>
           </a>
+          <div style={{ height: '5px' }}></div>
+          <a href="https://github.com/KalmeMarq" target="_blank" rel="noopener noreferrer">
+            Source Code
+          </a>
         </div>
         <div className="divider"></div>
         <div className="section">
@@ -47,8 +54,25 @@ const About: React.FC = () => {
             <T>Credits and Third-party licenses</T>
           </h3>
           <p>
-            <T>Made by</T> KalmeMarq
+            <T placeholders={['KalmeMarq']}>Developed by</T>:
           </p>
+          <ul className="cred-list">
+            {credits.map((cred) => (
+              <li key={cred.name}>
+                <div className="cred-item">
+                  <span>{cred.name} - </span>
+                  <div className="cred-links">
+                    <a href={cred.github} target="_blank" rel="noopener noreferrer">
+                      Github
+                    </a>
+                    <a href={cred.twitter} target="_blank" rel="noopener noreferrer">
+                      Twitter
+                    </a>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
           <div style={{ height: '10px' }}></div>
           <LButton
             text="Third-party licenses"

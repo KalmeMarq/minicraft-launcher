@@ -1,0 +1,22 @@
+appenders:
+  stdout:
+    kind: console
+    encoder:
+      pattern: "{h([{l}: {d(%Y-%m-%d %H:%M:%S.%f)}: {M} > {f}\\({L}\\)] {m}{n})}"
+
+  logfile:
+    kind: file
+    path: "%LOG_FILE_PATH%"
+    append: false
+    encoder:
+      pattern: "[{l}: {d(%Y-%m-%d %H:%M:%S.%f)}: {f}\\({L}\\)] {m}{n}"
+
+root: 
+  level: info
+  appenders:
+    - stdout
+    - logfile
+
+loggers:
+  tao:
+    level: off

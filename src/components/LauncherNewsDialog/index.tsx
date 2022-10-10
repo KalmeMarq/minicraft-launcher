@@ -2,6 +2,7 @@ import DOMPurify from 'dompurify';
 import { useContext } from 'react';
 import { AboutContext } from '../../context/AboutContext';
 import { PatchNotesContext } from '../../context/PatchNotesContext';
+import { SettingsContext } from '../../context/SettingsContext';
 import { T } from '../../context/TranslationContext';
 import { formatDate, getOSName } from '../../utils';
 import { ModalDialog } from '../ModalDialog';
@@ -10,6 +11,7 @@ import './index.scss';
 const LauncherNewsDialog: React.FC<{ isOpen?: boolean; onClose?: () => void }> = ({ isOpen, onClose }) => {
   const { launcher: patchNotes } = useContext(PatchNotesContext);
   const { os } = useContext(AboutContext);
+  const { language } = useContext(SettingsContext);
 
   return (
     <ModalDialog isOpen={isOpen} title="What's new in the Launcher?" onClose={onClose}>
@@ -17,7 +19,7 @@ const LauncherNewsDialog: React.FC<{ isOpen?: boolean; onClose?: () => void }> =
         {patchNotes.map((pn, i) => (
           <div key={pn.id} className={'launcher-news-note' + (i === 0 ? ' lastest' : '')}>
             <div className="launcher-news-note-content">
-              <h2>{formatDate(pn.date)}</h2>
+              <h2>{formatDate(pn.date, language)}</h2>
               <div className="launcher-news-note-versions">
                 {Object.entries(pn.versions)
                   .sort((a, b) => {

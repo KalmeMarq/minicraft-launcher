@@ -3,6 +3,7 @@ import iconMinicraftPlus from './assets/main_menu_icons/minicraftplus_icon.png';
 import iconLauncherNew from './assets/main_menu_icons/lnew_icon.png';
 import iconCommunity from './assets/main_menu_icons/store_icon.png';
 import iconSettings from './assets/main_menu_icons/settings_icon.png';
+import iconNews from './assets/main_menu_icons/news_icon.png';
 import MainMenuTab, { MainMenuButton } from './components/MainMenuTab';
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
@@ -15,11 +16,14 @@ import { isDev } from './utils';
 import { AboutContext } from './context/AboutContext';
 import Notifications from './components/Notifications';
 import { INotification, NotificationsContext } from './context/NotificatonsContext';
+import News from './routes/News';
+import { SettingsContext } from './context/SettingsContext';
 
 function App() {
   const [showDialog, setShowDialog] = useState(false);
   const { app: appInfo } = useContext(AboutContext);
   const { addNotification, removeNotification, hasNotification } = useContext(NotificationsContext);
+  const { showCommunityTab } = useContext(SettingsContext);
 
   if (isDev()) {
     (window as any).addNotif = (notif: INotification) => {
@@ -44,9 +48,10 @@ function App() {
       />
       <HashRouter>
         <div className="main-menu">
+          {isDev() && <MainMenuTab title="News" icon={iconNews} path="news" />}
           <MainMenuTab title="Minicraft" subtitle="Plus" icon={iconMinicraftPlus} path="minicraftplus" />
           <MainMenuTab title="Minicraft" icon={iconMinicraft} path="/minicraft" />
-          {isDev() && <MainMenuTab title="Community" icon={iconCommunity} path="community" />}
+          {showCommunityTab && <MainMenuTab title="Community" icon={iconCommunity} path="community" />}
           <div className="fill-v"></div>
           <MainMenuButton
             title="What's New"
@@ -59,7 +64,8 @@ function App() {
         </div>
         <div className="route-root">
           <Routes>
-            <Route path="/" element={<Navigate to="/minicraft" />} />
+            <Route path="/" element={<Navigate to="/minicraftplus" />} />
+            <Route path="/news/*" element={<News />} />
             <Route path="/minicraftplus/*" element={<MinicraftPlus />} />
             <Route path="/minicraft/*" element={<Minicraft />} />
             {isDev() && <Route path="/community/*" element={<Community />} />}

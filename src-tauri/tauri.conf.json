@@ -43,7 +43,9 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": [],
+      "resources": [
+        "resources/*"
+      ],
       "shortDescription": "A launcher for Minicraft",
       "targets": "all",
       "windows": {

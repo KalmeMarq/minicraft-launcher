@@ -34,6 +34,10 @@
   margin: 0 1.7rem 0 0;
 }
 
+[dir="rtl"] .submenu li {
+  margin: 0 0 0 1.7rem;
+}
+
 .submenu li:first-of-type {
   padding-right: 0;
   padding-left: 0;
@@ -109,4 +113,9 @@
   left: 50%;
   transform: translate(-50%);
   bottom: -8px;
+
+  [dir="rtl"] & {
+    right: 50%;
+    transform: translate(50%);
+  }
 }
