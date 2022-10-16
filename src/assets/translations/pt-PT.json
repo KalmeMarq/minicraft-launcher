@@ -42,5 +42,17 @@
   "Minicraft Settings": "Definições do Minicraft",
   "Language": "Idioma",
   "Theme": "Tema",
-  "Version identifier": "Identificação de versão"
+  "Version identifier": "Identificação de versão",
+  "Installation name": "Nome da instalação",
+  "Categories": "Categorias",
+  "News title": "Título da notícia",
+  "Name": "Nome",
+  "Last played": "Mais recente",
+  "Sort By": "Ordenar por",
+  "Refresh": "Atualizar",
+  "Refresh Themes": "Atualizar temas",
+  "Force right to left layout": "Forçar layout da direita para a esquerda",
+  "Releases": "Lançamentos",
+  "Betas": "Betas",
+  "Modded": "Modificadas"
 }

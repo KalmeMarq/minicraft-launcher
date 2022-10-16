@@ -8,7 +8,7 @@
     max-width: 880px;
     height: 1px;
     margin: auto;
-    background: #484848;
+    background: var(--divider);
   }
 
   &-filter-content {
@@ -40,6 +40,7 @@
   .search-filter {
     width: 100%;
     max-width: 333px;
+    min-width: 333px;
     padding: 0.9rem 0 10px 0;
   
     .filter-name {
@@ -70,6 +71,16 @@
       top: -1px;
       place-items: center;
       column-gap: 0.5rem;
+    }
+  }
+
+  .refresh {
+    display: flex;
+    place-items: center;
+
+    button {
+      position: relative;
+      top: 6px;
     }
   }
 

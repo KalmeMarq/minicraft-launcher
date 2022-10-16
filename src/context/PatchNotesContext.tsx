@@ -28,16 +28,19 @@ export const PatchNotesContext = createContext<{
   launcher: LauncherPatchNote[];
   minicraftPlus: MinicraftPatchNote[];
   minicraft: MinicraftPatchNote[];
+  unitycraft: MinicraftPatchNote[];
 }>({
   launcher: [],
   minicraftPlus: [],
-  minicraft: []
+  minicraft: [],
+  unitycraft: []
 });
 
 export const PatchNotesProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [launcherPatchNotes, setLauncherPatchNotes] = useState<LauncherPatchNote[]>([]);
   const [minicraftPlusPatchNotes, setMinicraftPlusPatchNotes] = useState<MinicraftPatchNote[]>([]);
   const [minicraftPatchNotes, setMinicraftPatchNotes] = useState<MinicraftPatchNote[]>([]);
+  const [unitycraftPatchNotes, setUnitycraftPatchNotes] = useState<MinicraftPatchNote[]>([]);
 
   useEffect(() => {
     if (launcherPatchNotes.length === 0)
@@ -54,6 +57,11 @@ export const PatchNotesProvider: React.FC<React.PropsWithChildren> = ({ children
       invoke('get_minicraft_patch_notes').then((data) => {
         setMinicraftPatchNotes((data as { entries: MinicraftPatchNote[] }).entries);
       });
+
+    if (unitycraftPatchNotes.length === 0)
+      invoke('get_unitycraft_patch_notes').then((data) => {
+        setUnitycraftPatchNotes((data as { data: MinicraftPatchNote[] }).data);
+      });
   }, []);
 
   return (
@@ -61,7 +69,8 @@ export const PatchNotesProvider: React.FC<React.PropsWithChildren> = ({ children
       value={{
         launcher: launcherPatchNotes,
         minicraftPlus: minicraftPlusPatchNotes,
-        minicraft: minicraftPatchNotes
+        minicraft: minicraftPatchNotes,
+        unitycraft: unitycraftPatchNotes
       }}
     >
       {children}

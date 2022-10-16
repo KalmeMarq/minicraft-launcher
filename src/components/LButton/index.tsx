@@ -7,15 +7,17 @@ interface ILButton {
   text?: string;
   icon?: string;
   className?: string;
+  style?: React.CSSProperties;
+  disabled?: boolean;
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   type?: 'normal' | 'green' | 'red';
 }
 
-const LButton: React.FC<ILButton> = ({ icon, text, onClick, className, type = 'normal' }) => {
+const LButton: React.FC<ILButton> = ({ icon, text, onClick, disabled, className, type = 'normal', style }) => {
   const { t } = useTranslation();
 
   return (
-    <button className={'bordered-btn ' + (icon ? 'iconned ' : ' ') + type + (className ? ' ' + className : '')} onClick={onClick}>
+    <button disabled={disabled} className={'bordered-btn ' + (icon ? 'iconned ' : ' ') + type + (className ? ' ' + className : '')} onClick={onClick} style={style}>
       <div className="inner">
         {t(text ?? '')}
         {icon && <img src={icon} />}

@@ -1,4 +1,4 @@
-import { ReactComponent as SearchIcon } from '../../assets/images/search.svg';
+import { ReactComponent as SearchIcon } from '../../assets/old_images/search.svg';
 import { ReactComponent as CancelIcon } from '../../assets/icons/close.svg';
 import { FC } from 'react';
 import './index.scss';
@@ -32,7 +32,6 @@ const SearchBox: FC<ISearchBox> = ({ value, results = 0, handleEnter, handleFilt
           <CancelIcon />
         </button>
       )}
-      {/* {results && results > 0 && value !== '' && <p className="results">{results > 0 ? 's' : 'p'} Results</p>} */}
       {results > 0 && (
         <p className="results">
           <T placeholders={[results]}>%1$s results</T>

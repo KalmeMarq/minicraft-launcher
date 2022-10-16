@@ -9,8 +9,16 @@
   }
 
   .pn-filter-content-inside {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     width: calc(240px * 3 + 26px * 2);
     margin: 0 auto;
+  }
+
+  .refresh {
+    display: flex;
+    place-items: center;
   }
 
   .pn-cards-content {
@@ -44,7 +52,7 @@
   width: 100%;
   height: 1px;
   min-height: 1px;
-  background: #484848;
+  background: var(--divider);
 }
 
 

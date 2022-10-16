@@ -14,6 +14,13 @@ interface PatchNotes {
   betas: boolean;
 }
 
+interface NewsFilter {
+  java: boolean;
+  bugrock: boolean;
+  dungeons: boolean;
+  legends: boolean;
+}
+
 export const UIStateContext = createContext<{
   minicraftPlus: {
     configurations: Configuration;
@@ -23,6 +30,10 @@ export const UIStateContext = createContext<{
     configurations: Configuration;
     patchNotes: PatchNotes;
   };
+  unitycraft: {
+    configurations: Configuration;
+  };
+  newsFilter: NewsFilter;
   setSetting: (option: string, value: string | number | boolean) => Promise<void>;
 }>({
   minicraftPlus: {
@@ -47,6 +58,19 @@ export const UIStateContext = createContext<{
       betas: true
     }
   },
+  unitycraft: {
+    configurations: {
+      sortBy: 'name',
+      releases: true,
+      betas: true
+    }
+  },
+  newsFilter: {
+    java: true,
+    bugrock: true,
+    dungeons: true,
+    legends: true
+  },
   async setSetting(option, value) {}
 });
 
@@ -61,6 +85,11 @@ export const UIStateProvider: React.FC<React.PropsWithChildren> = ({ children })
     releases: true,
     betas: true
   });
+  const [unitycraftConfig, setUnitycraftConfig] = useState<Configuration>({
+    sortBy: 'name',
+    releases: true,
+    betas: true
+  });
   const [minicraftPlusPatchNotes, setMinicraftPlusPatchNotes] = useState<PatchNotes>({
     releases: true,
     betas: true
@@ -68,6 +97,12 @@ export const UIStateProvider: React.FC<React.PropsWithChildren> = ({ children })
   const [minicraftPatchNotes, setMinicraftPatchNotes] = useState<PatchNotes>({
     releases: true,
     betas: true
+  });
+  const [newsFilter, setNewsFilter] = useState<NewsFilter>({
+    java: true,
+    bugrock: true,
+    dungeons: true,
+    legends: true
   });
 
   useEffect(() => {
@@ -84,6 +119,12 @@ export const UIStateProvider: React.FC<React.PropsWithChildren> = ({ children })
       const releasesMPN = await invoke('get_setting', { option: 'minicraft:patchNotes/releases' });
       const betasMPN = await invoke('get_setting', { option: 'minicraft:patchNotes/betas' });
 
+      const newsJava = await invoke('get_setting', { option: 'news:java' });
+      const newsBugrock = await invoke('get_setting', { option: 'news:bugrock' });
+      const newsDungeons = await invoke('get_setting', { option: 'news:dungeons' });
+      const newsLegends = await invoke('get_setting', { option: 'news:legends' });
+
+      setNewsFilter({ java: newsJava === 'true' ? true : false, bugrock: newsBugrock === 'true' ? true : false, dungeons: newsDungeons === 'true' ? true : false, legends: newsLegends === 'true' ? true : false });
       setMinicraftPlusConfig({ sortBy: sortByMPC as SortBy, releases: releasesMPC === 'true' ? true : false, betas: betasMPC === 'true' ? true : false });
       setMinicraftPlusPatchNotes({ releases: releasesMPPN === 'true' ? true : false, betas: betasMPPN === 'true' ? true : false });
       setMinicraftConfig({ ...minicraftConfig, sortBy: sortByMC as SortBy, releases: releasesMC === 'true' ? true : false, betas: betasMC === 'true' ? true : false });
@@ -123,6 +164,10 @@ export const UIStateProvider: React.FC<React.PropsWithChildren> = ({ children })
           configurations: minicraftPlusConfig,
           patchNotes: minicraftPlusPatchNotes
         },
+        unitycraft: {
+          configurations: unitycraftConfig
+        },
+        newsFilter,
         setSetting
       }}
     >

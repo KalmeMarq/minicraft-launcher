@@ -76,6 +76,10 @@
     border-color: white;
   }
 
+  &:disabled {
+    pointer-events: none;
+  }
+
   // width: max-content;
   // max-width: max-content;
   // background: none;

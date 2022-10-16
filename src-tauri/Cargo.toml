@@ -19,12 +19,18 @@ chrono = "0.4.22"
 log = "0.4.17"
 log4rs = "1.1.1"
 tauri-plugin-single-instance = { git = "https://github.com/tauri-apps/tauri-plugin-single-instance" }
+tauri-plugin-window-state = { git = "https://github.com/tauri-apps/tauri-plugin-window-state" }
 reqwest = { version = "0.11.12", features = ["json"] }
 time = { version = "0.3.14", features = ["serde", "serde-well-known"] }
 tokio = { version = "1.18.2", features = ["full"] }
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.1.1", features = ["os-all", "shell-open", "updater"] }
+tauri = { version = "1.1.1", features = ["os-all", "shell-open"] }
 serde_yaml = "0.8.4"
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+opt-level = "s"
 
 [features]
 default = [ "custom-protocol" ]

@@ -1,13 +1,14 @@
 import React, { useState, version } from 'react';
 import { filesize } from 'filesize';
 import './index.scss';
-import folderIcon from '../../../../assets/images/folder.png';
+import folderIcon from '../../../../assets/old_images/folder.png';
 import Checkbox from '../../../../components/Checkbox';
 import SearchBox from '../../../../components/SearchBox';
 import LButton from '../../../../components/LButton';
 import ReactModal from 'react-modal';
 import { useTranslation } from '../../../../hooks/useTranslation';
 import { T } from '../../../../context/TranslationContext';
+import { versionInfosTesting } from '../../../../utils';
 
 interface VersionInfo {
   id: string;
@@ -15,7 +16,7 @@ interface VersionInfo {
   size: number;
 }
 
-const DeletePopup: React.FC<{ isOpen?: boolean; onClose?: () => void; onConfirm?: () => void }> = ({ isOpen = false, onClose, onConfirm }) => {
+export const DeletePopup: React.FC<{ isOpen?: boolean; onClose?: () => void; id: string; onConfirm?: () => void }> = ({ isOpen = false, onClose, id, onConfirm }) => {
   const { t } = useTranslation();
 
   return (
@@ -24,7 +25,7 @@ const DeletePopup: React.FC<{ isOpen?: boolean; onClose?: () => void; onConfirm?
         <p className="question">
           <T>Are you sure you want to delete?</T>
         </p>
-        <p className="version-id">minicraftplus_1.1.1</p>
+        <p className="version-id">{id}</p>
         <div className="popup-buttons">
           <LButton text={t('Cancel')} onClick={onClose} />
           <LButton text={t('Delete')} type="red" onClick={onConfirm} />
@@ -35,7 +36,7 @@ const DeletePopup: React.FC<{ isOpen?: boolean; onClose?: () => void; onConfirm?
 };
 
 const Versions: React.FC = () => {
-  const [versions, setVersions] = useState<VersionInfo[]>(/* versionInfosTesting as VersionInfo[] */ []);
+  const [versions, setVersions] = useState<VersionInfo[]>([]);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
 
   const [showReleases, setShowReleases] = useState(true);
@@ -55,6 +56,7 @@ const Versions: React.FC = () => {
     <>
       <DeletePopup
         isOpen={showDeletePopup}
+        id="minicraftplus_1.2.3"
         onClose={() => {
           setShowDeletePopup(false);
         }}
@@ -95,9 +97,13 @@ const Versions: React.FC = () => {
                 />
               </div>
             </div>
+            <div style={{ width: '100%' }}></div>
+            <div className="refresh">
+              <LButton text="Refresh" />
+            </div>
           </div>
         </div>
-        <div style={{ width: '100%', background: '#484848', height: '1px' }}></div>
+        <div style={{ width: '100%', background: 'var(--divider)', height: '1px' }}></div>
         <div className="versions-list">
           {versions.length === 0 && (
             <p

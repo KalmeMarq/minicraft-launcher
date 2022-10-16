@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import Checkbox from '../../../../components/Checkbox';
 import LButton from '../../../../components/LButton';
 import Select from '../../../../components/Select';
@@ -10,7 +10,9 @@ import translations from '../../../../assets/translations.json';
 
 const General: React.FC = () => {
   const { t } = useTranslation();
-  const { keepLauncherOpen, animatePages, showCommunityTab, openOutputLog, setSetting, theme, language, themes } = useContext(SettingsContext);
+  const { keepLauncherOpen, animatePages, showCommunityTab, openOutputLog, setSetting, theme, language, themes, refreshThemes } = useContext(SettingsContext);
+  const [forceRTL, setForceRTL] = useState(false);
+  const [beforeForced, setBeforeForced] = useState('ltr');
 
   return (
     <div className="settings-general-content">
@@ -44,6 +46,13 @@ const General: React.FC = () => {
           }}
         />
       </div>
+      <LButton
+        text="Refresh Themes"
+        style={{ maxWidth: 'max-content' }}
+        onClick={() => {
+          refreshThemes();
+        }}
+      />
       <div style={{ height: '15px' }}></div>
       <h3>
         <T>Launcher Settings</T>
@@ -72,6 +81,19 @@ const General: React.FC = () => {
         checked={showCommunityTab}
         onChange={(ev, checked, prop) => {
           setSetting(prop, checked).then(() => {});
+          console.log(prop, checked);
+        }}
+      />
+      <Checkbox
+        label={t('Force right to left layout')}
+        id="forceRTL"
+        checked={forceRTL}
+        onChange={(ev, checked, prop) => {
+          if (checked) {
+            setBeforeForced(document.body.dir);
+          }
+          setForceRTL(checked);
+          document.body.dir = checked ? 'rtl' : beforeForced;
           console.log(prop, checked);
         }}
       />

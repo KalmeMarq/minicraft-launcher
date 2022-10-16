@@ -18,6 +18,7 @@ export const SettingsContext = createContext<{
   language: string;
   theme: string;
   themes: Theme[];
+  refreshThemes: () => void;
   setSetting: (option: string, value: string | number | boolean) => Promise<void>;
 }>({
   keepLauncherOpen: true,
@@ -27,6 +28,7 @@ export const SettingsContext = createContext<{
   theme: 'dark',
   language: 'en-US',
   themes: [],
+  async refreshThemes() {},
   async setSetting(option: string, value: string | number | boolean) {}
 });
 
@@ -50,7 +52,10 @@ export const SettingsProvider: React.FC<React.PropsWithChildren> = ({ children }
   const [animatePages, setAnimatePages] = useState(false);
   const [showCommunityTab, setShowCommunityTab] = useState(false);
   const [openOutputLog, setOpenOutputLog] = useState(false);
-  const [themes, setThemes] = useState<Theme[]>([]);
+  const [themes, setThemes] = useState<Theme[]>([
+    { name: 'Dark', type: 'dark', styles: {} },
+    { name: 'Light', type: 'light', styles: {} }
+  ]);
   const [theme, setTheme] = useState<string>('dark');
   const [language, setLanguage] = useState<string>('en-US');
   const { addNotification } = useNotifications();
@@ -68,7 +73,6 @@ export const SettingsProvider: React.FC<React.PropsWithChildren> = ({ children }
       setThemes(themes as Theme[]);
       setLanguage(lang as string);
       setTheme((thm as string).toLowerCase());
-      applyTheme((thm as string).toLowerCase());
       setKeepLauncherOpen(klo === 'true' ? true : false);
       setAnimatePages(ap === 'true' ? true : false);
       setShowCommunityTab(sct === 'true' ? true : false);
@@ -80,6 +84,7 @@ export const SettingsProvider: React.FC<React.PropsWithChildren> = ({ children }
 
   const applyTheme = (newTheme: string) => {
     if (themes.findIndex((th) => th.name.toLowerCase() == newTheme.toLowerCase()) >= 0) {
+      document.documentElement.removeAttribute('data-allow-anim');
       const theme = themes.find((th) => th.name.toLowerCase() == newTheme.toLowerCase())!;
 
       const baseTheme = themes.find((th) => th.name.toLowerCase() == theme.type)!;
@@ -92,8 +97,11 @@ export const SettingsProvider: React.FC<React.PropsWithChildren> = ({ children }
       Object.entries(styles).forEach(([key, value]) => {
         document.documentElement.style.setProperty('--' + key.replaceAll('.', '-'), value);
       });
+
+      document.documentElement.setAttribute('data-allow-anim', '');
     }
   };
+  applyTheme((theme as string).toLowerCase());
 
   async function setSetting(option: string, value: string | number | boolean) {
     if (typeof value === 'string') {
@@ -134,6 +142,13 @@ export const SettingsProvider: React.FC<React.PropsWithChildren> = ({ children }
     }
   }
 
+  async function refreshThemes() {
+    await invoke('refresh_themes');
+    const themes = await invoke('get_themes');
+    setThemes(themes as Theme[]);
+    applyTheme((theme as string).toLowerCase());
+  }
+
   return (
     <SettingsContext.Provider
       value={{
@@ -143,6 +158,7 @@ export const SettingsProvider: React.FC<React.PropsWithChildren> = ({ children }
         showCommunityTab,
         openOutputLog,
         theme,
+        refreshThemes,
         themes,
         setSetting
       }}

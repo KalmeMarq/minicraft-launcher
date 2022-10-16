@@ -7,13 +7,13 @@
   height: 62px;
   background: var(--mainmenu-tab-background);
   cursor: pointer;
-  transition: 150ms background ease-in;
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
   -webkit-user-drag: none;
   border: 1px solid transparent;
   text-decoration: none;
+  transition: 150ms background ease-in;
 
   .new-square {
     --new-square-border: #1e1e1e;

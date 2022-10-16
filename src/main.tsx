@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import './fonts.scss';
 import './main.scss';
-import './night.scss';
-import './light.scss';
 import { setAppElement } from 'react-modal';
 import { PatchNotesProvider } from './context/PatchNotesContext';
 import { AboutProvider } from './context/AboutContext';
@@ -27,6 +25,12 @@ if (!isDev()) {
 
 window.addEventListener('contextmenu', (e) => {
   e.preventDefault();
+});
+
+window.addEventListener('mousedown', (e) => {
+  if (e.button === 1) {
+    e.preventDefault();
+  }
 });
 
 setAppElement('#root');

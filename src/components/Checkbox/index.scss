@@ -8,33 +8,33 @@
     place-items: center;
     place-content: center;
     flex-direction: row;
-    width: max-content;
+    max-width: max-content;
 
     &:hover {
       .check-fake {
-        border: 1px solid #747474;
-        background: #515151;
+        border: 1px solid var(--checkbox-hover-border);
+        background: var(--checkbox-hover-background);
       }
     }
 
     &:active {
       .check-fake {
-        border: 1px solid #4d4d4d;
-        background: #212121;
+        border: 1px solid var(--checkbox-active-border);
+        background: var(--checkbox-active-background);
       }
     }
 
     &:hover {
       input:checked ~ .check-fake {
-        border: 1px solid #0DD166;
-        background: #0DD166;
+        border: 1px solid var(--checkbox-checked-hover-background);
+        background: var(--checkbox-checked-hover-background);
       }
     }
 
     &:active {
       input:checked ~ .check-fake {
-        border: 1px solid #006431;
-        background: #006431;
+        border: 1px solid var(--checkbox-checked-active-background);
+        background: var(--checkbox-checked-active-background);
       }
     }
 
@@ -50,7 +50,9 @@
   .check-box {
     position: relative;
     width: 17px;
+    min-width: 17px;
     height: 17px;
+    min-height: 17px;
 
     border: 1px solid transparent;
     margin-right: 4px;
@@ -69,8 +71,11 @@
       left: 0px;
       position: absolute;
       width: 15px;
+      min-width: 15px;
       height: 15px;
-      border: 1px solid #626262;
+      min-height: 15px;
+      background: var(--checkbox-background);
+      border: 1px solid var(--checkbox-border);
       display: flex;
       place-content: center;
       place-items: center;
@@ -84,8 +89,8 @@
       opacity: 0;
       
       &:checked + .check-fake {
-        border-color: #008542;
-        background: #008542;
+        border-color: var(--checkbox-checked-background);
+        background: var(--checkbox-checked-background);
 
         .check {
           display: block;

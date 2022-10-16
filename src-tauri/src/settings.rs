@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use tauri::State;
 use log::info;
 
-use crate::{utils::{get_launcher_path, LauncherSave}, LauncherState};
+use crate::{utils::{get_launcher_path, LauncherSave}, LauncherState, themes::LauncherThemes};
 
 pub fn get_launcher_settings_path() -> PathBuf {
     get_launcher_path().join("launcher_settings.json")
@@ -40,6 +40,15 @@ fn default_ui_state() -> UIState {
     };
 
     ui_state
+}
+
+fn default_news_filter() -> NewsFilter {
+    NewsFilter {
+        java: true,
+        bugrock: true,
+        dungeons: true,
+        legends: true
+    }
 }
 
 #[derive(Serialize, Deserialize, Clone)]
@@ -112,6 +121,36 @@ pub struct UIState {
     patch_notes: PatchNotesFilter
 }
 
+#[derive(Serialize, Deserialize, Clone)]
+pub struct NewsFilter {
+    #[serde(default = "bool_true")]
+    java: bool,
+    #[serde(default = "bool_true")]
+    bugrock: bool,
+    #[serde(default = "bool_true")]
+    dungeons: bool,
+    #[serde(default = "bool_true")]
+    legends: bool
+}
+
+impl NewsFilter {
+    pub fn set_java(&mut self, value: bool) {
+        self.java = value;
+    }
+
+    pub fn set_bugrock(&mut self, value: bool) {
+        self.bugrock = value;
+    }
+
+    pub fn set_dungeons(&mut self, value: bool) {
+        self.dungeons = value;
+    }
+
+    pub fn set_legends(&mut self, value: bool) {
+        self.legends = value;
+    }
+}
+
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LauncherSettings {
@@ -130,7 +169,8 @@ pub struct LauncherSettings {
     #[serde(default = "default_ui_state")]
     minicraft_plus: UIState,
     #[serde(default = "default_ui_state")]
-    minicraft: UIState
+    minicraft: UIState,
+    news_filter: NewsFilter
 }
 
 impl Default for LauncherSettings {
@@ -143,7 +183,8 @@ impl Default for LauncherSettings {
             show_community_tab: false,
             animate_pages: false,
             minicraft_plus: default_ui_state(),
-            minicraft: default_ui_state()
+            minicraft: default_ui_state(),
+            news_filter: default_news_filter()
         }
     }
 }
@@ -174,6 +215,12 @@ impl LauncherSettings {
     pub fn set_open_output_log(&mut self, value: bool) {
         self.open_output_log = value;
     }
+
+    pub fn check_theme(&mut self, launcher_themes: &LauncherThemes) {
+        if !launcher_themes.themes.iter().position(|t| t.name.to_lowercase() == self.theme.to_lowercase()).is_some() {
+            self.theme = "Dark".into();
+        }
+    }
 }
 
 impl LauncherSave for LauncherSettings {
@@ -199,6 +246,8 @@ static LANGUAGES: [&str; 4] = ["en-US", "en-GB", "pt-PT", "pt-BR"];
 
 #[tauri::command]
 pub fn set_setting(state: State<LauncherState>, option: &str, value: &str) {
+    info!("Option '{}' set to '{}'", option, value);
+
     match option {
         "keepLauncherOpen" => state.settings.lock().unwrap().set_keep_launcher_open(parse_set_bool(value)),
         "theme" => state.settings.lock().unwrap().set_theme(value),
@@ -216,6 +265,10 @@ pub fn set_setting(state: State<LauncherState>, option: &str, value: &str) {
         "minicraft:configurations/betas" => state.settings.lock().unwrap().minicraft.configurations.set_betas(parse_set_bool(value)),
         "minicraft:patchNotes/betas" => state.settings.lock().unwrap().minicraft.patch_notes.set_betas(parse_set_bool(value)),
         "minicraft:patchNotes/releases" => state.settings.lock().unwrap().minicraft.patch_notes.set_releases(parse_set_bool(value)),
+        "news:java" => state.settings.lock().unwrap().news_filter.set_java(parse_set_bool(value)),
+        "news:bugrock" => state.settings.lock().unwrap().news_filter.set_bugrock(parse_set_bool(value)),
+        "news:dungeons" => state.settings.lock().unwrap().news_filter.set_dungeons(parse_set_bool(value)),
+        "news:legends" => state.settings.lock().unwrap().news_filter.set_legends(parse_set_bool(value)),
         _ => {}
     }
 }
@@ -239,6 +292,10 @@ pub fn get_setting(state: State<LauncherState>, option: &str) -> String {
        "minicraft:configurations/betas" => state.settings.lock().unwrap().minicraft.configurations.betas.to_string(),
        "minicraft:patchNotes/releases" => state.settings.lock().unwrap().minicraft.patch_notes.releases.to_string(),
        "minicraft:patchNotes/betas" => state.settings.lock().unwrap().minicraft.patch_notes.betas.to_string(),
+       "news:java" => state.settings.lock().unwrap().news_filter.java.to_string(),
+       "news:bugrock" => state.settings.lock().unwrap().news_filter.bugrock.to_string(),
+       "news:dungeons" => state.settings.lock().unwrap().news_filter.dungeons.to_string(),
+       "news:legends" => state.settings.lock().unwrap().news_filter.legends.to_string(),
        _ => "unknown".to_string()
    } 
 }

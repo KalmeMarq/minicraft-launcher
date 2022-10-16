@@ -97,6 +97,9 @@ const About: React.FC = () => {
           <a href="https://minicraft.fandom.com/wiki/Minicraft%2B" target="_blank" rel="noopener noreferrer">
             Minicraft+ Wiki
           </a>
+          <a href="https://maxkratt.github.io/unitycraft/" target="_blank" rel="noopener noreferrer">
+            UnityCraft
+          </a>
         </div>
       </div>
     </>

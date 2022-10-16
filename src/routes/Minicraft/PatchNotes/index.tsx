@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import Checkbox from '../../../components/Checkbox';
+import LButton from '../../../components/LButton';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import PatchNotesList from '../../../components/PatchNotesList';
 import { PatchNotesContext } from '../../../context/PatchNotesContext';
@@ -41,6 +42,9 @@ const PatchNotes: React.FC = () => {
                 }}
               />
             </div>
+          </div>
+          <div className="refresh">
+            <LButton text="Refresh" />
           </div>
         </div>
       </div>

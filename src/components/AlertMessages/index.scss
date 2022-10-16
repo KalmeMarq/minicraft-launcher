@@ -1,0 +1,22 @@
+.alert-message-item {
+  background: hsl(210, 1%, 29%);
+  color: white;
+  border-top: 1px solid hsl(240, 0%, 43%);
+  display: flex;
+  flex-direction: row;
+
+  .icon {
+    display: grid;
+    place-content: center;
+    place-items: center;
+    padding-left: 0.6rem;
+  }
+
+  .text-content {
+    padding: 0.5rem 1rem;
+    padding-left: 0.4rem;
+    font-size: 0.9rem;
+    width: 90%;
+    font-weight: 200;
+  }
+}

@@ -12,10 +12,48 @@
   --background: #333333;
   --mainmenu-background: #1e1e1e;
   --mainmenu-tab-background: #1e1e1e;
+  --mainmenu-tab-hover-background: #353535;
+  --mainmenu-tab-focus-background: #292929;
   --mainmenu-tab-foreground: #ffffff;
   --mainmenu-tab-selected-indicator: #ffffff;
   --submenu-background: #1e1e1e;
+  --play-bar-background: #1e1e1e;
   --modal-dialog-background: #303030;
+
+  --playbutton-foreground: #FFFFFF;
+  --playbutton-foreground-disabled: #AAA;
+  --playbutton-border: black;
+  --playbutton-border-active: white;
+  --playbutton-top: #27CE40;
+  --playbutton-top-active: #064D2A;
+  --playbutton-top-disabled: #1B902D;
+  --playbutton-side: #0C6E3D;
+  --playbutton-bottom: #064D2A;
+  --playbutton-bottom-active: #0AA618;
+  --playbutton-bottom-disabled: #04361D;
+  --playbutton-gradient-top: #009147;
+  --playbutton-gradient-top-hover: #0A8F4C;
+  --playbutton-gradient-top-active: #008542;
+  --playbutton-gradient-top-focus: #0A9B51;
+  --playbutton-gradient-top-disabled: #006532;
+  --playbutton-gradient-bottom: #008542;
+  --playbutton-gradient-bottom-hover: #0A9B51;
+  --playbutton-gradient-bottom-active: #009147;
+  --playbutton-gradient-bottom-focus: #0A8F4C;
+  --playbutton-gradient-bottom-disabled: #005D2E;
+
+  --divider: #484848;
+  --settings-about-divider: #3D3D3D;
+
+  --checkbox-background: #00000000;
+  --checkbox-border: #626262;
+  --checkbox-hover-background: #515151;
+  --checkbox-hover-border: #747474;
+  --checkbox-active-background: #212121;
+  --checkbox-active-border: #4d4d4d;
+  --checkbox-checked-background: #008542;
+  --checkbox-checked-hover-background: #0DD166;
+  --checkbox-checked-active-background: #006431;
 }
 
 * {
@@ -26,6 +64,7 @@
 
 body {
   height: 100vh;
+  overflow: hidden;
 }
 
 body, #root, h1, h2, h3, h4, h5, h6, p, span, button, a, img {
@@ -58,6 +97,15 @@ body, #root, h1, h2, h3, h4, h5, h6, p, span, button, a, img {
 
 // App
 #root {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.app {
   width: 100%;
   height: 100%;
   max-height: 100%;
@@ -96,7 +144,6 @@ body, #root, h1, h2, h3, h4, h5, h6, p, span, button, a, img {
 }
 
 .subroute-page {
-  top: 83px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;

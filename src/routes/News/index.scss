@@ -1,0 +1,162 @@
+.news-pages {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+
+  header {
+    position: relative;
+    width: 100%;
+    right: 0;
+    height: 69px;
+    max-height: 69px;
+    min-height: 69px;
+    background: url(../../assets/old_images/bg-wool-dark.png);
+    background-position-x: right;
+    background-size: contain;
+    box-shadow: 
+      inset 13px 0px 40px #1e1e1eFF,
+      -1px 3px 5px -1px #00000099;
+
+    .notsteve {
+      position: absolute;
+      top: 30px;
+      width: 64px;
+      right: 0;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      transition: 200ms opacity ease-in-out;
+      transition-property: opacity, translate, rotate;
+      translate: 100% 0;
+      rotate: 0deg;
+    }
+
+    svg {
+      position: absolute;
+      max-width: 400px;
+      max-height: calc(400px * 0.171341);
+      left: 50%;
+      transform: translate(-50%, 20%);
+      z-index: 20;
+      transition: 200ms opacity ease-in-out;
+
+      &:hover ~ .mini-logo {
+        opacity: 1;
+      }
+
+      &:hover ~ .notsteve {
+        translate: 50%;
+        rotate: -45deg;
+      }
+    }
+
+    svg:hover {
+      opacity: 0;
+    }
+
+    .mini-logo {
+      opacity: 0;
+      position: absolute;
+      width: 400px;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      left: calc(50% + 2px);
+      transform: translate(-50%, 30%);
+      transition: 200ms opacity ease-in-out;
+    }
+  }
+
+  .subnavbar {
+    display: flex;
+    min-width: 100%;
+    flex-direction: column;
+    place-content: center;
+    padding: 1.6rem 1rem 0 0;
+    max-height: max-content;
+
+    ul {
+      list-style-type: none;
+      display: flex;
+    }
+
+    li {
+      text-align: center;
+      padding: 0.2rem 0.8rem 0.4rem;
+    }
+
+    [dir="rtl"] .subnavbar li {
+      padding: 0.2rem 0 0.4rem 0.8rem;
+    }
+
+    a {
+      position: relative;
+      color: white;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-family: 'Noto Sans';
+
+      &:focus {
+        outline: none;
+      }
+
+      &:focus-visible {
+        font-family: 'Noto Sans';
+        font-weight: bold;
+      }
+    }
+
+    a::before {
+      display: block;
+      content: attr(title);
+      font-family: 'Noto Sans';
+      font-weight: bold;
+      overflow: hidden;
+      visibility: hidden;
+      height: 0px;
+    }
+    
+    a.active::after {
+      background: #008542;
+      transition-property: width;
+      transition-duration: 200ms;
+      width: 20px;
+    }
+
+    a.active {
+      font-family: 'Noto Sans';
+      font-weight: bold;
+    }
+    
+    a:active,
+    a:focus:has(:hover),
+    a:focus-visible {
+      font-family: 'Noto Sans';
+      font-weight: bold;
+      color: hsl(0, 0%, 100%);
+    }
+
+    a.active:focus-visible::after {
+      background: hsl(0, 0%, 100%);
+      width: 20px;
+    }
+
+    a::after {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 0;
+      height: 3px;
+      background: transparent;
+      left: 0%;
+      transform: translate(-50%);
+      bottom: -8px;
+    
+      [dir="rtl"] & {
+        left: initial;
+        right: 0;
+        transform: translate(50%);
+      }
+    }
+  }
+}

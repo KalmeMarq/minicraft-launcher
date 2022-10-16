@@ -62,13 +62,63 @@ impl LauncherSave for LauncherProfiles {
 }
 
 #[tauri::command]
-pub fn get_minicraftplus_profiles(state: tauri::State<LauncherState>) -> HashMap<String, Profile> {
-    state.profiles.lock().unwrap().profiles.clone().into_iter().filter(|(_, prof)| prof.profile_type == ProfileType::MinicraftPlus).collect()
+pub fn get_minicraftplus_profiles(state: tauri::State<LauncherState>) -> HashMap<String, Profile>  {
+   state.profiles.lock().unwrap().profiles.clone().into_iter().filter(|(_, prof)| prof.profile_type == ProfileType::MinicraftPlus).collect()
 }
 
 #[tauri::command]
 pub fn get_minicraft_profiles(state: tauri::State<LauncherState>) -> HashMap<String, Profile> {
     state.profiles.lock().unwrap().profiles.clone().into_iter().filter(|(_, prof)| prof.profile_type == ProfileType::Minicraft).collect()
+}
+
+#[tauri::command]
+pub fn create_profile(state: tauri::State<LauncherState>, profile_type: ProfileType, id: String, name: String, icon: String, version_id: String, game_dir: String, jvm_args: Option<String>, java_path: Option<String>) {
+    state.profiles.lock().unwrap().profiles.insert(id, Profile {
+        profile_type,
+        name,
+        icon,
+        created: OffsetDateTime::now_utc(),
+        last_used: OffsetDateTime::now_utc(),
+        version_id,
+        game_dir,
+        jvm_args,
+        java_path,
+        last_time_played: 0,
+        total_time_played: 0
+    });
+}
+
+#[tauri::command]
+pub fn update_profile(state: tauri::State<LauncherState>, id: String, name: Option<String>, icon: Option<String>, version_id: Option<String>, game_dir: Option<String>, jvm_args: Option<String>, java_path: Option<String>) {
+    if state.profiles.lock().unwrap().profiles.contains_key(&id) {
+        let mut profile = state.profiles.lock().unwrap().profiles.get_mut(&id).unwrap().clone();
+
+        if name.is_some() {
+            profile.name = name.unwrap();
+        }
+
+        if icon.is_some() {
+            profile.icon = icon.unwrap();
+        }
+
+        if version_id.is_some() {
+            profile.version_id = version_id.unwrap();
+        }
+
+        if game_dir.is_some() {
+            profile.game_dir = game_dir.unwrap();
+        }
+
+        if jvm_args.is_some() {
+            profile.jvm_args = jvm_args;
+        }
+
+        if java_path.is_some() {
+            profile.java_path = java_path;
+        }
+
+        state.profiles.lock().unwrap().profiles.insert(id, profile);
+    }
 }
 
 #[derive(Serialize)]

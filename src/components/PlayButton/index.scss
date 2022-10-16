@@ -1,0 +1,86 @@
+.play-button {
+  --border-color: var(--playbutton-border);
+  --top: var(--playbutton-top);
+  --bottom: var(--playbutton-bottom);
+  --grad-top: var(--playbutton-gradient-top);
+  --grad-bottom: var(--playbutton-gradient-bottom);
+  --side: var(--playbutton-side);
+  position: absolute;
+  left: 50%;
+  top: -8px;
+  transform: translate(-50%);
+  background: linear-gradient(var(--grad-top) 0%, var(--grad-bottom) 100%);
+  border: none;
+  font-family: 'MinecraftTen';
+  font-size: 1.5rem;
+  text-shadow: 0 2px #00000055;
+  color: var(--playbutton-foreground);
+  height: 42px;
+  box-shadow: 2px 2px 0 black;
+  cursor: pointer;
+  box-shadow:
+  // top 
+    0 -1px 0 var(--grad-top),
+    
+    0 -4px 0 var(--top),
+    0 -6px 0 var(--border-color),
+    
+    // sides
+    -4px 0 0 var(--side),
+    -6px 0 0 var(--border-color),
+    4px 0 0 var(--side),
+    6px 0 0 var(--border-color),
+    
+    // corner top right
+    2px -6px 0 var(--border-color),
+    6px -2px 0 var(--border-color),
+    
+    
+    // corner top left
+    -2px -6px 0 var(--border-color),
+    -6px -2px 0 var(--border-color),
+    
+    // bottom
+    0 1px 0 var(--grad-bottom),
+    0 4px 0 var(--bottom),
+    0 6px 0 var(--border-color),
+
+    // corner bottom left
+    -2px 6px 0 var(--border-color),
+    -6px 2px 0 var(--border-color),
+    
+    // corner bottom right
+    2px 6px 0 var(--border-color),
+    6px 2px 0 var(--border-color),
+
+    0 10px 0 rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    --grad-top: var(--playbutton-gradient-top-hover);
+    --grad-bottom: var(--playbutton-gradient-bottom-hover);
+  }
+
+  &:focus {
+    outline: none;
+    --border-color: var(--playbutton-border-active);
+    --grad-top: var(--playbutton-gradient-top-focus);
+    --grad-bottom: var(--playbutton-gradient-bottom-focus);
+  }
+  
+  &:active {
+    --border-color: var(--playbutton-border-active);
+    --grad-top: var(--playbutton-gradient-top-active);
+    --grad-bottom: var(--playbutton-gradient-bottom-active);
+    --top: var(--playbutton-top-active);
+    --bottom: var(--playbutton-bottom-active);
+  }
+
+  &:disabled {
+    pointer-events: none;
+    --top: var(--playbutton-top-disabled);
+    --bottom: var(--playbutton-bottom-disabled);
+    --grad-top: var(--playbutton-gradient-top-disabled);
+    --grad-bottom: var(--playbutton-gradient-bottom-disabled);
+    color: var(--playbutton-foreground-disabled);
+  }
+}

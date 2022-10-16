@@ -7,10 +7,11 @@ interface SelectProps {
   defaultValue: string;
   width?: number;
   onChange: (index: number, value: string) => void;
+  noBackground?: boolean;
   options: { label: string; value: string }[];
 }
 
-const Select: React.FC<SelectProps> = ({ defaultValue, width = '100%', onChange, options }) => {
+const Select: React.FC<SelectProps> = ({ defaultValue, width = '100%', noBackground, onChange, options }) => {
   const [open, setOpen] = useState(false);
   const [state, setState] = useState(defaultValue);
 
@@ -33,11 +34,17 @@ const Select: React.FC<SelectProps> = ({ defaultValue, width = '100%', onChange,
     }
   };
 
+  const handleClickOutsideWindow = (ev: FocusEvent) => {
+    setOpen(false);
+  };
+
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
+    window.addEventListener('blur', handleClickOutsideWindow);
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('blur', handleClickOutsideWindow);
     };
   }, []);
 
@@ -54,16 +61,16 @@ const Select: React.FC<SelectProps> = ({ defaultValue, width = '100%', onChange,
     // }
   };
 
-  useEffect(() => {
-    // if (open && dropRef.current) {
-    //   let b = dropRef.current.querySelectorAll('.dropdown-item.active')[0] as HTMLButtonElement;
-    //   b.focus();
-    //   b?.scrollIntoView();
-    // }
-  }, []);
+  // useEffect(() => {
+  //   // if (open && dropRef.current) {
+  //   //   let b = dropRef.current.querySelectorAll('.dropdown-item.active')[0] as HTMLButtonElement;
+  //   //   b.focus();
+  //   //   b?.scrollIntoView();
+  //   // }
+  // }, []);
 
   return (
-    <div ref={dropRef} onKeyDown={handleKeyDown} tabIndex={0} className={classNames('dropdown', { open })} style={{ width }}>
+    <div ref={dropRef} onKeyDown={handleKeyDown} tabIndex={0} className={classNames('dropdown', { open, 'no-bg': noBackground })} style={{ width }}>
       <div className="dropdown-selected" onClick={handleOpen}>
         <span>{options.find((opt, i) => opt.value === state)?.label}</span>
         <ArrowDownIcon className="arrow" />
