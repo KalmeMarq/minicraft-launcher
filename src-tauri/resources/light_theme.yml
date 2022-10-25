@@ -1,0 +1,7 @@
+background: "#fcfcfc"
+mainmenu.background: "#f1f1f1"
+mainmenu.tab.background: "#f1f1f1"
+mainmenu.tab.foreground: "#222222"
+mainmenu.tab.selected.indicator: "#1f51db"
+submenu.background: "#f1f1f1"
+modal.dialog.background: "#f1f1f1"

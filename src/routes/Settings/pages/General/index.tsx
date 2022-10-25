@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Checkbox from '../../../../components/Checkbox';
 import LButton from '../../../../components/LButton';
 import Select from '../../../../components/Select';
@@ -7,12 +7,16 @@ import { T } from '../../../../context/TranslationContext';
 import { useTranslation } from '../../../../hooks/useTranslation';
 import './index.scss';
 import translations from '../../../../assets/translations.json';
+import { invoke } from '@tauri-apps/api';
+import { relaunch } from '@tauri-apps/api/process';
+import { isDev } from '../../../../utils';
 
 const General: React.FC = () => {
   const { t } = useTranslation();
-  const { keepLauncherOpen, animatePages, showCommunityTab, openOutputLog, setSetting, theme, language, themes, refreshThemes } = useContext(SettingsContext);
+  const { launcherPath, keepLauncherOpen, animatePages, showCommunityTab, openOutputLog, setSetting, theme, language, themes, refreshThemes } = useContext(SettingsContext);
   const [forceRTL, setForceRTL] = useState(false);
   const [beforeForced, setBeforeForced] = useState('ltr');
+  const [storePath, setStorePath] = useState(launcherPath);
 
   return (
     <div className="settings-general-content">
@@ -53,7 +57,7 @@ const General: React.FC = () => {
           refreshThemes();
         }}
       />
-      <div style={{ height: '15px' }}></div>
+      <div style={{ minHeight: '16px', height: '16px' }}></div>
       <h3>
         <T>Launcher Settings</T>
       </h3>
@@ -84,19 +88,53 @@ const General: React.FC = () => {
           console.log(prop, checked);
         }}
       />
-      <Checkbox
-        label={t('Force right to left layout')}
-        id="forceRTL"
-        checked={forceRTL}
-        onChange={(ev, checked, prop) => {
-          if (checked) {
-            setBeforeForced(document.body.dir);
-          }
-          setForceRTL(checked);
-          document.body.dir = checked ? 'rtl' : beforeForced;
-          console.log(prop, checked);
-        }}
-      />
+      {isDev() && (
+        <Checkbox
+          label={t('Force right to left layout')}
+          id="forceRTL"
+          checked={forceRTL}
+          onChange={(ev, checked, prop) => {
+            if (checked) {
+              setBeforeForced(document.body.dir);
+            }
+            setForceRTL(checked);
+            document.body.dir = checked ? 'rtl' : beforeForced;
+            console.log(prop, checked);
+          }}
+        />
+      )}
+      <div>
+        <h3 style={{ marginBottom: '8px', marginTop: '2rem' }}>
+          <T>Storage Directory</T>
+        </h3>
+        <div className="store-path-cont">
+          <span onCopy={(e) => e.preventDefault()}>{storePath}</span>
+          <button
+            className="browse-btn"
+            onClick={() => {
+              invoke('pick_folder', { defaultFolder: storePath }).then((selected) => {
+                if (selected != null && typeof selected === 'string' && selected !== '') {
+                  setStorePath(selected);
+                }
+              });
+            }}
+          >
+            Browse
+          </button>
+        </div>
+        <div style={{ height: '8px' }}></div>
+        <p style={{ fontSize: '14px', marginBottom: '6px', fontStyle: 'italic', fontFamily: 'Noto Sans' }}>*You'll need to restart the app to take effect. It also may take a little bit.</p>
+        <LButton
+          type="red"
+          text="Apply"
+          disabled={storePath === launcherPath}
+          onClick={() => {
+            if (storePath !== launcherPath && storePath !== '') {
+              invoke('change_launcher_path', { newLauncherPath: storePath });
+            }
+          }}
+        />
+      </div>
       <h3>
         <T>Minicraft Settings</T>
       </h3>
@@ -109,6 +147,7 @@ const General: React.FC = () => {
           console.log(prop, checked);
         }}
       />
+      <br />
     </div>
   );
 };

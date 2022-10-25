@@ -2,10 +2,11 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
   
   .divider {
     width: calc(100% - 4rem);
-    max-width: 880px;
+    max-width: 780px;
     height: 1px;
     margin: auto;
     background: var(--divider);
@@ -20,7 +21,7 @@
   .filter-content-inside {
     display: flex;
     flex-direction: row;
-    max-width: 880px;
+    max-width: 780px;
     width: 100%;
     margin-left: 2rem;
     margin-right: 2rem;
@@ -88,142 +89,5 @@
     position: relative;
     height: 100%;
     overflow-y: auto;
-  }
-  
-  .version-item {
-    display: flex;
-    place-content: center;
-    max-height: 68px;
-    min-height: 68px;
-    height: 68px;
-    border: 1px solid transparent;
-    transition: background 200ms;
-  
-    &:hover {
-      background: rgba(255, 255, 255, 0.1);
-
-      .version-item-tools {
-        display: flex;
-      }
-    }
-  
-    &:active {
-      background: rgba(255, 255, 255, 0.05);
-    }
-  
-    &:focus-within:not(:active) {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: white;
-
-      .version-item-tools {
-        display: flex;
-      }
-    }
-  
-    .version-btn {
-      position: relative;
-      background: none;
-      border: none;
-      width: 100%;
-      cursor: pointer;
-      max-width: 880px;
-      height: 100%;
-      outline: none;
-      display: flex;
-      flex-direction: row;
-      place-items: center;
-      margin-left: 2rem;
-      margin-right: 2rem;
-      font-family: 'Noto Sans';
-    }
-
-    .version-info {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      color: white;
-    
-      p {
-        font-family: 'Noto Sans';
-        padding-bottom: 4px;
-        font-weight: bold;
-        font-size: 0.95rem;
-      }
-    
-      span {
-        font-size: 0.79rem;
-        color:rgb(180, 180, 180);
-      }
-    }
-
-    .version-item-tools {
-      position: absolute;
-      display: none;
-      flex-direction: row;
-      gap: 0 0.4rem;
-      right: 0;
-    }
-  }
-}
-
-.delete-popup-overlay {
-  width: 100vw;
-  height: 100vh;
-  background: #000000CB;
-  display: block;
-  position: fixed;
-  top: 0;
-  z-index: 99;
-}
-
-.delete-popup {
-  display: flex;
-  place-items: center;
-  place-content: center;
-  background: transparent;
-  pointer-events: none;
-  
-  .delete-popup-content {
-    pointer-events: initial;
-    display: flex;
-    flex-direction: column;
-    place-items: center;
-    width: max-content;
-    min-width: 435px;
-    border-radius: 3px;
-    background: #1e1e1e;
-    padding: 36px 0 20px 0;
-    translate: 0 -25%;
-    opacity: 0;
-    animation: deletePopupOpenAnim 200ms ease-in-out forwards;
-
-    .question {
-      padding-bottom: 15px;
-      font-size: 0.90rem;
-    }
-
-    .version-id {
-      font-family: 'Noto Sans';
-      font-style: italic;
-      padding-bottom: calc(2.6rem - 1px);
-      font-size: 0.92rem;
-    }
-  }
-
-  .popup-buttons {
-    display: flex;
-    flex-direction: row;
-    column-gap: 8px;
-  }
-}
-
-@keyframes deletePopupOpenAnim {
-  0% {
-    translate: 0 -10%;
-    opacity: 0;
-  }
-  100% {
-    translate: 0 0;
-    opacity: 1;
   }
 }

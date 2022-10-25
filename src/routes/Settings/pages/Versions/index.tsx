@@ -1,7 +1,5 @@
 import React, { useState, version } from 'react';
-import { filesize } from 'filesize';
 import './index.scss';
-import folderIcon from '../../../../assets/old_images/folder.png';
 import Checkbox from '../../../../components/Checkbox';
 import SearchBox from '../../../../components/SearchBox';
 import LButton from '../../../../components/LButton';
@@ -9,31 +7,14 @@ import ReactModal from 'react-modal';
 import { useTranslation } from '../../../../hooks/useTranslation';
 import { T } from '../../../../context/TranslationContext';
 import { versionInfosTesting } from '../../../../utils';
+import VersionItem from './components/VersionItem';
+import RemovePopup from './components/RemovePopup';
 
 interface VersionInfo {
   id: string;
   type: 'release' | 'beta';
   size: number;
 }
-
-export const DeletePopup: React.FC<{ isOpen?: boolean; onClose?: () => void; id: string; onConfirm?: () => void }> = ({ isOpen = false, onClose, id, onConfirm }) => {
-  const { t } = useTranslation();
-
-  return (
-    <ReactModal isOpen={isOpen} className="modal-dialog delete-popup" shouldCloseOnOverlayClick={true} overlayClassName="modal-overlay delete-popup-overlay" onRequestClose={onClose}>
-      <div className="delete-popup-content">
-        <p className="question">
-          <T>Are you sure you want to delete?</T>
-        </p>
-        <p className="version-id">{id}</p>
-        <div className="popup-buttons">
-          <LButton text={t('Cancel')} onClick={onClose} />
-          <LButton text={t('Delete')} type="red" onClick={onConfirm} />
-        </div>
-      </div>
-    </ReactModal>
-  );
-};
 
 const Versions: React.FC = () => {
   const [versions, setVersions] = useState<VersionInfo[]>([]);
@@ -54,7 +35,7 @@ const Versions: React.FC = () => {
 
   return (
     <>
-      <DeletePopup
+      <RemovePopup
         isOpen={showDeletePopup}
         id="minicraftplus_1.2.3"
         onClose={() => {
@@ -135,24 +116,7 @@ const Versions: React.FC = () => {
               return (
                 <React.Fragment key={version.id}>
                   {idx !== 0 && <div className="divider"></div>}
-                  <div className="version-item">
-                    <div tabIndex={0} className="version-btn">
-                      <div className="version-info">
-                        <p>{version.id}</p>
-                        <span dir="ltr">{filesize(version.size) as string}</span>
-                      </div>
-                      <div className="version-item-tools">
-                        <LButton icon={folderIcon} />
-                        <LButton
-                          text={t('Remove')}
-                          type="normal"
-                          onClick={() => {
-                            setShowDeletePopup(true);
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div>
+                  <VersionItem info={version} onFolder={() => {}} onRemove={() => {}} />
                 </React.Fragment>
               );
             })}

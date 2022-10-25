@@ -10,7 +10,7 @@ import { useTranslation } from '../../../hooks/useTranslation';
 import './index.scss';
 
 const PatchNotes: React.FC = () => {
-  const { minicraft } = useContext(PatchNotesContext);
+  const { minicraft, refresh } = useContext(PatchNotesContext);
   const { minicraft: uiState, setSetting } = useContext(UIStateContext);
   const { t } = useTranslation();
 
@@ -44,7 +44,7 @@ const PatchNotes: React.FC = () => {
             </div>
           </div>
           <div className="refresh">
-            <LButton text="Refresh" />
+            <LButton text="Refresh" onClick={() => refresh('minicraftPatchNotes')} />
           </div>
         </div>
       </div>

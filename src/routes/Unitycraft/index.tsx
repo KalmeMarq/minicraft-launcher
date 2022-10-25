@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import SubMenu from '../../components/SubMenu';
 import FAQ from '../MinicraftPlus/FAQ';
+import { SubPageAnimator } from '../Settings';
 import Installations from './installations';
 import PatchNotes from './patchnotes';
 import Play from './play';
@@ -17,12 +18,14 @@ const Unitycraft: React.FC = () => {
         </SubMenu.Navbar>
       </SubMenu>
       <div className="subroute-page">
-        <Routes>
-          <Route path="/" element={<Navigate to="/unitycraft/play" replace />} />
-          <Route path="/play" element={<Play />} />
-          <Route path="/installations" element={<Installations />} />
-          <Route path="/patchnotes" element={<PatchNotes />} />
-        </Routes>
+        <SubPageAnimator pages={['/unitycraft/play', '/unitycraft/installations', '/unitycraft/patchnotes']}>
+          <Routes>
+            <Route path="/" element={<Navigate to="/unitycraft/play" replace />} />
+            <Route path="/play" element={<Play />} />
+            <Route path="/installations" element={<Installations />} />
+            <Route path="/patchnotes" element={<PatchNotes />} />
+          </Routes>
+        </SubPageAnimator>
       </div>
     </>
   );

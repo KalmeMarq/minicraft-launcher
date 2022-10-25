@@ -1,60 +1,57 @@
-use std::{fs::{File, self, read_to_string}, path::PathBuf, process::Command, io::Write};
+use std::{fs::{File, self, read_to_string}, path::PathBuf, process::Command, io::Write, sync::Mutex};
 use log::info;
 use log4rs::config::RawConfig;
 use tauri::regex::Regex;
 
-#[tauri::command]
-pub fn get_launcher_path() -> PathBuf {
-    dirs::data_dir().unwrap().join(".minicraft_launcher")
+use crate::CoreConfig;
+
+pub fn get_cache_path(launcher_path: &PathBuf) -> PathBuf {
+    launcher_path.join("webcache")
 }
 
-pub fn get_cache_path() -> PathBuf {
-    get_launcher_path().join("webcache")
+pub fn get_versions_path(launcher_path: &PathBuf) -> PathBuf {
+    launcher_path.join("versions")
 }
 
-pub fn get_versions_path() -> PathBuf {
-    get_launcher_path().join("versions")
+pub fn get_installations_path(launcher_path: &PathBuf) -> PathBuf {
+    launcher_path.join("installations")
 }
 
-pub fn get_installations_path() -> PathBuf {
-    get_launcher_path().join("installations")
+pub fn get_themes_path(launcher_path: &PathBuf) -> PathBuf {
+    launcher_path.join("themes")
 }
 
-pub fn get_themes_path() -> PathBuf {
-    get_launcher_path().join("themes")
+pub fn get_libraries_path(launcher_path: &PathBuf) -> PathBuf {
+    launcher_path.join("libraries")
 }
 
-pub fn get_libraries_path() -> PathBuf {
-    get_launcher_path().join("libraries")
-}
-
-pub fn create_launcher_dirs() {
+pub fn create_launcher_dirs(launcher_path: &PathBuf) {
     info!("Creating launcher dirs");
 
-    if !get_launcher_path().exists() {
-        fs::create_dir(get_launcher_path()).expect("Could not create launcher directory");
+    if !launcher_path.exists() {
+        fs::create_dir(launcher_path).expect("Could not create launcher directory");
     }
     
-    if !get_versions_path().exists() {
-        fs::create_dir(get_versions_path()).expect("Could not create versions directory");
+    if !get_versions_path(launcher_path).exists() {
+        fs::create_dir(get_versions_path(launcher_path)).expect("Could not create versions directory");
     }
 
-    if !get_installations_path().exists() {
-        fs::create_dir(get_installations_path()).expect("Could not create installations directory");
+    if !get_installations_path(launcher_path).exists() {
+        fs::create_dir(get_installations_path(launcher_path)).expect("Could not create installations directory");
     }
 
-    if !get_themes_path().exists() {
-        fs::create_dir(get_themes_path()).expect("Could not create themes directory");
+    if !get_themes_path(launcher_path).exists() {
+        fs::create_dir(get_themes_path(launcher_path)).expect("Could not create themes directory");
     }
 
-    if !get_libraries_path().exists() {
-        fs::create_dir(get_libraries_path()).expect("Could not create libraries directory");
+    if !get_libraries_path(launcher_path).exists() {
+        fs::create_dir(get_libraries_path(launcher_path)).expect("Could not create libraries directory");
     }
 }
 
 #[tauri::command]
-pub fn open_folder_from_launcher(id: &str) {
-    let path = get_launcher_path().join(id);
+pub fn open_folder_from_launcher(state: tauri::State<CoreConfig>, id: &str) {
+    let path = state.launcher_path.join(id);
     
     if fs::metadata(&path).is_ok() {
         open_folder(path)
@@ -62,86 +59,105 @@ pub fn open_folder_from_launcher(id: &str) {
 }
 
 #[tauri::command]
-pub async fn get_news_minecraft() -> serde_json::Value {
-    let pn_path = get_cache_path().join("ndo");
-    get_json_cached_file(pn_path, "https://launchercontent.mojang.com/news.json", 60).await
+pub async fn get_news_minecraft(state: tauri::State<'_, Mutex<CoreConfig>>) -> Result<serde_json::Value, ()> {
+    let pn_path = get_cache_path(&state.lock().unwrap().launcher_path).join("ndo");
+    let data = get_json_cached_file(pn_path, "https://launchercontent.mojang.com/news.json", 60).await;
+    Ok(data)
 }
 
 #[tauri::command]
-pub async fn get_news_minecraft_forum() -> String {
-    let pn_path = get_cache_path().join("ndgo");
-    get_text_cached_file(pn_path, "https://www.minecraftforum.net/news.rss", 60).await
+pub async fn get_news_minecraft_forum(state: tauri::State<'_, Mutex<CoreConfig>>) -> Result<String, ()> {
+    let pn_path = get_cache_path(&state.lock().unwrap().launcher_path).join("ndgo");
+    let data = get_text_cached_file(pn_path, "https://www.minecraftforum.net/news.rss", 60).await;
+    Ok(data)
 }
 
 #[tauri::command]
-pub async fn get_news_minecraft_top() -> String {
-    let pn_path = get_cache_path().join("nduo");
-    get_text_cached_file(pn_path, "https://minecrafttop.com/news/rss", 60).await
+pub async fn get_news_minecraft_top(state: tauri::State<'_, Mutex<CoreConfig>>) -> Result<String, ()> {
+    let pn_path = get_cache_path(&state.lock().unwrap().launcher_path).join("nduo");
+    let data = get_text_cached_file(pn_path, "https://minecrafttop.com/news/rss", 60).await;
+    Ok(data)
 }
 
 #[tauri::command]
-pub async fn get_launcher_patch_notes() -> serde_json::Value {
-    let pn_path = get_cache_path().join("mqo");
-    get_json_cached_file(pn_path, "https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/patchnotes/launcherPatchNotes.json", 60).await
+pub async fn get_launcher_patch_notes(state: tauri::State<'_, Mutex<CoreConfig>>) -> Result<serde_json::Value, ()> {
+    let pn_path = get_cache_path(&state.lock().unwrap().launcher_path).join("mqo");
+    let data = get_json_cached_file(pn_path, "https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/patchnotes/launcherPatchNotes.json", 60).await;
+    Ok(data)
 }
 
 #[tauri::command]
-pub async fn get_minicraft_plus_patch_notes() -> serde_json::Value {
-    let pn_path = get_cache_path().join("nqro");
-    get_json_cached_file(pn_path, "https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/patchnotes/minicraftPlusPatchNotes.json", 60).await
+pub async fn get_minicraft_plus_patch_notes(state: tauri::State<'_, Mutex<CoreConfig>>) -> Result<serde_json::Value, ()> {
+    let pn_path = get_cache_path(&state.lock().unwrap().launcher_path).join("nqro");
+    let data = get_json_cached_file(pn_path, "https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/patchnotes/minicraftPlusPatchNotes.json", 60).await;
+    Ok(data)
 }
 
 #[tauri::command]
-pub async fn get_minicraft_patch_notes() -> serde_json::Value {
-    let pn_path = get_cache_path().join("nqo");
-    get_json_cached_file(pn_path, "https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/patchnotes/minicraftPatchNotes.json", 60).await
+pub async fn get_minicraft_patch_notes(state: tauri::State<'_, Mutex<CoreConfig>>) -> Result<serde_json::Value, ()> {
+    let pn_path = get_cache_path(&state.lock().unwrap().launcher_path).join("nqo");
+    let data = get_json_cached_file(pn_path, "https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/patchnotes/minicraftPatchNotes.json", 60).await;
+    Ok(data)
 }
 
 #[tauri::command]
-pub async fn get_unitycraft_patch_notes() -> serde_json::Value {
-    let pn_path = get_cache_path().join("vqo");
-    get_json_cached_file(pn_path, "https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/patchnotes/unitycraftPatchNotes.json", 60).await
+pub async fn get_unitycraft_patch_notes(state: tauri::State<'_, Mutex<CoreConfig>>) -> Result<serde_json::Value, ()> {
+    let pn_path = get_cache_path(&state.lock().unwrap().launcher_path).join("vqo");
+    let data = get_json_cached_file(pn_path, "https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/patchnotes/unitycraftPatchNotes.json", 60).await;
+    Ok(data)
 }
 
 #[tauri::command]
-pub async fn get_faq(language: String) -> serde_json::Value {
-    let pn_path = get_cache_path().join(format!("faq-{}", &language));
+pub async fn get_faq(state: tauri::State<'_, Mutex<CoreConfig>>, language: String) -> Result<serde_json::Value, ()> {
+    let pn_path = get_cache_path(&state.lock().unwrap().launcher_path).join(format!("faq-{}", &language));
     let request_url = format!("https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/faq/{}.json", language);
-    get_json_cached_file(pn_path, &request_url, 60).await
+    let data = get_json_cached_file(pn_path, &request_url, 60).await;
+    Ok(data)
 }
 
 #[tauri::command]
-pub async fn get_alert_messaging() -> serde_json::Value {
-    let pn_path = get_cache_path().join("alertMessaging");
-    get_json_cached_file(pn_path, "https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/alertMessaging.json", 60).await
+pub async fn get_alert_messaging(state: tauri::State<'_, Mutex<CoreConfig>>) -> Result<serde_json::Value, ()> {
+    let pn_path = get_cache_path(&state.lock().unwrap().launcher_path).join("alertMessaging");
+    let data = get_json_cached_file(pn_path, "https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/alertMessaging.json", 60).await;
+    Ok(data)
 }
 
 #[tauri::command]
-pub async fn get_news() -> serde_json::Value {
-    let pn_path = get_cache_path().join("news");
-    get_json_cached_file(pn_path, "https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/news.json", 60).await
+pub async fn get_news(state: tauri::State<'_, Mutex<CoreConfig>>) -> Result<serde_json::Value, ()> {
+    let pn_path = get_cache_path(&state.lock().unwrap().launcher_path).join("news");
+    let data = get_json_cached_file(pn_path, "https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/news.json", 60).await;
+    Ok(data)
 }
 
 #[tauri::command]
-pub async fn refresh_cached_file(file: &str) -> Result<(), ()> {
+pub async fn get_version_manifest(state: tauri::State<'_, Mutex<CoreConfig>>) -> Result<serde_json::Value, ()> {
+    let pn_path = get_cache_path(&state.lock().unwrap().launcher_path).join("wn");
+    let data = get_json_cached_file(pn_path, "https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/version_manifest.json", 60).await;
+    Ok(data)
+}
+
+#[tauri::command]
+pub async fn refresh_cached_file(state: tauri::State<'_, Mutex<CoreConfig>>, file: &str) -> Result<(), ()> {
+    let launcher_path = state.lock().unwrap().launcher_path.clone();
+    
     match file {
         "launcherPatchNotes" => {
-            save_json_to_file(get_cache_path().join("mqo"), &get_json_from_url("https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/patchnotes/launcherPatchNotes.json").await);
+            save_json_to_file(get_cache_path(&launcher_path).join("mqo"), &get_json_from_url("https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/patchnotes/launcherPatchNotes.json").await);
         }
         "minicraftPlusPatchNotes" => {
-            save_json_to_file(get_cache_path().join("nqro"), &get_json_from_url("https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/patchnotes/minicraftPlusPatchNotes.json").await);
+            save_json_to_file(get_cache_path(&launcher_path).join("nqro"), &get_json_from_url("https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/patchnotes/minicraftPlusPatchNotes.json").await);
         }
         "minicraftPatchNotes" => {
-            save_json_to_file(get_cache_path().join("nqo"), &get_json_from_url("https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/patchnotes/minicraftPatchNotes.json").await);
+            save_json_to_file(get_cache_path(&launcher_path).join("nqo"), &get_json_from_url("https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/patchnotes/minicraftPatchNotes.json").await);
         }
         "minecraftNews" => {
-            save_json_to_file(get_cache_path().join("ndo"), &get_json_from_url("https://launchercontent.mojang.com/news.json").await);
+            save_json_to_file(get_cache_path(&launcher_path).join("ndo"), &get_json_from_url("https://launchercontent.mojang.com/news.json").await);
         }
         "minecraftForumNews" => {
-            save_text_to_file(get_cache_path().join("ndgo"), &get_text_from_url("https://www.minecraftforum.net/news.rss").await);
+            save_text_to_file(get_cache_path(&launcher_path).join("ndgo"), &get_text_from_url("https://www.minecraftforum.net/news.rss").await);
         }
         "minecraftTopNews" => {
-            save_text_to_file(get_cache_path().join("nduo"), &get_text_from_url("https://minecrafttop.com/news/rss").await);
+            save_text_to_file(get_cache_path(&launcher_path).join("nduo"), &get_text_from_url("https://minecrafttop.com/news/rss").await);
         }
         _ => {}
     }
@@ -254,15 +270,19 @@ pub fn open_folder(path: PathBuf) {
 }
 
 pub trait LauncherSave {
-    fn save(&self);
+    fn save(&self, app_handle: &tauri::AppHandle, core_config: &CoreConfig);
 }
 
-pub fn init_logger(app: tauri::AppHandle) {
+pub trait LauncherLoad<T> {
+    fn load(app_handle: &tauri::AppHandle, core_config: &CoreConfig) -> T; 
+}
+
+pub fn init_logger(app_handle: tauri::AppHandle, core_config: &CoreConfig) {
     info!("Initializing logger");
 
-    let log_config_path = app.path_resolver().resolve_resource("resources/log4rs.yml").expect("failed to resolve log4rs.yml resource");
+    let log_config_path = app_handle.path_resolver().resolve_resource("resources/log4rs.yml").expect("failed to resolve log4rs.yml resource");
 
-    let binding = get_launcher_path().join("launcher_log.txt");
+    let binding = core_config.launcher_path.join("launcher_log.txt");
     
     let log_file_path = binding.to_str().unwrap().replace("\\", "/");
     let log_config_str = read_to_string(&log_config_path).unwrap();

@@ -1,0 +1,97 @@
+.news-item {
+  display: block;
+  text-decoration: none;
+  width: 374px;
+  max-width: 374px;
+  min-width: 374px;
+  cursor: pointer;
+  animation: animPatchCardOpac 300ms;
+  height: max-content;
+  outline: none;
+
+  .news-item-img {
+    img {
+      display: block;
+      max-width: 100%;
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  &.forum .news-item-img {
+    height: 170px;
+    position: relative;
+    overflow: hidden;
+
+    img {
+      position: relative;
+      translate: 0 -25%;
+    }
+  }
+
+  .news-item-inside {
+    border: 1px solid transparent;
+  }
+
+  .news-item-cont {
+    position: relative;
+    background: #131313;
+    padding: 1rem 1.4rem;
+    box-shadow: 0 3px 0 #00000044;
+  }
+
+  &:focus:not(:active) .news-item-inside {
+    border-color: white;
+  }
+
+  &.card-border .news-item-cont::after {
+    content: '';
+    position: absolute;
+    display: block;
+    width: calc(100% - 10px);
+    top: 3px;
+    left: 3px;
+    height: calc(100% - 8px - 2px);
+    border: 2px solid #bbbbbb;
+    z-index: 2;
+  }
+
+  h3 {
+    font-family: 'MinecraftTen';
+    font-weight: 100;
+    font-size: 1.5rem;
+    color: white;
+  }
+
+  &:hover {
+    .news-item-cont {
+      background: hsl(0, 0%, 15%);
+    }
+  }
+
+  &:active {
+    .news-item-cont {
+      background: #131313;
+    }
+  }
+
+  .wrapper {
+    padding-top: 0.5rem;
+    padding-bottom: 0.1rem;
+  }
+
+  .cat {
+    color: #fff;
+    background: hsl(0, 0%, 20%);
+    font-family: 'Noto Sans';
+    font-size: 0.75rem;
+    padding: 1px 4px;
+  }
+
+  .date {
+    color: #bbb;
+    font-size: 0.75rem;
+    margin-left: 6px;
+    padding: 1px 4px;
+  }
+}

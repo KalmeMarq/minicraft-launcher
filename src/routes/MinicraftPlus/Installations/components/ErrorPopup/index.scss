@@ -1,0 +1,49 @@
+.profile-error-popup-overlay {
+  width: 100vw;
+  height: 100vh;
+  background: #000000CB;
+  display: block;
+  position: fixed;
+  top: 0;
+  z-index: 99;
+}
+
+.profile-error-popup {
+  display: flex;
+  place-items: center;
+  place-content: center;
+  background: transparent;
+  pointer-events: none;
+  
+  .error-popup-content {
+    pointer-events: initial;
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    width: max-content;
+    min-width: 435px;
+    border-radius: 3px;
+    background: #1e1e1e;
+    padding: 26px 0 20px 0;
+    translate: 0 -25%;
+    opacity: 0;
+    animation: deletePopupOpenAnim 200ms ease-in-out forwards;
+
+    .title {
+      padding-bottom: 15px;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .message {
+      padding-bottom: 15px;
+      font-size: 0.90rem;
+    }
+  }
+
+  .popup-buttons {
+    display: flex;
+    flex-direction: row;
+    column-gap: 8px;
+  }
+}

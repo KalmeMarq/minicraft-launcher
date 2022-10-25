@@ -8,7 +8,7 @@ import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
 import { path } from '@tauri-apps/api';
 import { useTranslation } from '../../hooks/useTranslation';
 import Minecraft from './pages/Minecraft';
-import Forum from './pages/Forum';
+import MinecraftForum from './pages/MinecraftForum';
 import MinecraftTop from './pages/MinecraftTop';
 import classNames from 'classnames';
 
@@ -30,7 +30,7 @@ const News: React.FC = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink title={t('Minecraft Forum')} className={({ isActive }) => classNames({ active: isActive })} to="/news/forum">
+            <NavLink title={t('Minecraft Forum')} className={({ isActive }) => classNames({ active: isActive })} to="/news/minecraftforum">
               <T>Minecraft Forum</T>
             </NavLink>
           </li>
@@ -45,7 +45,7 @@ const News: React.FC = () => {
       <Routes>
         <Route path="/" element={<Navigate to="/news/minecraft" replace />} />
         <Route path="/minecraft" element={<Minecraft />} />
-        <Route path="/forum" element={<Forum />} />
+        <Route path="/minecraftforum" element={<MinecraftForum />} />
         <Route path="/minecrafttop" element={<MinecraftTop />} />
       </Routes>
     </div>

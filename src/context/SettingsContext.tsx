@@ -17,6 +17,7 @@ export const SettingsContext = createContext<{
   openOutputLog: boolean;
   language: string;
   theme: string;
+  launcherPath: string;
   themes: Theme[];
   refreshThemes: () => void;
   setSetting: (option: string, value: string | number | boolean) => Promise<void>;
@@ -28,6 +29,7 @@ export const SettingsContext = createContext<{
   theme: 'dark',
   language: 'en-US',
   themes: [],
+  launcherPath: '',
   async refreshThemes() {},
   async setSetting(option: string, value: string | number | boolean) {}
 });
@@ -59,6 +61,7 @@ export const SettingsProvider: React.FC<React.PropsWithChildren> = ({ children }
   const [theme, setTheme] = useState<string>('dark');
   const [language, setLanguage] = useState<string>('en-US');
   const { addNotification } = useNotifications();
+  const [launcherPath, setLauncherPath] = useState('');
 
   useEffect(() => {
     async function fetchAll() {
@@ -69,9 +72,11 @@ export const SettingsProvider: React.FC<React.PropsWithChildren> = ({ children }
       const thm = await invoke('get_setting', { option: 'theme' });
       const lang = await invoke('get_setting', { option: 'language' });
       const themes = await invoke('get_themes');
+      const lp = await invoke('get_launcher_path');
 
       setThemes(themes as Theme[]);
       setLanguage(lang as string);
+      setLauncherPath(lp as string);
       setTheme((thm as string).toLowerCase());
       setKeepLauncherOpen(klo === 'true' ? true : false);
       setAnimatePages(ap === 'true' ? true : false);
@@ -152,6 +157,7 @@ export const SettingsProvider: React.FC<React.PropsWithChildren> = ({ children }
   return (
     <SettingsContext.Provider
       value={{
+        launcherPath,
         language,
         keepLauncherOpen,
         animatePages,

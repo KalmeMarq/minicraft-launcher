@@ -13,6 +13,7 @@ import { FAQProvider } from './context/FAQContext';
 import { NotificationsProvider } from './context/NotificatonsContext';
 import { UIStateProvider } from './context/UIStateContext';
 import { SettingsProvider } from './context/SettingsContext';
+import { NewsProvider } from './context/NewsContext';
 
 if (!isDev()) {
   document.addEventListener('keydown', (e) => {
@@ -20,8 +21,26 @@ if (!isDev()) {
     if (e.code === 'F3') e.preventDefault();
     if (e.code === 'F7') e.preventDefault();
     if (e.code === 'KeyR' && e.ctrlKey) e.preventDefault();
+    if (e.code === 'F12') e.preventDefault();
+    if (e.ctrlKey && e.shiftKey && e.code === 'KeyI') e.preventDefault();
+    if (e.ctrlKey && e.shiftKey && e.code === 'KeyJ') e.preventDefault();
   });
 }
+
+document.addEventListener('keydown', (e) => {
+  if (e.ctrlKey && e.code === 'KeyP') e.preventDefault();
+  if (e.ctrlKey && e.code === 'KeyU') e.preventDefault();
+  if (e.ctrlKey && e.code === 'KeyF') e.preventDefault();
+  if (e.ctrlKey && e.code === 'KeyG') e.preventDefault();
+
+  if (e.altKey && e.code === 'ArrowLeft') e.preventDefault();
+  if (e.altKey && e.code === 'ArrowRight') e.preventDefault();
+
+  if (e.ctrlKey && e.shiftKey && e.code === 'KeyC') e.preventDefault();
+  if (e.ctrlKey && e.shiftKey && e.code === 'KeyS') e.preventDefault();
+  if (e.ctrlKey && e.shiftKey && e.code === 'KeyE') e.preventDefault();
+  if (e.ctrlKey && e.shiftKey && e.code === 'KeyX') e.preventDefault();
+});
 
 window.addEventListener('contextmenu', (e) => {
   e.preventDefault();
@@ -45,7 +64,9 @@ const Root = () => {
           <UIStateProvider>
             <PatchNotesProvider>
               <FAQProvider>
-                <App />
+                <NewsProvider>
+                  <App />
+                </NewsProvider>
               </FAQProvider>
             </PatchNotesProvider>
           </UIStateProvider>

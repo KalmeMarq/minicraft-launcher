@@ -4,10 +4,10 @@ use log::info;
 use serde::{Serialize, Deserialize};
 use time::OffsetDateTime;
 
-use crate::{utils::{get_launcher_path, LauncherSave}, LauncherState};
+use crate::{utils::{LauncherSave, LauncherLoad}, LauncherState, CoreConfig};
 
-pub fn get_launcher_profiles_path() -> PathBuf {
-    get_launcher_path().join("launcher_profiles.json")
+fn get_launcher_profiles_path(launcher_path: &PathBuf) -> PathBuf {
+    launcher_path.join("launcher_profiles.json")
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
@@ -51,14 +51,36 @@ pub struct LauncherProfiles {
 }
 
 impl LauncherSave for LauncherProfiles {
-    fn save(&self) {
+    fn save(&self, _app_handle: &tauri::AppHandle, core_config: &CoreConfig) {
         info!("Saving launcher profiles");
 
         serde_json::to_writer_pretty(
-            &File::create(get_launcher_profiles_path()).expect("Could not save launcher profiles file"), 
+            &File::create(get_launcher_profiles_path(&core_config.launcher_path)).expect("Could not save launcher profiles file"), 
             self
         ).expect("Could not save launcher profiles");
     } 
+}
+
+impl LauncherLoad<LauncherProfiles> for LauncherProfiles {
+    fn load(app_handle: &tauri::AppHandle, core_config: &CoreConfig) -> LauncherProfiles {
+        info!("Loading launcher profiles");
+
+        let profiles_path = get_launcher_profiles_path(&core_config.launcher_path);
+
+        let mut profiles: LauncherProfiles = LauncherProfiles {
+            profiles: HashMap::new(),
+            groups: HashMap::new()
+        };
+    
+        if profiles_path.exists() {
+            let data = std::fs::read_to_string(profiles_path).expect("Could not read launcher profiles file");
+            profiles = serde_json::from_str(&data).expect("Could not load launcher profiles");
+        } else {
+            profiles.save(app_handle, core_config);
+        }
+    
+        profiles
+    }
 }
 
 #[tauri::command]
@@ -122,44 +144,45 @@ pub fn update_profile(state: tauri::State<LauncherState>, id: String, name: Opti
 }
 
 #[derive(Serialize)]
-pub struct ProfileDeleteResponse {
+pub struct ProfileResponse {
     message: Option<String>,
     success: bool
 }
 
 #[tauri::command]
-pub fn delete_profile(state: tauri::State<LauncherState>, profile_id: String) -> ProfileDeleteResponse {
+pub fn duplicate_profile(state: tauri::State<LauncherState>, profile_id: String, duplicate_profile_id: String) -> ProfileResponse {
     if state.profiles.lock().unwrap().profiles.contains_key(&profile_id) {
-        state.profiles.lock().unwrap().profiles.remove(&profile_id).unwrap();
-        
-        ProfileDeleteResponse {
+        let mut profile = state.profiles.lock().unwrap().profiles.get_mut(&profile_id).unwrap().clone();
+        profile.total_time_played = 0;
+        profile.last_time_played = 0;
+
+        state.profiles.lock().unwrap().profiles.insert(duplicate_profile_id, profile);
+
+        ProfileResponse {
             message: None,
             success: true
         }
     } else {
-        ProfileDeleteResponse {
+        ProfileResponse {
             message: Some("Profile does not exist".into()),
             success: false
         }
     }
 }
 
-pub fn load_profiles() -> LauncherProfiles {
-    info!("Loading launcher profiles");
-
-    let profiles_path = get_launcher_profiles_path();
-
-    let mut profiles: LauncherProfiles = LauncherProfiles {
-        profiles: HashMap::new(),
-        groups: HashMap::new()
-    };
-
-    if profiles_path.exists() {
-        let data = std::fs::read_to_string(profiles_path).expect("Could not read launcher profiles file");
-        profiles = serde_json::from_str(&data).expect("Could not load launcher profiles");
+#[tauri::command]
+pub fn delete_profile(state: tauri::State<LauncherState>, profile_id: String) -> ProfileResponse {
+    if state.profiles.lock().unwrap().profiles.contains_key(&profile_id) {
+        state.profiles.lock().unwrap().profiles.remove(&profile_id).unwrap();
+        
+        ProfileResponse {
+            message: None,
+            success: true
+        }
     } else {
-        profiles.save();
+        ProfileResponse {
+            message: Some("Profile does not exist".into()),
+            success: false
+        }
     }
-
-    profiles
 }

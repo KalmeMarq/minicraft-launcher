@@ -1,4 +1,4 @@
-import { ReactComponent as SearchIcon } from '../../assets/old_images/search.svg';
+import { ReactComponent as SearchIcon } from '../../assets/icons/search.svg';
 import { ReactComponent as CancelIcon } from '../../assets/icons/close.svg';
 import { FC } from 'react';
 import './index.scss';
@@ -17,7 +17,6 @@ const SearchBox: FC<ISearchBox> = ({ value, results = 0, handleEnter, handleFilt
     <div className="searchbox">
       <SearchIcon className="search-icon" />
       <input
-        title="Search"
         type="text"
         value={value}
         placeholder={placeholder}

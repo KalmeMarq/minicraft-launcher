@@ -1,4 +1,5 @@
 import React, { createContext, useState } from 'react';
+import { isDev } from '../utils';
 
 export interface ErrorNotification {
   type: 'error';
@@ -56,6 +57,18 @@ export const NotificationsProvider: React.FC<React.PropsWithChildren> = ({ child
 
   function removeNotification(id: string) {
     setNotifications(notifications.filter((v) => v.id !== id));
+  }
+
+  if (isDev()) {
+    (window as any).addNotif = (notif: INotification) => {
+      addNotification(notif);
+    };
+    (window as any).delNotif = (id: string) => {
+      removeNotification(id);
+    };
+    (window as any).hasNotif = (id: string) => {
+      return hasNotification(id);
+    };
   }
 
   return <NotificationsContext.Provider value={{ notifications, addNotification, hasNotification, removeNotification }}>{children}</NotificationsContext.Provider>;

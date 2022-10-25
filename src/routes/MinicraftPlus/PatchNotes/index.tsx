@@ -9,7 +9,7 @@ import { UIStateContext } from '../../../context/UIStateContext';
 import './index.scss';
 
 const PatchNotes: React.FC = () => {
-  const { minicraftPlus } = useContext(PatchNotesContext);
+  const { minicraftPlus, refresh } = useContext(PatchNotesContext);
   const { minicraftPlus: uiState, setSetting } = useContext(UIStateContext);
 
   return (
@@ -42,7 +42,7 @@ const PatchNotes: React.FC = () => {
             </div>
           </div>
           <div className="refresh">
-            <LButton text="Refresh" />
+            <LButton text="Refresh" onClick={() => refresh('minicraftPlusPatchNotes')} />
           </div>
         </div>
       </div>

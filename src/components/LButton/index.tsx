@@ -19,7 +19,7 @@ const LButton: React.FC<ILButton> = ({ icon, text, onClick, disabled, className,
   return (
     <button disabled={disabled} className={'bordered-btn ' + (icon ? 'iconned ' : ' ') + type + (className ? ' ' + className : '')} onClick={onClick} style={style}>
       <div className="inner">
-        {t(text ?? '')}
+        <span>{t(text ?? '')}</span>
         {icon && <img src={icon} />}
       </div>
     </button>

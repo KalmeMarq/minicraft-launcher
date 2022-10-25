@@ -17,13 +17,13 @@
         "all": true
       },
       "shell": {
-        "open": true
+        "open": "^https://"
       }
     },
     "bundle": {
       "active": true,
       "category": "Utility",
-      "copyright": "",
+      "copyright": "GLP-3.0",
       "deb": {
         "depends": []
       },

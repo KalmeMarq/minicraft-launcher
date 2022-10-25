@@ -125,7 +125,7 @@ export const versionInfosTesting = [
     id: 'minicraftplus_2.1.0',
     type: 'release',
     size: 8247532
-  } /* ,
+  },
   {
     id: 'minicraftplus_1.1.3',
     type: 'beta',
@@ -140,14 +140,41 @@ export const versionInfosTesting = [
     id: 'minicraftplus_2.5.3',
     type: 'release',
     size: 8247532
-  } */
+  },
+  {
+    id: 'minicraftplus_2.522.3',
+    type: 'release',
+    size: 8247532
+  },
+  {
+    id: 'minicraftplus_42.2.3',
+    type: 'release',
+    size: 34756347
+  },
+  {
+    id: 'minicraftplus_22.5.3',
+    type: 'release',
+    size: 8247532
+  }
 ];
 
 let cacheRndStr: string[] = [];
-export function generateRandomStr(length = 20) {
+export function generateRandomStr(length = 22, data?: string) {
   const gen = () => {
     const arr = new Uint8Array((length || 40) / 2);
-    window.crypto.getRandomValues(arr);
+    if (data) {
+      arr.set(
+        [
+          ...data
+            .padStart((length || 40) / 2, '0')
+            .substring(0, (length || 40) / 2)
+            .split('')
+            .map((c) => c.charCodeAt(0))
+        ],
+        0
+      );
+    }
+    if (data == null) window.crypto.getRandomValues(arr);
     const dec2hex = (dec: number) => dec.toString(16).padStart(2, '0');
     return Array.from(arr, dec2hex).join('');
   };
@@ -162,3 +189,5 @@ export function generateRandomStr(length = 20) {
 }
 
 (window as any).generateRandomStr = generateRandomStr;
+
+export const profileIcons = ['Apple', 'Wood_Shovel'];

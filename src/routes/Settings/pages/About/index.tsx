@@ -57,7 +57,7 @@ const About: React.FC = () => {
             <T placeholders={['KalmeMarq']}>Developed by</T>:
           </p>
           <ul className="cred-list">
-            {credits.map((cred) => (
+            {credits.developed_by.map((cred) => (
               <li key={cred.name}>
                 <div className="cred-item">
                   <span>{cred.name} - </span>

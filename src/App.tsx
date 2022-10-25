@@ -21,24 +21,14 @@ import News from './routes/News';
 import { SettingsContext } from './context/SettingsContext';
 import AlertMessages from './components/AlertMessages';
 import Unitycraft from './routes/Unitycraft';
+import { NewsContext } from './context/NewsContext';
 
 function App() {
   const [showDialog, setShowDialog] = useState(false);
   const { app: appInfo } = useContext(AboutContext);
   const { addNotification, removeNotification, hasNotification } = useContext(NotificationsContext);
   const { showCommunityTab } = useContext(SettingsContext);
-
-  if (isDev()) {
-    (window as any).addNotif = (notif: INotification) => {
-      addNotification(notif);
-    };
-    (window as any).delNotif = (id: string) => {
-      removeNotification(id);
-    };
-    (window as any).hasNotif = (id: string) => {
-      return hasNotification(id);
-    };
-  }
+  const { lastSeenMCFNews, lastSeenMCNews, lastSeenMCTNews } = useContext(NewsContext);
 
   return (
     <>
@@ -52,7 +42,7 @@ function App() {
       <HashRouter>
         <div className="app">
           <div className="main-menu">
-            <MainMenuTab title="News" icon={iconNews} path="/news" />
+            <MainMenuTab title="News" icon={iconNews} path="/news" newIcon={lastSeenMCFNews || lastSeenMCNews || lastSeenMCTNews} />
             <MainMenuTab title="Minicraft" subtitle="Plus" icon={iconMinicraftPlus} path="/minicraftplus" />
             <MainMenuTab title="Minicraft" icon={iconMinicraft} path="/minicraft" />
             <MainMenuTab title="Unitycraft" icon={iconUnityCraft} path="/unitycraft" />

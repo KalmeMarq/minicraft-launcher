@@ -4,10 +4,10 @@ use serde::{Deserialize, Serialize};
 use tauri::State;
 use log::info;
 
-use crate::{utils::{get_launcher_path, LauncherSave}, LauncherState, themes::LauncherThemes};
+use crate::{utils::{LauncherSave, LauncherLoad}, LauncherState, themes::LauncherThemes, CoreConfig};
 
-pub fn get_launcher_settings_path() -> PathBuf {
-    get_launcher_path().join("launcher_settings.json")
+pub fn get_launcher_settings_path(launcher_path: &PathBuf) -> PathBuf {
+    launcher_path.join("launcher_settings.json")
 }
 
 fn bool_true() -> bool {
@@ -163,8 +163,6 @@ pub struct LauncherSettings {
     #[serde(default)]
     open_output_log: bool,
     #[serde(default)]
-    show_community_tab: bool,
-    #[serde(default)]
     animate_pages: bool,
     #[serde(default = "default_ui_state")]
     minicraft_plus: UIState,
@@ -180,7 +178,6 @@ impl Default for LauncherSettings {
             theme: default_theme(),
             language: default_language(),
             open_output_log: false,
-            show_community_tab: false,
             animate_pages: false,
             minicraft_plus: default_ui_state(),
             minicraft: default_ui_state(),
@@ -208,10 +205,6 @@ impl LauncherSettings {
         self.animate_pages = value;
     }
 
-    pub fn set_show_community_tab(&mut self, value: bool) {
-        self.show_community_tab = value;
-    }
-
     pub fn set_open_output_log(&mut self, value: bool) {
         self.open_output_log = value;
     }
@@ -224,13 +217,32 @@ impl LauncherSettings {
 }
 
 impl LauncherSave for LauncherSettings {
-    fn save(&self) {
+    fn save(&self, _app_handle: &tauri::AppHandle, core_config: &CoreConfig) {
         info!("Saving launcher settings");
 
         serde_json::to_writer_pretty(
-            &File::create(get_launcher_settings_path()).expect("Could not save launcher settings file"), 
+            &File::create(get_launcher_settings_path(&core_config.launcher_path)).expect("Could not save launcher settings file"), 
             self
         ).expect("Could not save launcher settings");
+    }
+}
+
+impl LauncherLoad<LauncherSettings> for LauncherSettings {
+    fn load(app_handle: &tauri::AppHandle, core_config: &CoreConfig) -> LauncherSettings {
+        info!("Loading launcher settings");
+
+        let settings_path = get_launcher_settings_path(&core_config.launcher_path);
+
+        let mut settings: LauncherSettings = LauncherSettings::default();
+
+        if settings_path.exists() {
+            let data = fs::read_to_string(settings_path).expect("Could not read launcher settings");
+            settings = serde_json::from_str(&data).expect("Could not load launcher settings");
+        } else {
+            settings.save(app_handle, core_config);
+        }
+
+        settings
     }
 }
 
@@ -242,7 +254,7 @@ fn parse_set_bool(val: &str) -> bool {
     }
 }
 
-static LANGUAGES: [&str; 4] = ["en-US", "en-GB", "pt-PT", "pt-BR"];
+static LANGUAGES: [&str; 6] = ["en-US", "en-GB", "pt-PT", "pt-BR", "es-ES", "es-MX"];
 
 #[tauri::command]
 pub fn set_setting(state: State<LauncherState>, option: &str, value: &str) {
@@ -254,7 +266,6 @@ pub fn set_setting(state: State<LauncherState>, option: &str, value: &str) {
         "language" => state.settings.lock().unwrap().set_language(value),
         "animatePages" => state.settings.lock().unwrap().set_animate_pages(parse_set_bool(value)),
         "openOutputLog" => state.settings.lock().unwrap().set_open_output_log(parse_set_bool(value)),
-        "showCommunityTab" => state.settings.lock().unwrap().set_show_community_tab(parse_set_bool(value)),
         "minicraftPlus:configurations/sortBy" => state.settings.lock().unwrap().minicraft_plus.configurations.set_sort_by(value),
         "minicraftPlus:configurations/releases" => state.settings.lock().unwrap().minicraft_plus.configurations.set_releases(parse_set_bool(value)),
         "minicraftPlus:configurations/betas" => state.settings.lock().unwrap().minicraft_plus.configurations.set_betas(parse_set_bool(value)),
@@ -281,7 +292,6 @@ pub fn get_setting(state: State<LauncherState>, option: &str) -> String {
        "language" => state.settings.lock().unwrap().language.clone(),
        "animatePages" => state.settings.lock().unwrap().animate_pages.to_string(),
        "openOutputLog" => state.settings.lock().unwrap().open_output_log.to_string(),
-       "showCommunityTab" => state.settings.lock().unwrap().show_community_tab.to_string(),
        "minicraftPlus:configurations/sortBy" => state.settings.lock().unwrap().minicraft_plus.configurations.sort_by.as_str().to_string(),
        "minicraftPlus:configurations/releases" => state.settings.lock().unwrap().minicraft_plus.configurations.releases.to_string(),
        "minicraftPlus:configurations/betas" => state.settings.lock().unwrap().minicraft_plus.configurations.betas.to_string(),
@@ -298,21 +308,4 @@ pub fn get_setting(state: State<LauncherState>, option: &str) -> String {
        "news:legends" => state.settings.lock().unwrap().news_filter.legends.to_string(),
        _ => "unknown".to_string()
    } 
-}
-
-pub fn load_settings() -> LauncherSettings {
-    info!("Loading launcher settings");
-
-    let settings_path = get_launcher_settings_path();
-
-    let mut settings: LauncherSettings = LauncherSettings::default();
-
-    if settings_path.exists() {
-        let data = fs::read_to_string(settings_path).expect("Could not read launcher settings");
-        settings = serde_json::from_str(&data).expect("Could not load launcher settings");
-    } else {
-        settings.save();
-    }
-
-    settings
 }

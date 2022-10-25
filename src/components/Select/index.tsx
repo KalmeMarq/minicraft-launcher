@@ -14,11 +14,12 @@ interface SelectProps {
 const Select: React.FC<SelectProps> = ({ defaultValue, width = '100%', noBackground, onChange, options }) => {
   const [open, setOpen] = useState(false);
   const [state, setState] = useState(defaultValue);
+  const [stateHovered, setStateHovered] = useState(0);
 
   const dropRef = useRef<HTMLDivElement>(null);
 
   const handleOpen = () => {
-    setOpen(!open);
+    setOpen(true);
   };
 
   const handleSelect = (index: number, value: string) => {
@@ -34,16 +35,28 @@ const Select: React.FC<SelectProps> = ({ defaultValue, width = '100%', noBackgro
     }
   };
 
+  const handleFocusDoc = (ev: FocusEvent) => {
+    // @ts-ignore
+    if (dropRef.current && dropRef.current.contains(ev.target)) {
+      setOpen(true);
+    }
+  };
+
   const handleClickOutsideWindow = (ev: FocusEvent) => {
     setOpen(false);
   };
 
   useEffect(() => {
+    dropRef.current?.addEventListener('focus', handleFocusDoc);
+    dropRef.current?.addEventListener('blur', handleClickOutsideWindow);
+
     document.addEventListener('mousedown', handleClickOutside);
     window.addEventListener('blur', handleClickOutsideWindow);
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      dropRef.current?.removeEventListener('focus', handleFocusDoc);
+      dropRef.current?.removeEventListener('blur', handleClickOutsideWindow);
       window.removeEventListener('blur', handleClickOutsideWindow);
     };
   }, []);

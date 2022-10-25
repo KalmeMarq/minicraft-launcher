@@ -1,7 +1,10 @@
-[
-  {
-    "name": "KalmeMarq",
-    "github": "https://github.com/KalmeMarq",
-    "twitter": "https://twitter.com/KalmeMarq"
-  }
-]
+{
+  "developed_by": [
+    {
+      "name": "KalmeMarq",
+      "github": "https://github.com/KalmeMarq",
+      "twitter": "https://twitter.com/KalmeMarq"
+    }
+  ],
+  "special_thanks": []
+}

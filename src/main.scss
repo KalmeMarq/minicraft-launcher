@@ -147,8 +147,10 @@ body, #root, h1, h2, h3, h4, h5, h6, p, span, button, a, img {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  width: 100%;
   height: 100%;
   overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 // Coming Soon
@@ -161,4 +163,21 @@ body, #root, h1, h2, h3, h4, h5, h6, p, span, button, a, img {
   h2 {
     font-size: 2rem;
   }
+}
+.right-to-left-enter {
+  transform: translateX(40px);
+}
+  
+.right-to-left-enter-active {
+  transform: translateX(0);
+  transition: all 0.2s ease-in;
+}
+
+.left-to-right-enter {
+  transform: translateX(-40px);
+}
+
+.left-to-right-enter-active {
+  transform: translateX(0);
+  transition:all 0.2s ease-in;
 }

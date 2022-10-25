@@ -29,11 +29,13 @@ export const PatchNotesContext = createContext<{
   minicraftPlus: MinicraftPatchNote[];
   minicraft: MinicraftPatchNote[];
   unitycraft: MinicraftPatchNote[];
+  refresh: (file: string) => Promise<void>;
 }>({
   launcher: [],
   minicraftPlus: [],
   minicraft: [],
-  unitycraft: []
+  unitycraft: [],
+  async refresh(file) {}
 });
 
 export const PatchNotesProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -64,13 +66,28 @@ export const PatchNotesProvider: React.FC<React.PropsWithChildren> = ({ children
       });
   }, []);
 
+  async function refresh(file: string) {
+    await invoke('refresh_cached_file', { file });
+
+    console.log('refresh ' + file);
+
+    switch (file) {
+      case 'minicraftPatchNotes':
+        invoke('get_minicraft_patch_notes').then((data) => {
+          setMinicraftPatchNotes((data as { entries: MinicraftPatchNote[] }).entries);
+        });
+        break;
+    }
+  }
+
   return (
     <PatchNotesContext.Provider
       value={{
         launcher: launcherPatchNotes,
         minicraftPlus: minicraftPlusPatchNotes,
         minicraft: minicraftPatchNotes,
-        unitycraft: unitycraftPatchNotes
+        unitycraft: unitycraftPatchNotes,
+        refresh: refresh
       }}
     >
       {children}
