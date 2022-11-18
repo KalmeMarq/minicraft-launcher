@@ -50,14 +50,16 @@ const General: React.FC = () => {
           }}
         />
       </div>
-      <LButton
-        text="Refresh Themes"
-        style={{ maxWidth: 'max-content' }}
-        onClick={() => {
-          refreshThemes();
-        }}
-      />
-      <div style={{ minHeight: '16px', height: '16px' }}></div>
+      <div>
+        <LButton
+          text="Refresh Themes"
+          style={{ maxWidth: 'max-content' }}
+          onClick={() => {
+            refreshThemes();
+          }}
+        />
+      </div>
+      <div style={{ minHeight: '16px', height: '16px', maxHeight: '16px' }}></div>
       <h3>
         <T>Launcher Settings</T>
       </h3>

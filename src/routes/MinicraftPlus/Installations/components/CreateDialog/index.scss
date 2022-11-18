@@ -1,0 +1,179 @@
+.create-dialog {
+  .icon-selector {
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    margin: 1rem 0;
+
+    .selector-btn {
+      background: none;
+      border: 1px solid transparent;
+      transition: 150ms background;
+      border-radius: 3px;
+      padding: 0.5rem 0.5rem;
+      display: flex;
+      flex-direction: row;
+      place-items: center;
+
+      .arrow {
+        position: relative;
+        z-index: 10;
+        top: 5px;
+        transition: top 200ms;
+        pointer-events: none;
+      }
+
+      img {
+        width: 46px;
+        margin-right: 8px;
+        image-rendering: crisp-edges;
+        image-rendering: pixelated;
+        pointer-events: none;
+      }
+
+      &:hover {
+        background: #FFFFFF29;
+        border-color: #FFFFFF29;
+      }
+
+      &:hover {
+        .arrow {
+          top: calc(5px + 2px);
+        }
+      }
+
+      &:focus {
+        background: #FFFFFF29;
+        border-color: white;
+      }
+    }
+
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(11, 58px);
+      background: #131313;
+      padding: 1.1rem 1.4rem;
+      margin-top: 1.4rem;
+      border-radius: 3px;
+      animation: iconSelectorAnimOpen 150ms forwards ease-in;
+      position: relative;
+
+      &::before {
+        position: absolute;
+        display: block;
+        content: '';
+        pointer-events: none;
+        width: 0; 
+        height: 0; 
+        left: 50%;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-bottom: 5px solid #131313;
+        translate: -50%;
+        top: -5px;
+      }
+
+      img {
+        width: 46px;
+        image-rendering: crisp-edges;
+        image-rendering: pixelated;
+      }
+
+      .icon-grid-item {
+        width: 58px;
+        height: 61px;
+        display: flex;
+        place-content: center;
+        place-items: center;
+        border-radius: 2px;
+        transition: 150ms background;
+        outline: none;
+
+        svg {
+          width: 29px;
+          height: 29px;
+        }
+
+        &:hover,
+        &:focus-visible {
+          background: #FFFFFF29;
+        }
+
+        &:active {
+          background: #FFFFFF1A;
+        }
+      }
+    }
+  }
+
+  .install-form {
+    width: 424px;
+    margin: 0 auto;
+    position: relative;
+
+    .form-item {
+      margin: 1.4rem;
+      position: relative;
+
+      &:first-of-type {
+        margin-top: 0;
+      }
+
+      h3 {
+        text-transform: uppercase;
+        font-family: 'Noto Sans';
+        font-weight: bold;
+        font-size: 11px;
+        margin-bottom: 3px;
+      }
+
+      .textbox {
+        border-radius: 3px;
+        border: 1px solid transparent;
+
+        &:focus-within {
+          border-color: white;
+        }
+      }
+
+      .textbox-inner {
+        background: #131313;
+        border-radius: 3px;
+        height: 32px;
+        min-height: 32px;
+        display: flex;
+        flex-direction: row;
+        place-items: center;
+        padding: 0 4px 0 9px;
+
+        input[type="text"] {
+          background: none;
+          border: none;
+          outline: none;
+          width: 100%;
+          font-family: sans-serif;
+          font-size: 12.5px;
+          font-weight: bold;
+        }
+
+        &:hover {
+          background: #0E0E0E;
+        }
+      }
+    }
+  }
+
+  footer {
+    padding: 0 1.25rem;
+    column-gap: 5px;
+  }
+}
+
+@keyframes iconSelectorAnimOpen {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

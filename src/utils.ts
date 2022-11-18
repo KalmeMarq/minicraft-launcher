@@ -160,13 +160,13 @@ export const versionInfosTesting = [
 
 let cacheRndStr: string[] = [];
 export function generateRandomStr(length = 22, data?: string) {
-  const gen = () => {
+  const gen = (isR: boolean = false) => {
     const arr = new Uint8Array((length || 40) / 2);
     if (data) {
       arr.set(
         [
           ...data
-            .padStart((length || 40) / 2, '0')
+            .padEnd((length || 40) / 2, '0')
             .substring(0, (length || 40) / 2)
             .split('')
             .map((c) => c.charCodeAt(0))
@@ -190,4 +190,30 @@ export function generateRandomStr(length = 22, data?: string) {
 
 (window as any).generateRandomStr = generateRandomStr;
 
-export const profileIcons = ['Apple', 'Wood_Shovel'];
+export const profileIcons = [
+  'Anvil_Tile',
+  'Anvil',
+  'Apple',
+  'Chest_Tile',
+  'Corn',
+  'Furnace_Tile',
+  'Furnace',
+  'Gold_Apple',
+  'Lantern_Tile',
+  'Lantern',
+  'Lava_Bucket',
+  'Log',
+  'Loom_Tile',
+  'Loom',
+  'Rock_Axe',
+  'Rock_Pickaxe',
+  'Rock_Shovel',
+  'Rock_Sword',
+  'Steak',
+  'TNT_Tile',
+  'TNT',
+  'Water_Bucket',
+  'White_Flower',
+  'Wood_Shovel',
+  'Workbench_Tile'
+];

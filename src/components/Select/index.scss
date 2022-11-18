@@ -1,6 +1,7 @@
 .dropdown {
   width: 100%;
   height: 32px;
+  min-height: 32px;
   outline: none;
 
   .dropdown-selected {
@@ -11,6 +12,7 @@
     justify-content: space-between;
     width: 100%;
     height: 32px;
+    min-height: 32px;
     border-radius: 3px;
     place-items: center;
     padding: 0 0.4rem;
@@ -48,7 +50,7 @@
   }
 
   &:focus {
-    .dropdown-selected:hover {
+    .dropdown-selected {
       border: 1px solid white;
     }
   }
@@ -93,6 +95,10 @@
     color: white;
     font-family: 'Noto Sans';
     font-size: 0.82rem;
+
+    &.hovered {
+      background: #008542;
+    }
   }
 
   .dropdown-item:hover,

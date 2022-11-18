@@ -1,19 +1,23 @@
 .searchbox {
+  border: 1px solid transparent;
+  border-radius: 3px;
+
+  &:focus-within {
+    border-color: #C2C2C2;
+  }
+}
+
+.searchbox-inner {
   display: flex;
   height: 32px;
   min-height: 32px;
   background: #131313;
   border-radius: 3px;
   place-items: center;
-  border: 1px solid #131313;
   cursor: text;
 
-  &:hover {
+  &:h {
     background: #0E0E0E;
-  }
-
-  &:focus-within {
-    border: 1px solid #C2C2C2;
   }
 
   .reset-btn {

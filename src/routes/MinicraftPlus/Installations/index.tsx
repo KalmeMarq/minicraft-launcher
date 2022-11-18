@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { useState } from 'react';
 import Checkbox from '../../../components/Checkbox';
 import SearchBox from '../../../components/SearchBox';
@@ -12,63 +12,14 @@ import { invoke } from '@tauri-apps/api';
 import ErrorPopup from './components/ErrorPopup';
 import Tooltip from '../../../components/Tooltip';
 import InstallationItem from './components/InstallationItem';
-
-interface IMinicraftProfile {
-  id: string;
-  profile_type?: 'minicraft' | 'minicraftplus';
-  name: string;
-  icon: string;
-  versionId: string;
-  created: string;
-  lastUsed: string;
-  lastTimePlayed: number;
-  totalTimePlayed: number;
-  jvmArgs?: string;
-  javaPath?: string;
-  gameDir: String;
-}
+import { ProfilesContext } from '../../../context/ProfilesContext';
+import CreateDialog from './components/CreateDialog';
+import EditDialog from './components/EditDialog';
 
 const Installations: React.FC = () => {
   const { t } = useTranslation();
 
-  const [profiles, setProfiles] = useState<IMinicraftProfile[]>([
-    {
-      id: '5345346',
-      profile_type: 'minicraftplus',
-      name: 'Dest',
-      icon: 'Wood_Shovel',
-      versionId: 'minicraftplus_3.1.0',
-      created: new Date('2022-10-16').toJSON(),
-      lastUsed: new Date('2022-11-17').toJSON(),
-      lastTimePlayed: 0,
-      totalTimePlayed: 0,
-      gameDir: ''
-    },
-    {
-      id: '46345757aa',
-      profile_type: 'minicraftplus',
-      name: 'Test installation',
-      icon: 'Wood_Shovel',
-      versionId: 'minicraftplus_2.1.0',
-      created: new Date('2022-10-16').toJSON(),
-      lastUsed: new Date('2022-10-17').toJSON(),
-      lastTimePlayed: 0,
-      totalTimePlayed: 0,
-      gameDir: ''
-    },
-    {
-      id: 'djigadgadfg',
-      profile_type: 'minicraftplus',
-      name: 'Fnother name',
-      icon: 'Apple',
-      versionId: 'minicraftplus_2.2.0',
-      created: new Date('2022-10-10').toJSON(),
-      lastUsed: new Date('2022-10-10').toJSON(),
-      lastTimePlayed: 400320,
-      totalTimePlayed: 2232230,
-      gameDir: ''
-    }
-  ]);
+  const { minicraftPlusProfiles: profiles } = useContext(ProfilesContext);
 
   const [results, setResults] = useState(0);
   const [filterText, setFilterText] = useState('');
@@ -86,8 +37,23 @@ const Installations: React.FC = () => {
   const [showErrorDialog, setShowErrorDialog] = useState(false);
   const [errorDialogMsg, setErrorDialogMsg] = useState('');
 
+  const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+
   return (
     <>
+      <CreateDialog
+        isOpen={showCreateDialog}
+        onClose={() => {
+          setShowCreateDialog(false);
+        }}
+      />
+      <EditDialog
+        isOpen={showEditDialog}
+        onClose={() => {
+          setShowEditDialog(false);
+        }}
+      />
       <ErrorPopup message={errorDialogMsg} isOpen={showErrorDialog} onClose={() => setShowErrorDialog(false)} />
       <div className="installations">
         <div className="installs-filters">
@@ -156,7 +122,12 @@ const Installations: React.FC = () => {
         <div className="installations-list">
           <div className="create-btn">
             <div className="create-btn-inside">
-              <LButton text="New installation" />
+              <LButton
+                text="New installation"
+                onClick={() => {
+                  setShowCreateDialog(true);
+                }}
+              />
             </div>
           </div>
           <div className="divider"></div>
@@ -183,7 +154,9 @@ const Installations: React.FC = () => {
                   profile={profile}
                   onSelect={() => {}}
                   onPlay={() => {}}
-                  onEdit={() => {}}
+                  onEdit={() => {
+                    setShowEditDialog(true);
+                  }}
                   onDuplicate={() => {
                     invoke<{ message?: string; success: boolean }>('duplicate_profile', { profileId: profile.id, duplicateProfileId: crypto.randomUUID().replace(/-/g, '') }).then((res) => {
                       if (res.success) {

@@ -14,6 +14,7 @@ import { NotificationsProvider } from './context/NotificatonsContext';
 import { UIStateProvider } from './context/UIStateContext';
 import { SettingsProvider } from './context/SettingsContext';
 import { NewsProvider } from './context/NewsContext';
+import { ProfilesProvider } from './context/ProfilesContext';
 
 if (!isDev()) {
   document.addEventListener('keydown', (e) => {
@@ -65,7 +66,9 @@ const Root = () => {
             <PatchNotesProvider>
               <FAQProvider>
                 <NewsProvider>
-                  <App />
+                  <ProfilesProvider>
+                    <App />
+                  </ProfilesProvider>
                 </NewsProvider>
               </FAQProvider>
             </PatchNotesProvider>

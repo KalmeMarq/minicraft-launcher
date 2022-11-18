@@ -10,7 +10,7 @@
     display: flex;
     place-items: center;
     place-content: center;
-    padding: 1px 1.2rem 0;
+    padding: 1px 1.15rem 0;
     color: white;
     border: 1px solid #717171;
     height: 32px;
@@ -20,8 +20,6 @@
   }
 
   span {
-    -webkit-font-smoothing: antialiased;
-    transform: translate3d(0, 0, 0);
     translate: 0 0;
     position: relative;
   }
@@ -66,11 +64,6 @@
     background: #4f4f4f;
   }
 
-  &:active.green .inner {
-    background: #006431;
-    border-color: #006431;
-  }
-
   &:active.red .inner {
     background: #C0300A;
     border-color: #C0300A;
@@ -95,6 +88,11 @@
   &:focus,
   &:focus-visible {
     border-color: white;
+  }
+
+  &:active.green .inner {
+    background: #006431;
+    border-color: #006431;
   }
 
   &:disabled {

@@ -121,7 +121,7 @@ async fn get_launcher_path(state: tauri::State<'_, Mutex<CoreConfig>>) -> Result
 }
 
 #[tauri::command]
-fn pick_folder(default_folder: String) -> Result<String, ()> {
+async fn pick_folder(default_folder: String) -> Result<String, ()> {
     let dialog = FileDialogBuilder::new().set_directory(PathBuf::from(default_folder));
     let dir_path = dialog.pick_folder();
 
@@ -130,6 +130,22 @@ fn pick_folder(default_folder: String) -> Result<String, ()> {
         None => Ok("".into())
     }
 }
+
+#[tauri::command]
+async fn pick_installation_icon() -> Result<String, ()> {
+    let ext: [&str; 1] = ["png"];
+    let dialog = FileDialogBuilder::new().set_directory(tauri::api::path::picture_dir().unwrap()).add_filter("pngs", &ext);
+
+    let img_path = dialog.pick_file();
+    
+    match img_path {
+        Some(value) => {
+            let data = std::fs::read(value).unwrap();
+            Ok(base64::encode(data))
+        },
+        None => Ok("".into())
+    }
+} 
 
 #[tokio::main]
 async fn main() {
@@ -172,6 +188,7 @@ async fn main() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
+            pick_installation_icon,
             change_launcher_path,
             get_launcher_path,
             pick_folder,
@@ -186,14 +203,17 @@ async fn main() {
             utils::get_news_minecraft,
             utils::get_news_minecraft_forum,
             utils::get_news_minecraft_top,
-            utils::get_version_manifest,
+            utils::get_version_manifest_v2,
             utils::refresh_cached_file,
             profiles::delete_profile,
-            profiles::update_profile,
-            profiles::create_profile,
+            profiles::update_minicraft_profile,
+            profiles::update_unitycraft_profile,
+            profiles::create_minicraft_profile,
+            profiles::create_unitycraft_profile,
             profiles::duplicate_profile,
             profiles::get_minicraft_profiles,
             profiles::get_minicraftplus_profiles,
+            profiles::get_unitycraft_profiles,
             themes::get_themes,
             themes::refresh_themes,
             settings::get_setting,

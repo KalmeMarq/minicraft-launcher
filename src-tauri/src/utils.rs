@@ -1,7 +1,10 @@
 use std::{fs::{File, self, read_to_string}, path::PathBuf, process::Command, io::Write, sync::Mutex};
+use chrono::{Utc, DateTime};
 use log::info;
 use log4rs::config::RawConfig;
+use reqwest::StatusCode;
 use tauri::regex::Regex;
+use rand::distributions::DistString;
 
 use crate::CoreConfig;
 
@@ -31,7 +34,7 @@ pub fn create_launcher_dirs(launcher_path: &PathBuf) {
     if !launcher_path.exists() {
         fs::create_dir(launcher_path).expect("Could not create launcher directory");
     }
-    
+
     if !get_versions_path(launcher_path).exists() {
         fs::create_dir(get_versions_path(launcher_path)).expect("Could not create versions directory");
     }
@@ -52,7 +55,7 @@ pub fn create_launcher_dirs(launcher_path: &PathBuf) {
 #[tauri::command]
 pub fn open_folder_from_launcher(state: tauri::State<CoreConfig>, id: &str) {
     let path = state.launcher_path.join(id);
-    
+
     if fs::metadata(&path).is_ok() {
         open_folder(path)
     }
@@ -130,16 +133,16 @@ pub async fn get_news(state: tauri::State<'_, Mutex<CoreConfig>>) -> Result<serd
 }
 
 #[tauri::command]
-pub async fn get_version_manifest(state: tauri::State<'_, Mutex<CoreConfig>>) -> Result<serde_json::Value, ()> {
+pub async fn get_version_manifest_v2(state: tauri::State<'_, Mutex<CoreConfig>>) -> Result<serde_json::Value, ()> {
     let pn_path = get_cache_path(&state.lock().unwrap().launcher_path).join("wn");
-    let data = get_json_cached_file(pn_path, "https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/version_manifest.json", 60).await;
+    let data = get_json_cached_file(pn_path, "https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/version_manifest_v2.json", 60).await;
     Ok(data)
 }
 
 #[tauri::command]
 pub async fn refresh_cached_file(state: tauri::State<'_, Mutex<CoreConfig>>, file: &str) -> Result<(), ()> {
     let launcher_path = state.lock().unwrap().launcher_path.clone();
-    
+
     match file {
         "launcherPatchNotes" => {
             save_json_to_file(get_cache_path(&launcher_path).join("mqo"), &get_json_from_url("https://github.com/KalmeMarq/minicraft-launcher-content/raw/main/patchnotes/launcherPatchNotes.json").await);
@@ -192,6 +195,60 @@ pub async fn get_text_from_url(request_url: &str) -> String {
     data
 }
 
+pub async fn get_json_from_url_if_modified(request_url: &str, old_time: DateTime<Utc>) -> Option<serde_json::Value> {
+    let client = reqwest::Client::new();
+    let reg = Regex::new(r"\+\d{4}").unwrap();
+
+    let mut headers = reqwest::header::HeaderMap::new();
+    headers.insert(reqwest::header::IF_MODIFIED_SINCE, reg.replace_all(&old_time.to_rfc2822().to_string(), "GMT").parse().unwrap());
+    headers.insert(reqwest::header::EXPIRES, "-1".parse().unwrap());
+    headers.insert(reqwest::header::CACHE_CONTROL, "must-revalidate, private".parse().unwrap());
+
+    let res = client
+        .get(request_url)
+        .headers(headers)
+        .send().await.ok();
+
+    if let Some(response) = res {
+        if response.status() == StatusCode::NOT_MODIFIED {
+            None
+        } else if response.status() == StatusCode::OK {
+            Some(serde_json::from_str(&response.text().await.expect("Could not get text file")).expect("Could not parse json"))
+        } else {
+            None
+        }
+    } else {
+        None
+    }
+}
+
+pub async fn get_text_from_url_if_modified(request_url: &str, old_time: DateTime<Utc>) -> Option<String> {
+    let client = reqwest::Client::new();
+    let reg = Regex::new(r"\+\d{4}").unwrap();
+
+    let mut headers = reqwest::header::HeaderMap::new();
+    headers.insert(reqwest::header::IF_MODIFIED_SINCE, reg.replace_all(&old_time.to_rfc2822().to_string(), "GMT").parse().unwrap());
+    headers.insert(reqwest::header::EXPIRES, "-1".parse().unwrap());
+    headers.insert(reqwest::header::CACHE_CONTROL, "must-revalidate, private".parse().unwrap());
+
+    let res = client
+        .get(request_url)
+        .headers(headers)
+        .send().await.ok();
+
+    if let Some(response) = res {
+        if response.status() == StatusCode::NOT_MODIFIED {
+            None
+        } else if response.status() == StatusCode::OK {
+            Some(response.text().await.expect("Could not get text file"))
+        } else {
+            None
+        }
+    } else {
+        None
+    }
+}
+
 pub fn save_json_to_file(file_path: PathBuf, data: &serde_json::Value) {
     serde_json::to_writer_pretty(
         &File::create(&file_path).expect("Could not create file"),
@@ -206,7 +263,6 @@ pub fn save_text_to_file(file_path: PathBuf, data: &String) {
     file.flush().unwrap();
 }
 
-// TODO: Instead of checking every given minutes, use If-Modified-Since header. It doesn't wastes the rate limit. If not modified then used the stored file
 pub async fn get_json_cached_file(file_path: PathBuf, request_url: &str, minutes_to_wait: u64) -> serde_json::Value {
     if file_path.exists() {
         let metadata = std::fs::metadata(&file_path)
@@ -215,10 +271,17 @@ pub async fn get_json_cached_file(file_path: PathBuf, request_url: &str, minutes
         let dur = metadata.modified().unwrap().elapsed().unwrap();
 
         if dur.as_secs() / 60 > minutes_to_wait {
-            let data = get_json_from_url(request_url).await;
-            save_json_to_file(file_path, &data);
+            let data = get_json_from_url_if_modified(request_url, DateTime::from(metadata.modified().unwrap())).await;
 
-            data
+            if let Some(d) = data {
+                save_json_to_file(file_path, &d);
+                d
+            } else {
+                let data = fs::read_to_string(&file_path).expect("Could not read cached file");
+                let json: serde_json::Value =
+                    serde_json::from_str(&data).expect("Could not jsonify file");
+                json
+            }
         } else {
             let data = fs::read_to_string(&file_path).expect("Could not read cached file");
             let json: serde_json::Value =
@@ -233,7 +296,6 @@ pub async fn get_json_cached_file(file_path: PathBuf, request_url: &str, minutes
     }
 }
 
-// TODO: Instead of checking every given minutes, use If-Modified-Since header. It doesn't wastes the rate limit. If not modified then used the stored file
 pub async fn get_text_cached_file(file_path: PathBuf, request_url: &str, minutes_to_wait: u64) -> String {
     if file_path.exists() {
         let metadata = std::fs::metadata(&file_path)
@@ -242,10 +304,15 @@ pub async fn get_text_cached_file(file_path: PathBuf, request_url: &str, minutes
         let dur = metadata.modified().unwrap().elapsed().unwrap();
 
         if dur.as_secs() / 60 > minutes_to_wait {
-            let data = get_text_from_url(request_url).await;
-            save_text_to_file(file_path, &data);
-         
-            data
+            let data = get_text_from_url_if_modified(request_url, DateTime::from(metadata.modified().unwrap())).await;
+
+            if let Some(d) = data {
+                save_text_to_file(file_path, &d);
+                d
+            } else {
+                let data = fs::read_to_string(&file_path).expect("Could not read cached file");
+                data
+            }
         } else {
             let data = fs::read_to_string(&file_path).expect("Could not read cached file");
             data
@@ -266,7 +333,7 @@ pub fn open_folder(path: PathBuf) {
     Command::new("open").args(["-R", &path.to_str().unwrap()]).spawn().unwrap();
 
     #[cfg(target_os = "linux")]
-    Command::new("xdg-open").arg(&path.to_str().unwrap()).spawn().unwrap(); 
+    Command::new("xdg-open").arg(&path.to_str().unwrap()).spawn().unwrap();
 }
 
 pub trait LauncherSave {
@@ -274,7 +341,7 @@ pub trait LauncherSave {
 }
 
 pub trait LauncherLoad<T> {
-    fn load(app_handle: &tauri::AppHandle, core_config: &CoreConfig) -> T; 
+    fn load(app_handle: &tauri::AppHandle, core_config: &CoreConfig) -> T;
 }
 
 pub fn init_logger(app_handle: tauri::AppHandle, core_config: &CoreConfig) {
@@ -283,7 +350,7 @@ pub fn init_logger(app_handle: tauri::AppHandle, core_config: &CoreConfig) {
     let log_config_path = app_handle.path_resolver().resolve_resource("resources/log4rs.yml").expect("failed to resolve log4rs.yml resource");
 
     let binding = core_config.launcher_path.join("launcher_log.txt");
-    
+
     let log_file_path = binding.to_str().unwrap().replace("\\", "/");
     let log_config_str = read_to_string(&log_config_path).unwrap();
 
@@ -292,4 +359,8 @@ pub fn init_logger(app_handle: tauri::AppHandle, core_config: &CoreConfig) {
 
     let raw_config = serde_yaml::from_str::<RawConfig>(&log_config).unwrap();
     let _handle = log4rs::init_raw_config(raw_config).unwrap();
+}
+
+pub fn get_random_id() -> String {
+    rand::distributions::Alphanumeric.sample_string(&mut rand::thread_rng(), 32)
 }

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+  <circle cx="11" cy="11" r="10.5" stroke="white" />
+  <path d="M10 6H12V8H10V6Z" fill="white" />
+  <path d="M10 8H12V10H10V8Z" fill="white" />
+  <path d="M10 10H12V12H10V10Z" fill="white" />
+  <path d="M10 12H12V14H10V12Z" fill="white" />
+  <path d="M10 14H12V16H10V14Z" fill="white" />
+  <path d="M6 10H8V12H6V10Z" fill="white" />
+  <path d="M8 10H10V12H8V10Z" fill="white" />
+  <path d="M12 10H14V12H12V10Z" fill="white" />
+  <path d="M14 10H16V12H14V10Z" fill="white" />
+</svg>

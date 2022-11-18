@@ -1,7 +1,7 @@
 import PlayButton from '../../../components/PlayButton';
 import banner from '/images/banner.png';
 import { T } from '../../../context/TranslationContext';
-import { ReactComponent as MinicraftLogo } from '../../../assets/images/minicraft_logo.svg';
+import { ReactComponent as UnitycraftLogo } from '../../../assets/images/unitycraft_logo.svg';
 
 const Play: React.FC = () => {
   return (
@@ -15,7 +15,7 @@ const Play: React.FC = () => {
           backgroundSize: 'cover'
         }}
       >
-        <MinicraftLogo className="minicraft-logo" />
+        <UnitycraftLogo className="minicraft-logo unitycraft-logo" />
       </div>
       <div className="bar">
         <PlayButton disabled>

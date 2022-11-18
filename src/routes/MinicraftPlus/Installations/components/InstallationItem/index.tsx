@@ -1,24 +1,45 @@
 import classNames from 'classnames';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useContext } from 'react';
 import LButton from '../../../../../components/LButton';
 import { T } from '../../../../../context/TranslationContext';
 import { profileIcons, displayTime } from '../../../../../utils';
 import folderIcon from '../../../../../assets/images/folder.png';
 import moreIcon from '../../../../../assets/images/more.png';
+import { IMinicraftProfile } from '../../../../../context/ProfilesContext';
+import { AboutContext, VersionManifestV2 } from '../../../../../context/AboutContext';
 
-interface IMinicraftProfile {
-  id: string;
-  profile_type?: 'minicraft' | 'minicraftplus';
-  name: string;
-  icon: string;
-  versionId: string;
-  created: string;
-  lastUsed: string;
-  lastTimePlayed: number;
-  totalTimePlayed: number;
-  jvmArgs?: string;
-  javaPath?: string;
-  gameDir: String;
+function getInstallationName(profile: IMinicraftProfile) {
+  switch (profile.lastVersionId) {
+    case 'latest-release':
+      return 'Latest Release';
+    case 'latest-beta':
+      return 'Latest Beta';
+    default:
+      return profile.name === '' ? '<unnamed installation>' : profile.name;
+  }
+}
+
+function getInstallationVersion(profile: IMinicraftProfile, type: 'minicraftPlus' | 'unitycraft', vm: VersionManifestV2) {
+  switch (profile.lastVersionId) {
+    case 'latest-release':
+      return vm[type].latest.release;
+    case 'latest-beta':
+      return vm[type].latest.beta;
+    default:
+      return profile.lastVersionId;
+  }
+}
+
+function getInstallationIcon(profile: IMinicraftProfile) {
+  if (profile.icon.startsWith('data:image/')) {
+    return profile.icon;
+  }
+
+  if (profileIcons.includes(profile.icon)) {
+    return `/images/installation_icons/${profile.icon}.png`;
+  }
+
+  return '/images/installation_icons/Apple.png';
 }
 
 const InstallationItem: React.FC<{
@@ -45,6 +66,8 @@ const InstallationItem: React.FC<{
     setShowTools(false);
   };
 
+  const { versionManifestV2 } = useContext(AboutContext);
+
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     window.addEventListener('blur', handleClickOutsideWindow);
@@ -65,11 +88,11 @@ const InstallationItem: React.FC<{
         }}
       >
         <div className="installation-icon">
-          <img src={profile.icon.startsWith('data:image/') ? profile.icon : profileIcons.includes(profile.icon) ? '/images/installation_icons/' + profile.icon + '.png' : '/images/installation_icons/Apple.png'} alt="icon" />
+          <img src={getInstallationIcon(profile)} alt="icon" />
         </div>
         <div className="installation-info">
-          <p>{profile.name}</p>
-          <span>{profile.versionId}</span>
+          <p>{getInstallationName(profile)}</p>
+          <span>{getInstallationVersion(profile, 'minicraftPlus', versionManifestV2)}</span>
           <div className="playtime">
             {profile.lastTimePlayed > 0 && <p className="lasttime">Last Playtime: {displayTime(profile.lastTimePlayed)}</p>}
             {profile.totalTimePlayed > 0 && <p className="totaltime">Total Playtime: {displayTime(profile.totalTimePlayed)}</p>}
@@ -120,16 +143,18 @@ const InstallationItem: React.FC<{
               >
                 <T>Duplicate</T>
               </button>
-              <button
-                className="edit-btn"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setShowTools(false);
-                  if (onDelete) onDelete(profile);
-                }}
-              >
-                <T>Delete</T>
-              </button>
+              {profile.type === 'custom' && (
+                <button
+                  className="edit-btn"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setShowTools(false);
+                    if (onDelete) onDelete(profile);
+                  }}
+                >
+                  <T>Delete</T>
+                </button>
+              )}
             </div>
           )}
         </div>

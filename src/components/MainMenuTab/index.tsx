@@ -12,7 +12,7 @@ const MainMenuTab: React.FC<{
   const { t } = useTranslation();
 
   return (
-    <NavLink to={path} className={({ isActive }) => 'main-menu-tab' + (isActive ? ' selected' : '')} title={subtitle ? t(subtitle) : t(title)}>
+    <NavLink to={path} className={({ isActive }) => 'main-menu-tab' + (isActive ? ' selected' : '')} title={subtitle ? t(title + ' ' + subtitle) : t(title)}>
       <div className="icon">
         <img src={icon} alt={t(title)} />
         {newIcon && <div className="new-square"></div>}

@@ -3,7 +3,9 @@ The old ones are on [KalmeMarq/minicraft-launcher-tauri](https://github.com/Kalm
 
 A launcher for all Minicraft derived versions and mods. Includes +190 version mods and versions like Unitycraft.
 
-The UI is based on the Minecraft Launcher (it's pretty).
+The launcher content can be found at [KalmeMarq/minicraft-launcher-content](https://github.com/KalmeMarq/minicraft-launcher-content)
+
+The UI is based on the Minecraft Launcher (it's pretty)
 
 ![about](./docs/about.png)
 

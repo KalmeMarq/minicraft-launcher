@@ -52,7 +52,7 @@ export function parseForumNews(rawDoc: string) {
     const imageUrl = item.getAttribute('image');
     if (title && date && readMoreLink && imageUrl) {
       news.push({
-        id: generateRandomStr(22, title),
+        id: generateRandomStr(22, (date.substring(0, 9) + title.substring(0, title.length > 5 ? 5 : title.length) + readMoreLink.substring(readMoreLink.length - 8, readMoreLink.length)).replaceAll(' ', '')),
         title,
         date,
         readMoreLink,
@@ -81,7 +81,7 @@ export function parseTopNews(rawDoc: string): INews[] {
     const imageUrl = item.getElementsByTagName('media:content')[0].getAttribute('url');
     if (title && date && readMoreLink && imageUrl) {
       news.push({
-        id: generateRandomStr(22, title),
+        id: generateRandomStr(22, (date.substring(0, 9) + title.substring(0, title.length > 5 ? 5 : title.length) + readMoreLink.substring(readMoreLink.length - 8, readMoreLink.length)).replaceAll(' ', '')),
         title,
         date,
         readMoreLink,
