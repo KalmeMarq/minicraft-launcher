@@ -1,7 +1,7 @@
 # Minicraft Launcher
 The old ones are on [KalmeMarq/minicraft-launcher-tauri](https://github.com/KalmeMarq/minicraft-launcher-tauri) and [KalmeMarq/minicraft-launcher-electron](https://github.com/KalmeMarq/minicraft-launcher-electron) and this new version starts from 0.1.0 again and uses the same identifier, so uninstall the older one.
 
-A launcher for all Minicraft derived versions and mods. Includes +190 version mods and versions like Unitycraft.
+A launcher for all Minicraft derived versions and mods. Includes +200 version mods and versions like Unitycraft.
 
 The launcher content can be found at [KalmeMarq/minicraft-launcher-content](https://github.com/KalmeMarq/minicraft-launcher-content)
 
